@@ -1,0 +1,34 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/42b74d5/
+0	config/vimium-options.json	/^    {$/;"	o	array:exclusionRules
+Henry's dotfiles	README.md	/^# Henry's dotfiles$/;"	c
+delete_local_merged_branches	scripts/git.sh	/^function delete_local_merged_branches() {$/;"	f
+delete_remote_merged_branches	scripts/git.sh	/^function delete_remote_merged_branches() {$/;"	f
+exclusionRules	config/vimium-options.json	/^  "exclusionRules": [$/;"	a
+filterLinkHints	config/vimium-options.json	/^  "filterLinkHints": false,$/;"	b
+grabBackFocus	config/vimium-options.json	/^  "grabBackFocus": false,$/;"	b
+hideHud	config/vimium-options.json	/^  "hideHud": false,$/;"	b
+ignoreKeyboardLayout	config/vimium-options.json	/^  "ignoreKeyboardLayout": false,$/;"	b
+keyMappings	config/vimium-options.json	/^  "keyMappings": "# Insert your preferred key mappings here.",$/;"	s
+linkHintCharacters	config/vimium-options.json	/^  "linkHintCharacters": "sadfjklewcmpgh",$/;"	s
+linkHintNumbers	config/vimium-options.json	/^  "linkHintNumbers": "0123456789",$/;"	s
+newTabUrl	config/vimium-options.json	/^  "newTabUrl": "about:newtab",$/;"	s
+nextPatterns	config/vimium-options.json	/^  "nextPatterns": "next,more,newer,>,›,→,»,≫,>>",$/;"	s
+passKeys	config/vimium-options.json	/^      "passKeys": ""$/;"	s	object:exclusionRules.0
+pattern	config/vimium-options.json	/^      "pattern": "https?:\/\/mail.google.com\/*",$/;"	s	object:exclusionRules.0
+previousPatterns	config/vimium-options.json	/^  "previousPatterns": "prev,previous,back,older,<,‹,←,«,≪,<<",$/;"	s
+regexFindMode	config/vimium-options.json	/^  "regexFindMode": false,$/;"	b
+scrollStepSize	config/vimium-options.json	/^  "scrollStepSize": 60,$/;"	n
+searchEngines	config/vimium-options.json	/^  "searchEngines": "w: https:\/\/www.wikipedia.org\/w\/index.php?title=Special:Search&search=%s /;"	s
+searchUrl	config/vimium-options.json	/^  "searchUrl": "https:\/\/www.google.com\/search?q=",$/;"	s
+settingsVersion	config/vimium-options.json	/^  "settingsVersion": "1.64.6",$/;"	s
+smoothScroll	config/vimium-options.json	/^  "smoothScroll": true,$/;"	b
+userDefinedLinkHintCss	config/vimium-options.json	/^  "userDefinedLinkHintCss": "div > .vimiumHintMarker {\\n    background: #2E3440;\\n    border: /;"	s
+waitForEnterForFilteredHints	config/vimium-options.json	/^  "waitForEnterForFilteredHints": true,$/;"	b
+weekly_summary	scripts/git.sh	/^function weekly_summary() {$/;"	f
