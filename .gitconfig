@@ -1,0 +1,59 @@
+[user]
+    name = Henry Oliver
+    email = henry_oliver@me.com
+
+[color]
+    ui = auto
+    status = auto
+    diff = auto
+    remote = auto
+
+[push]
+    default = simple
+
+[core]
+    editor = "nvim"
+    excludesfile = ~/.gitignore
+    autocrlf = input
+    eol = lf
+
+[merge]
+    tool = nvim
+
+[mergetool "nvim"]
+    cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
+
+[credential]
+	helper = osxkeychain
+
+[http]
+	cookiefile = ~/.gitcookies
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[alias]
+    ls = log --decorate --abbrev-commit --date=short --pretty=format:"%C(yellow)%h' '%C(blue)%ad' | '%C(green)[%cn]' '%C(reset)%s%C(red)%d"
+    lsd = diff-tree --no-commit-id --name-status -r
+    standup = log --since '1 day ago' --oneline --author "henry_oliver@me.com"
+    up = !git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
+    prune-branches = !ls "$(git rev-parse --show-toplevel)/.git/refs/heads/" | grep -v master | xargs git branch -d amend = commit --amend
+
+    bam     = "!source ~/.scripts/git.sh && delete_local_merged_branches"
+    bamr    = "!source ~/.scripts/git.sh && delete_remote_merged_branches"
+    summary = "!source ~/.scripts/git.sh && weekly_summary"
+
+    graph = log --graph --abbrev-commit --decorate --date=short --pretty=format:"%C(yellow)%h' '%C(blue)%ad' '|%C(red)%d' '%C(reset)%s' '%C(green)[%cn]" --all
+
+    graph1 = !"git graph2"
+    graph2 = !"git lg1-specific --all"
+    graph3 = !"git lg2-specific --all"
+    graph4 = !"git lg3-specific --all"
+
+    lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+    lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+    lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset)%n'' %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
+
