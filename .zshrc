@@ -108,7 +108,7 @@ case `uname` in
         brew upgrade &&
         brew update --all &&
         npm update npm -g &&
-        npm update -g &&
+        npm update -g --force &&
         npm install -g npm@latest &&
         zplug update &&
         brew doctor &&
@@ -132,7 +132,7 @@ case `uname` in
         sudo apt-get autoclean'
 
     alias update='npm update npm -g &&
-        npm update -g &&
+        npm update -g --force &&
         npm install -g npm@latest &&
         zplug update &&
         sudo apt update && 
