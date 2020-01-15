@@ -138,8 +138,7 @@ case `uname` in
     ;;
     Linux)
         # commands for Linux go here
-        alias clean="npm cache clean &&
-            npm cache --force clean &&
+        alias clean="npm cache --force clean &&
             zplug clean &&
             zplug clear &&
             sudo apt autoremove && 
