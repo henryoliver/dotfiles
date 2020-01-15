@@ -2,8 +2,16 @@
 export EDITOR="nvim"
 
 # Paths
-path=("/usr/local/bin" "/usr/local/opt/ruby/bin" $path)
-path+=("/usr/local/sbin")
+case `uname` in
+  Darwin)
+    # commands for OS X go here
+    path=("/usr/local/bin" "/usr/local/opt/ruby/bin" $path)
+    path+=("/usr/local/sbin")
+  ;;
+  Linux)
+    # commands for Linux go here
+    fpath+=('~/.npm-global/lib/node_modules/pure-prompt/functions')
+esac
 
 # Pure
 autoload -U promptinit; promptinit
