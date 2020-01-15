@@ -107,7 +107,7 @@ case `uname` in
   Darwin)
     # commands for OS X go here
     alias clean="brew cleanup &&
-        npm cache clean --force &&
+        npm cache --force clean &&
         zplug clean &&
         zplug clear &&
         dscacheutil -flushcache"
@@ -130,7 +130,7 @@ case `uname` in
   Linux)
     # commands for Linux go here
     alias clean="npm cache clean &&
-        npm cache clean --force &&
+        npm cache --force clean &&
         zplug clean &&
         zplug clear &&
         sudo apt autoremove && 
