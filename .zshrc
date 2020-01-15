@@ -10,10 +10,17 @@ autoload -U promptinit; promptinit
 prompt pure
 
 # Zsh Plugin Manager
-if [ -d '/usr/local/opt/zplug' ]; then export ZPLUG_HOME=/usr/local/opt/zplug; fi
 
-source $ZPLUG_HOME/init.zsh
+# Check if zplug is installed
+if [[ ! -d ~/.zplug ]]; then
+  git clone https://github.com/zplug/zplug ~/.zplug
+  source ~/.zplug/init.zsh && zplug update --self
+fi
 
+# Essential
+source ~/.zplug/init.zsh
+
+# Make sure to use double quotes to prevent shell expansion
 zplug 'supercrabtree/k'
 zplug 'b4b4r07/enhancd', use:init.sh
 
@@ -23,15 +30,16 @@ zplug 'b4b4r07/pkill.sh', as:command, use:'pkill.sh', rename-to:'pkill'
 zplug 'zsh-users/zsh-autosuggestions'
 zplug 'zsh-users/zsh-syntax-highlighting'
 
-# Install plugins if there are plugins that have not been installed
+# Install packages that have not been installed yet
 if ! zplug check --verbose; then
-    printf 'Install? [y/N]: '
+    printf "Install? [y/N]: "
     if read -q; then
         echo; zplug install
+    else
+        echo
     fi
 fi
 
-# Then, source plugins and add commands to $PATH
 zplug load
 
 # Key Bindings
