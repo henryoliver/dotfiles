@@ -3,14 +3,15 @@ export EDITOR="nvim"
 
 # Paths
 case `uname` in
-  Darwin)
-    # commands for OS X go here
-    path=("/usr/local/bin" "/usr/local/opt/ruby/bin" $path)
-    path+=("/usr/local/sbin")
-  ;;
-  Linux)
-    # commands for Linux go here
-    fpath+=('~/.npm-global/lib/node_modules/pure-prompt/functions')
+    Darwin)
+        # commands for OS X go here
+        path=("/usr/local/bin" "/usr/local/opt/ruby/bin" $path)
+        path+=("/usr/local/sbin")
+    ;;
+    Linux)
+        # commands for Linux go here
+        fpath+=("$HOME/.npm-global/lib/node_modules/pure-prompt/functions")
+    ;;
 esac
 
 # Pure
@@ -21,8 +22,8 @@ prompt pure
 
 # Check if zplug is installed
 if [[ ! -d ~/.zplug ]]; then
-  git clone https://github.com/zplug/zplug ~/.zplug
-  source ~/.zplug/init.zsh && zplug update --self
+    git clone https://github.com/zplug/zplug ~/.zplug
+    source ~/.zplug/init.zsh && zplug update --self
 fi
 
 # Essential
@@ -112,52 +113,52 @@ alias flush="dscacheutil -flushcache"    # Flush your dns cache
 alias path="echo $PATH | tr -s ":" "\n"" # Pretty print the path
 
 case `uname` in
-  Darwin)
-    # commands for OS X go here
-    alias clean="brew cleanup &&
-        npm cache --force clean &&
-        zplug clean &&
-        zplug clear &&
-        dscacheutil -flushcache"
+    Darwin)
+        # commands for OS X go here
+        alias clean="brew cleanup &&
+            npm cache --force clean &&
+            zplug clean &&
+            zplug clear &&
+            dscacheutil -flushcache"
 
-    alias update="brew update &&
-        brew upgrade &&
-        brew update --all &&
-        npm update npm -g &&
-        npm update -g --force &&
-        npm install -g npm@latest &&
-        zplug update &&
-        brew doctor &&
-        python3 -m pip install --upgrade pip &&
-        python2 -m pip install --upgrade pip &&
-        pip3 install --upgrade pip &&
-        pip2 install --upgrade pip && 
-        pip2 install --upgrade pynvim &&
-        pip3 install --upgrade pynvim"
-  ;;
-  Linux)
-    # commands for Linux go here
-    alias clean="npm cache clean &&
-        npm cache --force clean &&
-        zplug clean &&
-        zplug clear &&
-        sudo apt autoremove && 
-        sudo apt-get purge && 
-        sudo apt-get autoremove && 
-        sudo apt-get clean && 
-        sudo apt-get autoclean"
+        alias update="brew update &&
+            brew upgrade &&
+            brew update --all &&
+            npm update npm -g &&
+            npm update -g --force &&
+            npm install -g npm@latest &&
+            zplug update &&
+            brew doctor &&
+            python3 -m pip install --upgrade pip &&
+            python2 -m pip install --upgrade pip &&
+            pip3 install --upgrade pip &&
+            pip2 install --upgrade pip && 
+            pip2 install --upgrade pynvim &&
+            pip3 install --upgrade pynvim"
+    ;;
+    Linux)
+        # commands for Linux go here
+        alias clean="npm cache clean &&
+            npm cache --force clean &&
+            zplug clean &&
+            zplug clear &&
+            sudo apt autoremove && 
+            sudo apt-get purge && 
+            sudo apt-get autoremove && 
+            sudo apt-get clean && 
+            sudo apt-get autoclean"
 
-    alias update="npm update npm -g &&
-        npm update -g --force &&
-        npm install -g npm@latest &&
-        zplug update &&
-        sudo apt update && 
-        sudo apt upgrade && 
-        sudo apt full-upgrade && 
-        sudo apt-get update && 
-        sudo apt-get upgrade && 
-        sudo apt-get dist-upgrade && 
-        sudo apt-get dselect-upgrade && 
-        sudo apt-get check"
-  ;;
+        alias update="npm update npm -g &&
+            npm update -g --force &&
+            npm install -g npm@latest &&
+            zplug update &&
+            sudo apt update && 
+            sudo apt upgrade && 
+            sudo apt full-upgrade && 
+            sudo apt-get update && 
+            sudo apt-get upgrade && 
+            sudo apt-get dist-upgrade && 
+            sudo apt-get dselect-upgrade && 
+            sudo apt-get check"
+    ;;
 esac
