@@ -10,15 +10,10 @@ Plug 'sheerun/vim-polyglot'
 
 " Completion
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 " Search
 Plug 'romainl/vim-cool'
 Plug 'cloudhead/neovim-fuzzy'
-
-" Code display
-Plug 'sbdchd/neoformat'
 
 " Integrations
 Plug 'w0rp/ale'
@@ -141,20 +136,13 @@ let g:nord_underline = 1
 
 colorscheme nord
 
-" Netrw
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
-
 " ALE
-let g:ale_lint_on_enter = 0
+let g:ale_completion_enabled = 1
 let g:ale_lint_on_text_changed = 'never'
+let g:airline#extensions#ale#enabled = 1 " Set this. Airline will handle the rest.
 
 " Gutentags
 set statusline+=%{gutentags#statusline()} " To know when Gutentags is generating tags
-
-" Deoplete.
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#ternjs#filetypes = ['jsx', 'javascript.jsx', 'vue']
 
 " Vim-signify
 let g:signify_vcs_list = ['git']
@@ -166,6 +154,9 @@ let g:mundo_right = 1
 
 " NERD Commenter
 let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
+
+" Hardtime
+let g:hardtime_default_on = 1
 
 " Ranger
 let g:ranger_map_keys = 0
@@ -213,9 +204,6 @@ map <leader>Q :qa!<CR>
 map <leader>lp <Plug>(ale_previous_wrap)
 map <leader>ln <Plug>(ale_next_wrap)
 
-" Neoformat
-map <leader>ff :Neoformat<CR>
-
 " Goyo
 map <leader>G :Goyo<CR>
 
@@ -226,9 +214,6 @@ map <leader>f :FuzzyGrep<CR>
 " Sayonara
 map <leader>x :Sayonara<CR>
 cnoreabbrev <expr> x getcmdtype() == ":" && getcmdline() == 'x' ? 'Sayonara' : 'x'
-
-" Hardtime
-let g:hardtime_default_on = 1
 
 " Ranger
 map <leader>r :Ranger<CR>

@@ -7,7 +7,7 @@ ln -sv ~/.dotfiles/.gitignore ~
 
 ln -sv ~/.dotfiles/scripts ~/.scripts
 
-ln -sv ~/.dotfiles/nvim/init.vim ~/.config/nvim
+mkdir ~/.config/nvim && ln -sv ~/.dotfiles/nvim/init.vim ~/.config/nvim
 ln -sv ~/.dotfiles/ranger ~/.config/ranger
 
 ln -sv ~/.dotfiles/ctags ~/.ctags.d
