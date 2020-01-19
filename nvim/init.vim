@@ -6,17 +6,19 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'arcticicestudio/nord-vim'
 
 " Language
+Plug 'neomake/neomake'
 Plug 'sheerun/vim-polyglot'
 
 " Completion
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 " Search
 Plug 'romainl/vim-cool'
 Plug 'cloudhead/neovim-fuzzy'
 
 " Integrations
-Plug 'w0rp/ale'
 Plug 'kassio/neoterm'
 Plug 'rizzatti/dash.vim'
 Plug 'mhinz/vim-signify'
@@ -136,13 +138,23 @@ let g:nord_underline = 1
 
 colorscheme nord
 
-" ALE
-let g:ale_completion_enabled = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:airline#extensions#ale#enabled = 1 " Set this. Airline will handle the rest.
+" Neomake
+let g:neomake_open_list = 2
+let g:neomake_javascript_enabled_makers = ['eslint']
 
 " Gutentags
 set statusline+=%{gutentags#statusline()} " To know when Gutentags is generating tags
+
+" Deoplete.
+let g:deoplete#enable_at_startup = 1
+
+" Deoplete ternjs
+let g:deoplete#sources#ternjs#filetypes = [
+    \ 'jsx',
+    \ 'javascript.jsx',
+    \ 'vue',
+    \ 'svelte'
+    \ ]
 
 " Vim-signify
 let g:signify_vcs_list = ['git']
@@ -200,9 +212,12 @@ map <leader>Q :qa!<CR>
 
 " Plugins
 
-" ALE
-map <leader>lp <Plug>(ale_previous_wrap)
-map <leader>ln <Plug>(ale_next_wrap)
+" Neomake
+nmap <Leader>lo :lopen<CR>      " open location window
+nmap <Leader>lc :lclose<CR>     " close location window
+nmap <Leader>ll :ll<CR>         " go to current error/warning
+nmap <Leader>ln :lnext<CR>      " next error/warning
+nmap <Leader>lp :lprev<CR>      " previous error/warning
 
 " Goyo
 map <leader>G :Goyo<CR>
@@ -225,4 +240,9 @@ map <leader>r :Ranger<CR>
 command! -nargs=1 -complete=file Cp :w <args> | :e <args>
 
 " Plugins
+
+" Neomake
+
+" When writing a buffer.
+call neomake#configure#automake('w')
 
