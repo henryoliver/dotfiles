@@ -139,7 +139,7 @@ let g:nord_underline = 1
 colorscheme nord
 
 " Neomake
-let g:neomake_open_list = 2
+let g:neomake_css_enabled_makers = ['stylelint']
 let g:neomake_javascript_enabled_makers = ['eslint']
 
 " Gutentags
@@ -149,6 +149,7 @@ set statusline+=%{gutentags#statusline()} " To know when Gutentags is generating
 let g:deoplete#enable_at_startup = 1
 
 " Deoplete ternjs
+let g:deoplete#sources#ternjs#types = 1 " Whether to include the types of the completions in the result data. Default: 
 let g:deoplete#sources#ternjs#filetypes = [
     \ 'jsx',
     \ 'javascript.jsx',
@@ -162,7 +163,7 @@ let g:signify_vcs_list = ['git']
 " Mundo
 let g:mundo_width = 100
 let g:mundo_preview_height = 40
-let g:mundo_right = 1
+let g:mundo_right = 0
 
 " NERD Commenter
 let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
@@ -219,12 +220,15 @@ nmap <Leader>ll :ll<CR>         " go to current error/warning
 nmap <Leader>ln :lnext<CR>      " next error/warning
 nmap <Leader>lp :lprev<CR>      " previous error/warning
 
-" Goyo
-map <leader>G :Goyo<CR>
-
 " Fuzzy
 map <leader>p :FuzzyOpen<CR>
 map <leader>f :FuzzyGrep<CR>
+
+" Goyo
+map <leader>G :Goyo<CR>
+
+" Mundo
+map <leader>u :MundoToggle<CR>
 
 " Sayonara
 map <leader>x :Sayonara<CR>
