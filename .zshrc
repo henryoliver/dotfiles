@@ -87,6 +87,9 @@ bindkey "^ " autosuggest-execute
 # Aliases
 alias code="nvim"
 
+alias pip="pip3"
+alias python="python3"
+
 # Copy
 alias rcp="rsync --archive --human-readable --progress --verbose --whole-file"
 alias rscp="rsync --archive --checksum --compress --human-readable --itemize-changes --rsh=ssh --stats --verbose"

@@ -6,11 +6,13 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'arcticicestudio/nord-vim'
 
 " Language
-Plug 'neomake/neomake'
+Plug 'dense-analysis/ale'
 Plug 'sheerun/vim-polyglot'
 
 " Completion
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'Shougo/deoppet.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
@@ -28,9 +30,9 @@ Plug 'itspriddle/vim-marked',   { 'for': 'markdown' }
 " Interface
 Plug 'junegunn/goyo.vim'
 Plug 'mhinz/vim-startify'
+Plug 'itchyny/lightline.vim'
+Plug 'ryanoasis/vim-devicons'
 Plug 'simnalamburt/vim-mundo'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 
 " Commands
 Plug 'tpope/vim-repeat'
@@ -42,6 +44,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'mhinz/vim-sayonara'
 Plug 'takac/vim-hardtime'
 Plug 'rbgrouleff/bclose.vim'
+Plug 'heavenshell/vim-jsdoc'
+Plug 'heavenshell/vim-pydocstring'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'editorconfig/editorconfig-vim'
 
@@ -128,7 +132,7 @@ let g:ruby_host_prog = '/usr/local/lib/ruby/gems/2.6.0/bin/neovim-ruby-host'
 augroup nord-overrides
     autocmd!
     autocmd ColorScheme nord highlight Italic cterm=italic gui=italic
-    autocmd ColorScheme nord highlight Folded cterm=italic,bold gui=italic,bold ctermbg=none guibg=none 
+    autocmd ColorScheme nord highlight Folded cterm=italic,bold gui=italic,bold ctermbg=none guibg=none
     autocmd ColorScheme nord highlight Search ctermbg=3 ctermfg=0 guibg=#434C5E guifg=#D8DEE9
 augroup END
 
@@ -138,9 +142,38 @@ let g:nord_underline = 1
 
 colorscheme nord
 
-" Neomake
-let g:neomake_css_enabled_makers = ['stylelint']
-let g:neomake_javascript_enabled_makers = ['eslint']
+" ALE
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+highlight ALEErrorSign ctermbg=NONE ctermfg=red
+highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+
+let g:ale_linters = {
+    \   'css': ['stylelint'],
+    \   'python': ['pylint'],
+    \   'javascript': ['eslint'],
+    \   'zsh': ['shell', 'shellcheck']
+    \}
+
+let g:ale_fixers = {
+    \   'sh': ['shfmt', 'trim_whitespace', 'remove_trailing_lines'],
+    \   'zsh': ['shfmt', 'trim_whitespace', 'remove_trailing_lines'],
+    \   'python': ['yapf', 'trim_whitespace', 'remove_trailing_lines'],
+    \   'css': ['prettier', 'stylelint', 'trim_whitespace', 'remove_trailing_lines'],
+    \   'json': ['prettier', 'fixjson',  'trim_whitespace', 'remove_trailing_lines'],
+    \   'javascript': ['prettier', 'eslint', 'trim_whitespace', 'remove_trailing_lines']
+    \}
+
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+
+let g:ale_fix_on_save = 0
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_text_changed = 'never'
+
+" Vim polyglot
+let g:python_highlight_space_errors = 0
 
 " Gutentags
 set statusline+=%{gutentags#statusline()} " To know when Gutentags is generating tags
@@ -149,7 +182,7 @@ set statusline+=%{gutentags#statusline()} " To know when Gutentags is generating
 let g:deoplete#enable_at_startup = 1
 
 " Deoplete ternjs
-let g:deoplete#sources#ternjs#types = 1 " Whether to include the types of the completions in the result data. Default: 
+let g:deoplete#sources#ternjs#types = 1 " Whether to include the types of the completions in the result data. Default:
 let g:deoplete#sources#ternjs#filetypes = [
     \ 'jsx',
     \ 'javascript.jsx',
@@ -160,6 +193,11 @@ let g:deoplete#sources#ternjs#filetypes = [
 " Vim-signify
 let g:signify_vcs_list = ['git']
 
+" Lightline
+let g:lightline = {
+    \ 'colorscheme': 'nord',
+    \ }
+
 " Mundo
 let g:mundo_width = 100
 let g:mundo_preview_height = 40
@@ -168,8 +206,9 @@ let g:mundo_right = 0
 " NERD Commenter
 let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
 
-" Hardtime
+" Vim HardTime
 let g:hardtime_default_on = 1
+let g:hardtime_ignore_quickfix = 1
 
 " Ranger
 let g:ranger_map_keys = 0
@@ -197,12 +236,6 @@ map cp :let @+ = expand('%') <CR>
 map <silent> <leader>ev :e $MYVIMRC<CR>
 map <silent> <leader>sv :so $MYVIMRC<CR>
 
-" Switch Off The Current Search
-map <silent> <leader>/ :nohlsearch<CR>
-
-" Clean the highlight text
-map <leader>h :set hlsearch!<CR>
-
 " Save
 map <leader>s :update<CR>
 map <leader>ss :wall<CR>
@@ -210,25 +243,23 @@ map <leader>ss :wall<CR>
 " Quit
 map <leader>q :q<CR>
 map <leader>Q :qa!<CR>
+map <leader>xx :only<CR>
 
 " Plugins
 
-" Neomake
-nmap <Leader>lo :lopen<CR>      " open location window
-nmap <Leader>lc :lclose<CR>     " close location window
-nmap <Leader>ll :ll<CR>         " go to current error/warning
-nmap <Leader>ln :lnext<CR>      " next error/warning
-nmap <Leader>lp :lprev<CR>      " previous error/warning
+" ALE
+nmap <silent> <leader>ln <Plug>(ale_next_wrap)
+nmap <silent> <leader>lp <Plug>(ale_previous_wrap)
 
 " Fuzzy
-map <leader>p :FuzzyOpen<CR>
-map <leader>f :FuzzyGrep<CR>
+map <silent> <leader>p :FuzzyOpen<CR>
+map <silent> <leader>f :FuzzyGrep<CR>
 
 " Goyo
 map <leader>G :Goyo<CR>
 
 " Mundo
-map <leader>u :MundoToggle<CR>
+map <silent> <leader>u :MundoToggle<CR>
 
 " Sayonara
 map <leader>x :Sayonara<CR>
@@ -244,9 +275,4 @@ map <leader>r :Ranger<CR>
 command! -nargs=1 -complete=file Cp :w <args> | :e <args>
 
 " Plugins
-
-" Neomake
-
-" When writing a buffer.
-call neomake#configure#automake('w')
 
