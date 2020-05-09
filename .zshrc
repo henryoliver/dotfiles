@@ -10,7 +10,7 @@ case `uname` in
     ;;
     Linux)
         # commands for Linux go here
-        fpath+=("$HOME/.npm-global/bin")
+        path+=("$HOME/.npm-global/bin")
         fpath+=("$HOME/.npm-global/lib/node_modules/pure-prompt/functions")
     ;;
 esac
