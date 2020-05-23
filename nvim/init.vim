@@ -6,34 +6,27 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'arcticicestudio/nord-vim'
 
 " Language
-Plug 'dense-analysis/ale'
 Plug 'sheerun/vim-polyglot'
 
 " Completion
 Plug 'alvan/vim-closetag'
 Plug 'jiangmiao/auto-pairs'
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-Plug 'deoplete-plugins/deoplete-jedi' " Python
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' } " JavaScript
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Search
-Plug 'romainl/vim-cool'
-Plug 'cloudhead/neovim-fuzzy'
+Plug 'junegunn/fzf.vim'
+Plug 'unblevable/quick-scope'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
 " Integrations
 Plug 'kassio/neoterm'
-Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
-Plug 'heavenshell/vim-jsdoc', { 'do': 'npm install -g lehre' }
 
-Plug 'tpope/vim-eunuch'
+Plug 'junegunn/gv.vim'
 Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-rhubarb' " Github
 Plug 'tpope/vim-fugitive'
-
-Plug 'francoiscabrol/ranger.vim'
+Plug 'kevinhwang91/rnvimr', { 'do': 'make sync' } " Ranger
 Plug 'itspriddle/vim-marked',   { 'for': 'markdown' }
 
 " Interface
@@ -42,14 +35,13 @@ Plug 'mhinz/vim-startify'
 Plug 'simnalamburt/vim-mundo'
 
 " Commands
-Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-unimpaired'
 
 " Other
 Plug 'takac/vim-hardtime'
-Plug 'rbgrouleff/bclose.vim'
+Plug 'ThePrimeagen/vim-be-good'
 Plug 'editorconfig/editorconfig-vim'
 
 " Initialize plugin system
@@ -60,17 +52,21 @@ call plug#end()
 " {{{ -------------------------------------------------------------------------
 set encoding=UTF-8                " UTF-8 as the default encoding.
 
+set nobackup                      " Make a backup before overwriting a file.
+set nowritebackup
+
 set lazyredraw                    " Don't bother updating screen during macro playback
+set updatetime=300                " If this many milliseconds nothing is typed the swap file will be written to disk.
 set timeoutlen=600                " Time in milliseconds to wait for a mapped sequence to complete.
 set ttimeoutlen=40                " Time in milliseconds to wait for a key code sequence to complete.
 set clipboard+=unnamedplus        " Mac OS X clipboard sharing
 
 " Search and Replace
 set magic                         " Use 'magic' patterns (extended regular expressions).
-set hlsearch                      " Highlight search results.
 set gdefault                      " Use 'g' flag by default with :s/foo/bar/.
 set smartcase                     " ... unless the query has capital letters.
 set incsearch                     " Incremental search.
+set nohlsearch                    " Stop the highlighting for the 'hlsearch' option.
 set ignorecase                    " Make searching case insensitive
 
 " White Space
@@ -125,6 +121,7 @@ set laststatus=0
 " User Interface
 syntax enable                     " Enable syntax highlighting.
 set termguicolors                 " Enables 24-bit RGB color in the |TUI|.
+set signcolumn=yes                " When and how to draw the signcolumn.
 filetype plugin indent on         " Load syntax files for better indenting.
 
 " Ruby
@@ -150,77 +147,85 @@ let g:nord_uniform_diff_background = 1
 
 colorscheme nord
 
-" ALE
-let g:ale_sign_error = '✘'
-let g:ale_sign_warning = '⚠'
-
-highlight ALEErrorSign ctermbg=NONE ctermfg=red
-highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
-
-let g:ale_linters = {
-    \   'css': ['stylelint'],
-    \   'python': ['pylint'],
-    \   'javascript': ['eslint'],
-    \   'zsh': ['shell', 'shellcheck']
-    \}
-
-let g:ale_fixers = {
-    \   'sh': ['shfmt', 'trim_whitespace', 'remove_trailing_lines'],
-    \   'zsh': ['shfmt', 'trim_whitespace', 'remove_trailing_lines'],
-    \   'python': ['yapf', 'trim_whitespace', 'remove_trailing_lines'],
-    \   'css': ['prettier', 'stylelint', 'trim_whitespace', 'remove_trailing_lines'],
-    \   'json': ['prettier', 'fixjson',  'trim_whitespace', 'remove_trailing_lines'],
-    \   'javascript': ['prettier', 'eslint', 'trim_whitespace', 'remove_trailing_lines']
-    \}
-
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-
-let g:ale_fix_on_save = 0
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_text_changed = 'never'
-
-" Vim Closetag
-let g:closetag_filetypes = 'html,xhtml,jsx,javascript'
-
-" Vim polyglot
+" Vim Polyglot
 let g:python_highlight_space_errors = 0
 
-" Gutentags
-set statusline+=%{gutentags#statusline()} " To know when Gutentags is generating tags
+" Kite
+let g:kite_supported_languages = ['python', 'javascript']
 
-" Deoplete.
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option('max_list', 20)
+" FZF
+let g:fzf_tags_command = 'ctags -R'
+let g:fzf_layout = { 'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8, 'yoffset':0.5, 'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 
-" Deoplete ternjs
-let g:deoplete#sources#ternjs#types = 1 " Whether to include the types of the completions in the result data. Default:
-let g:deoplete#sources#ternjs#filetypes = [
-    \ 'jsx',
-    \ 'javascript.jsx',
-    \ 'vue',
-    \ 'svelte'
-    \ ]
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
+let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
 
-" Vim-cool
-let g:CoolTotalMatches = 1
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+            \ { 'fg':    ['fg', 'Normal'],
+            \ 'bg':      ['bg', 'Normal'],
+            \ 'hl':      ['fg', 'Comment'],
+            \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+            \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+            \ 'hl+':     ['fg', 'Statement'],
+            \ 'info':    ['fg', 'PreProc'],
+            \ 'border':  ['fg', 'Ignore'],
+            \ 'prompt':  ['fg', 'Conditional'],
+            \ 'pointer': ['fg', 'Exception'],
+            \ 'marker':  ['fg', 'Keyword'],
+            \ 'spinner': ['fg', 'Label'],
+            \ 'header':  ['fg', 'Comment'] }
 
 " Neoterm
 let g:neoterm_autoscroll = 1
 let g:neoterm_repl_python = 'bpython'
 let g:neoterm_default_mod = 'vertical'
 
-" JsDoc
-let g:jsdoc_enable_es6 = 1
-let g:jsdoc_lehre_path = '/usr/local/bin/lehre'
-
 " Vim-signify
 let g:signify_vcs_list = ['git']
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '_'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '~'
+
+" I find the numbers disctracting
+let g:signify_sign_show_text = 1
+let g:signify_sign_show_count = 0
 
 " Ranger
-let g:ranger_map_keys = 0
-let g:ranger_replace_netrw = 1 " open ranger when vim open a directory
+let g:rnvimr_ex_enable = 1 " Make Ranger replace Netrw and be the file explorer
+let g:rnvimr_pick_enable = 1 " Make Ranger to be hidden after picking a file
+let g:rnvimr_draw_border = 1 " Disable a border for floating window
+let g:rnvimr_bw_enable = 1 " Make Neovim wipe the buffers corresponding to the files deleted by Ranger
+let g:rnvimr_border_attr = {'fg': 14, 'bg': -1} " Change the border's color integer value is [-1, 255].
+let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"' " Set up only two columns
+
+" Customize the initial layout
+let g:rnvimr_layout = { 
+            \ 'relative': 'editor',
+            \ 'width': float2nr(round(0.8 * &columns)),
+            \ 'height': float2nr(round(0.8 * &lines)),
+            \ 'col': float2nr(round(0.1 * &columns)),
+            \ 'row': float2nr(round(0.1 * &lines)),
+            \ 'style': 'minimal' }
+
+" Startify
+let g:startify_lists = [
+            \ { 'type': 'files',     'header': ['   Files']            },
+            \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
+            \ { 'type': 'sessions',  'header': ['   Sessions']       },
+            \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+            \ ]
+
+let g:startify_bookmarks = [
+            \ { 'i': '~/.config/nvim/init.vim' },
+            \ { 'z': '~/.zshrc' },
+            \ '~/Projects'
+            \ ]
+
+let g:startify_enable_special = 0
+let g:startify_change_to_vcs_root = 1
+let g:startify_session_delete_buffers = 1
 
 " Mundo
 let g:mundo_right = 0
@@ -228,7 +233,6 @@ let g:mundo_width = 100
 let g:mundo_preview_height = 40
 
 " TComment
-" Prevent tcomment from making a zillion mappings (we just want the operator).
 let g:tcomment_maps = 0
 let g:tcomment_mapleader1 = ''
 let g:tcomment_mapleader2 = ''
@@ -239,16 +243,13 @@ let g:tcomment_textobject_inlinecomment = ''
 let g:hardtime_default_on = 1
 let g:hardtime_ignore_quickfix = 1
 
-" Bclose
-let g:bclose_no_plugin_maps = 1
-
 " }}}
 
 " Mappings
 " {{{ -------------------------------------------------------------------------
 
 " Leader
-map <Space> <Leader>
+nmap <Space> <Leader>
 
 " Remap esc
 inoremap jj <Esc>
@@ -274,6 +275,10 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 
+" Move selection up and down
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
 " Quickly edit/reload the vimrc file
 nnoremap <silent> <Leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <Leader>sv :so $MYVIMRC<CR>
@@ -290,22 +295,17 @@ inoremap <Leader>ss <C-c>:wall<CR>
 " Quit
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>Q :qa!<CR>
-nnoremap <Leader>xx :only<CR>
+
+" Buffers
+nnoremap <silent> <Leader>x :bwipeout<CR>
+nnoremap <silent> <Leader>xx :BufOnly<CR>
+nnoremap <silent> <Leader>X :bufdo bwipeout<CR>
 
 " Plugins
 
-" ALE
-nnoremap <silent> <Leader>ln <Plug>(ale_next_wrap)
-nnoremap <silent> <Leader>lp <Plug>(ale_previous_wrap)
-
-" NeoSnippet
-inoremap <C-k> <Plug>(neosnippet_expand_or_jump)
-snoremap <C-k> <Plug>(neosnippet_expand_or_jump)
-xnoremap <C-k> <Plug>(neosnippet_expand_target)
-
-" Fuzzy
-nnoremap <silent> <Leader>p :FuzzyOpen<CR>
-nnoremap <silent> <Leader>f :FuzzyGrep<CR>
+" FZF
+nnoremap <silent> <Leader>p :Files<CR>
+nnoremap <silent> <Leader>f :RG<CR>
 
 " Neoterm
 nnoremap <silent> <Leader>t :Tnew<CR>
@@ -313,19 +313,25 @@ nnoremap <silent> <Leader>tc :Tclear<CR>
 nnoremap <silent> <Leader>tk :Tkill<CR>
 nnoremap <silent> <Leader>tx :Tclose!<CR>
 nnoremap <silent> <Leader>txx :TcloseAll!<CR>
-
 nnoremap <silent> <Leader>tsf :TREPLSendFile<CR>
 nnoremap <silent> <Leader>tsl :TREPLSendLine<CR>
 vnoremap <silent> <Leader>tss :TREPLSendSelection<CR>
 
-" JsDoc
-nmap <silent> <Leader>dj <Plug>(jsdoc)
+" Signify
+nnoremap <Leader>gh :SignifyToggleHighlight<CR>
+nnoremap <Leader>gj <Plug>(signify-next-hunk)
+nnoremap <Leader>gk <Plug>(signify-prev-hunk)
+nnoremap <Leader>gJ 9999<Leader>gj
+nnoremap <Leader>gK 9999<Leader>gk
 
-" Pydocstring
-nmap <silent> <Leader>dp <Plug>(pydocstring)
+" Fugitive
+nnoremap <Leader>gs :G<CR>
+nnoremap <Leader>gd :Gvdiffsplit!<CR>
+nnoremap <Leader>gl :diffget //2<CR>
+nnoremap <Leader>gr :diffget //3<CR>
 
 " Ranger
-noremap <Leader>r :Ranger<CR>
+nnoremap <silent> <Leader>r :RnvimrToggle<CR>
 
 " Goyo
 nnoremap <Leader>G :Goyo<CR>
@@ -336,9 +342,6 @@ nnoremap <silent> <Leader>u :MundoToggle<CR>
 " TComment
 noremap <silent> <Leader>c :TComment<CR>
 
-" Bclose
-noremap <Leader>x :Bclose<CR>
-
 " }}}
 
 " Functions
@@ -347,7 +350,38 @@ noremap <Leader>x :Bclose<CR>
 " Copy file
 command! -nargs=1 -complete=file Cp :w <args> | :e <args>
 
+" Buffers
+command! BufOnly silent execute '%bdelete|edit #|normal `"'
+
 " Plugins
+
+" FZF
+" Get Files
+command! -bang -nargs=? -complete=dir Files
+            \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+
+" Get text in files with Rg
+command! -bang -nargs=* Rg
+            \ call fzf#vim#grep(
+            \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+            \   fzf#vim#with_preview(), <bang>0)
+
+" Ripgrep advanced
+function! RipgrepFzf(query, fullscreen)
+    let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+    let initial_command = printf(command_fmt, shellescape(a:query))
+    let reload_command = printf(command_fmt, '{q}')
+    let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+    call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+" Git grep
+command! -bang -nargs=* GGrep
+            \ call fzf#vim#grep(
+            \   'git grep --line-number '.shellescape(<q-args>), 0,
+            \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 
 " }}}
 
