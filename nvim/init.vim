@@ -9,14 +9,16 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'sheerun/vim-polyglot'
 
 " Completion
+Plug 'honza/vim-snippets'
 Plug 'alvan/vim-closetag'
 Plug 'jiangmiao/auto-pairs'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Search
+Plug 'haya14busa/is.vim'
+Plug 'nelstrom/vim-visual-star-search'
+
 Plug 'junegunn/fzf.vim'
-Plug 'unblevable/quick-scope'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
 " Integrations
@@ -26,23 +28,26 @@ Plug 'junegunn/gv.vim'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-rhubarb' " Github
 Plug 'tpope/vim-fugitive'
+
 Plug 'kevinhwang91/rnvimr', { 'do': 'make sync' } " Ranger
 Plug 'itspriddle/vim-marked',   { 'for': 'markdown' }
 
 " Interface
 Plug 'junegunn/goyo.vim'
 Plug 'mhinz/vim-startify'
+Plug 'ryanoasis/vim-devicons'
 Plug 'simnalamburt/vim-mundo'
 
 " Commands
-Plug 'tpope/vim-surround'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-unimpaired'
+Plug 'machakann/vim-sandwich'
 
 " Other
 Plug 'takac/vim-hardtime'
-Plug 'ThePrimeagen/vim-be-good'
+Plug 'metakirby5/codi.vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'ThePrimeagen/vim-be-good', {'do': './install.sh'}
 
 " Initialize plugin system
 call plug#end()
@@ -63,10 +68,10 @@ set clipboard+=unnamedplus        " Mac OS X clipboard sharing
 
 " Search and Replace
 set magic                         " Use 'magic' patterns (extended regular expressions).
+set hlsearch                      " Highlight all search matches
 set gdefault                      " Use 'g' flag by default with :s/foo/bar/.
 set smartcase                     " ... unless the query has capital letters.
 set incsearch                     " Incremental search.
-set nohlsearch                    " Stop the highlighting for the 'hlsearch' option.
 set ignorecase                    " Make searching case insensitive
 
 " White Space
@@ -150,8 +155,12 @@ colorscheme nord
 " Vim Polyglot
 let g:python_highlight_space_errors = 0
 
-" Kite
-let g:kite_supported_languages = ['python', 'javascript']
+" Vim Closetag
+let g:closetag_filenames = '*.html, *.js, *.jsx'
+
+" COC
+let g:coc_snippet_next = '<c-j>' " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>' " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
 
 " FZF
 let g:fzf_tags_command = 'ctags -R'
@@ -243,13 +252,16 @@ let g:tcomment_textobject_inlinecomment = ''
 let g:hardtime_default_on = 1
 let g:hardtime_ignore_quickfix = 1
 
+" Vim be good
+let g:vim_be_good_floating = 0
+
 " }}}
 
 " Mappings
 " {{{ -------------------------------------------------------------------------
 
 " Leader
-nmap <Space> <Leader>
+let mapleader = ' '
 
 " Remap esc
 inoremap jj <Esc>
@@ -286,22 +298,47 @@ nnoremap <silent> <Leader>sv :so $MYVIMRC<CR>
 " Substitute
 nnoremap <Leader>S :%s/\<<C-r><C-w>\>//<Left>
 
+" Close buffers
+nnoremap <silent> <Leader>xx :only<CR>
+nnoremap <silent> <Leader>x :bdelete<CR>
+nnoremap <silent> <Leader>X :bufdo :bdelete<CR>
+
 " Save
 nnoremap <Leader>s :update<CR>
-inoremap <Leader>s <C-c>:update<CR>
 nnoremap <Leader>ss :wall<CR>
-inoremap <Leader>ss <C-c>:wall<CR>
+
+" Sort lines by length
+vnoremap <silent> <Leader>sl : ! awk '{ print length(), $0 \| "sort -n \| cut -d\\  -f2-" }'<CR>
 
 " Quit
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>Q :qa!<CR>
 
-" Buffers
-nnoremap <silent> <Leader>x :bwipeout<CR>
-nnoremap <silent> <Leader>xx :BufOnly<CR>
-nnoremap <silent> <Leader>X :bufdo bwipeout<CR>
-
 " Plugins
+
+" COC
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <C-;> coc#refresh()
+
+" Use <C-l> for trigger snippet expand.
+inoremap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vnoremap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+inoremap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use `[g` and `]g` to navigate diagnostics
+nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Formatting selected code.
+xnoremap <silent> <Leader>F <Plug>(coc-format-selected)
+nnoremap <silent> <Leader>F <Plug>(coc-format-selected)
 
 " FZF
 nnoremap <silent> <Leader>p :Files<CR>
@@ -319,8 +356,8 @@ vnoremap <silent> <Leader>tss :TREPLSendSelection<CR>
 
 " Signify
 nnoremap <Leader>gh :SignifyToggleHighlight<CR>
-nnoremap <Leader>gj <Plug>(signify-next-hunk)
-nnoremap <Leader>gk <Plug>(signify-prev-hunk)
+nmap <Leader>gj <Plug>(signify-next-hunk)
+nmap <Leader>gk <Plug>(signify-prev-hunk)
 nnoremap <Leader>gJ 9999<Leader>gj
 nnoremap <Leader>gK 9999<Leader>gk
 
@@ -340,7 +377,8 @@ nnoremap <Leader>G :Goyo<CR>
 nnoremap <silent> <Leader>u :MundoToggle<CR>
 
 " TComment
-noremap <silent> <Leader>c :TComment<CR>
+nnoremap <silent> <Leader>c :TComment<CR>
+vnoremap <silent> <Leader>c :TCommentBlock<CR>
 
 " }}}
 
@@ -350,10 +388,16 @@ noremap <silent> <Leader>c :TComment<CR>
 " Copy file
 command! -nargs=1 -complete=file Cp :w <args> | :e <args>
 
-" Buffers
-command! BufOnly silent execute '%bdelete|edit #|normal `"'
-
 " Plugins
+
+" COC
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
 
 " FZF
 " Get Files

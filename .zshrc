@@ -88,9 +88,6 @@ bindkey "^ " autosuggest-execute
 # Aliases
 alias code="nvim"
 
-alias pip="pip3"
-alias python="python3"
-
 # Copy
 alias rcp="rsync --archive --human-readable --progress --verbose --whole-file"
 alias rscp="rsync --archive --checksum --compress --human-readable --itemize-changes --rsh=ssh --stats --verbose"
@@ -133,12 +130,9 @@ case `uname` in
             npm install -g npm@latest &&
             zplug update &&
             brew doctor &&
-            python3 -m pip install --upgrade pip &&
-            python2 -m pip install --upgrade pip &&
-            pip3 install --upgrade pip &&
-            pip2 install --upgrade pip && 
-            pip2 install --upgrade pynvim &&
-            pip3 install --upgrade pynvim"
+            python -m pip install --upgrade pip &&
+            pip install --upgrade pip &&
+            pip install --upgrade pynvim"
     ;;
     Linux)
         # commands for Linux go here
