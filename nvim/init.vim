@@ -10,8 +10,6 @@ Plug 'sheerun/vim-polyglot'
 
 " Completion
 Plug 'honza/vim-snippets'
-Plug 'alvan/vim-closetag'
-Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Search
@@ -26,14 +24,12 @@ Plug 'kassio/neoterm'
 
 Plug 'junegunn/gv.vim'
 Plug 'mhinz/vim-signify'
-Plug 'tpope/vim-rhubarb' " Github
 Plug 'tpope/vim-fugitive'
 
 Plug 'kevinhwang91/rnvimr', { 'do': 'make sync' } " Ranger
 Plug 'itspriddle/vim-marked',   { 'for': 'markdown' }
 
 " Interface
-Plug 'junegunn/goyo.vim'
 Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
 Plug 'simnalamburt/vim-mundo'
@@ -154,9 +150,6 @@ colorscheme nord
 
 " Vim Polyglot
 let g:python_highlight_space_errors = 0
-
-" Vim Closetag
-let g:closetag_filenames = '*.html, *.js, *.jsx'
 
 " COC
 let g:coc_snippet_next = '<c-j>' " Use <C-j> for jump to next placeholder, it's default of coc.nvim
@@ -295,9 +288,6 @@ vnoremap K :m '<-2<CR>gv=gv
 nnoremap <silent> <Leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <Leader>sv :so $MYVIMRC<CR>
 
-" Substitute
-nnoremap <Leader>S :%s/\<<C-r><C-w>\>//<Left>
-
 " Close buffers
 nnoremap <silent> <Leader>xx :only<CR>
 nnoremap <silent> <Leader>x :bdelete<CR>
@@ -318,27 +308,43 @@ nnoremap <Leader>Q :qa!<CR>
 
 " COC
 " Use <c-space> to trigger completion.
-inoremap <silent><expr> <C-;> coc#refresh()
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <C-l> for trigger snippet expand.
-inoremap <C-l> <Plug>(coc-snippets-expand)
+imap <C-l> <Plug>(coc-snippets-expand)
 
 " Use <C-j> for select text for visual placeholder of snippet.
-vnoremap <C-j> <Plug>(coc-snippets-select)
+vmap <C-j> <Plug>(coc-snippets-select)
 
 " Use <C-j> for both expand and jump (make expand higher priority.)
-inoremap <C-j> <Plug>(coc-snippets-expand-jump)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " Use `[g` and `]g` to navigate diagnostics
-nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
-nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
+" Symbol renaming.
+nmap <Leader>wr <Plug>(coc-rename)
+nmap <Leader>ws :CocSearch <C-R>=expand('<cword>')<CR><CR>
+
 " Formatting selected code.
-xnoremap <silent> <Leader>F <Plug>(coc-format-selected)
-nnoremap <silent> <Leader>F <Plug>(coc-format-selected)
+nmap <Leader>FF <Plug>(coc-format)
+xmap <Leader>F <Plug>(coc-format-selected)
+nmap <Leader>F <Plug>(coc-format-selected)
+
+" CodeAction of selected region
+vmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
 
 " FZF
 nnoremap <silent> <Leader>p :Files<CR>
@@ -370,9 +376,6 @@ nnoremap <Leader>gr :diffget //3<CR>
 " Ranger
 nnoremap <silent> <Leader>r :RnvimrToggle<CR>
 
-" Goyo
-nnoremap <Leader>G :Goyo<CR>
-
 " Mundo
 nnoremap <silent> <Leader>u :MundoToggle<CR>
 
@@ -398,6 +401,9 @@ function! s:show_documentation()
         call CocAction('doHover')
     endif
 endfunction
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
 
 " FZF
 " Get Files

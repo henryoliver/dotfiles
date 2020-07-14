@@ -130,9 +130,9 @@ case `uname` in
             npm install -g npm@latest &&
             zplug update &&
             brew doctor &&
-            python -m pip install --upgrade pip &&
             pip install --upgrade pip &&
-            pip install --upgrade pynvim"
+            pip install --upgrade pynvim &&
+            pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
     ;;
     Linux)
         # commands for Linux go here
