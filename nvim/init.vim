@@ -26,7 +26,7 @@ Plug 'junegunn/gv.vim'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 
-Plug 'kevinhwang91/rnvimr', { 'do': 'make sync' } " Ranger
+Plug 'kevinhwang91/rnvimr' " Ranger
 Plug 'itspriddle/vim-marked',   { 'for': 'markdown' }
 
 " Interface
@@ -195,12 +195,17 @@ let g:signify_sign_show_text = 1
 let g:signify_sign_show_count = 0
 
 " Ranger
-let g:rnvimr_ex_enable = 1 " Make Ranger replace Netrw and be the file explorer
-let g:rnvimr_pick_enable = 1 " Make Ranger to be hidden after picking a file
-let g:rnvimr_draw_border = 1 " Disable a border for floating window
-let g:rnvimr_bw_enable = 1 " Make Neovim wipe the buffers corresponding to the files deleted by Ranger
+let g:rnvimr_enable_ex = 1  " Enable Ranger to replace builtin Netrw to be a file explorer.
+let g:rnvimr_enable_bw = 1 " Make Neovim automatically execute |bwipeout| to wipe out the buffers deleted by Ranger.
+
+let g:rnvimr_enable_picker = 1 " Enable Ranger to be hidden after picking a file.
+let g:rnvimr_hide_gitignore = 1 " Make Ranger to hide the files included in gitignore when show_hidden=False in Ranger.
+
+let g:rnvimr_draw_border = 1 " Using builtin curses in Ranger to draw a border for the floating window.
 let g:rnvimr_border_attr = {'fg': 14, 'bg': -1} " Change the border's color integer value is [-1, 255].
 let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"' " Set up only two columns
+
+let g:rnvimr_vanilla = 0 " Disable Rnvimr to import user configuration.
 
 " Customize the initial layout
 let g:rnvimr_layout = { 
@@ -244,9 +249,6 @@ let g:tcomment_textobject_inlinecomment = ''
 " Vim HardTime
 let g:hardtime_default_on = 1
 let g:hardtime_ignore_quickfix = 1
-
-" Vim be good
-let g:vim_be_good_floating = 0
 
 " }}}
 

@@ -88,6 +88,9 @@ bindkey "^ " autosuggest-execute
 # Aliases
 alias code="nvim"
 
+alias pip="pip3"
+alias python="python3"
+
 # Copy
 alias rcp="rsync --archive --human-readable --progress --verbose --whole-file"
 alias rscp="rsync --archive --checksum --compress --human-readable --itemize-changes --rsh=ssh --stats --verbose"
@@ -132,7 +135,7 @@ case `uname` in
             brew doctor &&
             pip install --upgrade pip &&
             pip install --upgrade pynvim &&
-            pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
+            pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U"
     ;;
     Linux)
         # commands for Linux go here
