@@ -14,6 +14,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Search
 Plug 'haya14busa/is.vim'
+Plug 'unblevable/quick-scope'
 Plug 'nelstrom/vim-visual-star-search'
 
 Plug 'junegunn/fzf.vim'
@@ -33,6 +34,7 @@ Plug 'itspriddle/vim-marked',   { 'for': 'markdown' }
 Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
 Plug 'simnalamburt/vim-mundo'
+Plug 'liuchengxu/eleline.vim'
 
 " Commands
 Plug 'tomtom/tcomment_vim'
@@ -90,7 +92,7 @@ set noruler                       " Hide the cursor position.
 set noshowcmd                     " Hide command in status line.
 set noshowmode                    " Hide vim mode message on the last line.
 set cmdheight=1                   " Number of screen lines to use for the command-line.
-set laststatus=0                  " Never show when the last window will have a status line
+set laststatus=2                  " Always show when the last window will have a status line
 set cmdwinheight=1                " Number of screen lines to use for the command-line window.
 
 set number                        " Show line numbers
@@ -151,9 +153,13 @@ colorscheme nord
 " Vim Polyglot
 let g:python_highlight_space_errors = 0
 
-" COC
+" Coc
 let g:coc_snippet_next = '<c-j>' " Use <C-j> for jump to next placeholder, it's default of coc.nvim
 let g:coc_snippet_prev = '<c-k>' " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+
+" Quick Scope
+let g:qs_max_chars=150
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " FZF
 let g:fzf_tags_command = 'ctags -R'
@@ -239,6 +245,9 @@ let g:mundo_right = 0
 let g:mundo_width = 100
 let g:mundo_preview_height = 40
 
+" Eleline.vim
+let g:eleline_powerline_fonts = 1
+
 " TComment
 let g:tcomment_maps = 0
 let g:tcomment_mapleader1 = ''
@@ -282,10 +291,6 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 
-" Move selection up and down
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
 " Quickly edit/reload the vimrc file
 nnoremap <silent> <Leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <Leader>sv :so $MYVIMRC<CR>
@@ -308,9 +313,9 @@ nnoremap <Leader>Q :qa!<CR>
 
 " Plugins
 
-" COC
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
+" Coc
+" Use <c-space> for trigger completion
+inoremap <silent><expr> <C-Space> coc#refresh()
 
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
@@ -335,18 +340,14 @@ nmap <silent> gr <Plug>(coc-references)
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-" Symbol renaming.
-nmap <Leader>wr <Plug>(coc-rename)
-nmap <Leader>ws :CocSearch <C-R>=expand('<cword>')<CR><CR>
-
 " Formatting selected code.
 nmap <Leader>FF <Plug>(coc-format)
 xmap <Leader>F <Plug>(coc-format-selected)
 nmap <Leader>F <Plug>(coc-format-selected)
 
 " CodeAction of selected region
-vmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
+vmap <Leader>a <Plug>(coc-codeaction-selected)
+nmap <Leader>a <Plug>(coc-codeaction-selected)
 
 " FZF
 nnoremap <silent> <Leader>p :Files<CR>
@@ -364,16 +365,16 @@ vnoremap <silent> <Leader>tss :TREPLSendSelection<CR>
 
 " Signify
 nnoremap <Leader>gh :SignifyToggleHighlight<CR>
-nmap <Leader>gj <Plug>(signify-next-hunk)
-nmap <Leader>gk <Plug>(signify-prev-hunk)
 nnoremap <Leader>gJ 9999<Leader>gj
 nnoremap <Leader>gK 9999<Leader>gk
+nmap <Leader>gj <Plug>(signify-next-hunk)
+nmap <Leader>gk <Plug>(signify-prev-hunk)
 
 " Fugitive
 nnoremap <Leader>gs :G<CR>
-nnoremap <Leader>gd :Gvdiffsplit!<CR>
 nnoremap <Leader>gl :diffget //2<CR>
 nnoremap <Leader>gr :diffget //3<CR>
+nnoremap <Leader>gd :Gvdiffsplit!<CR>
 
 " Ranger
 nnoremap <silent> <Leader>r :RnvimrToggle<CR>
