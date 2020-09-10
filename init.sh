@@ -1,5 +1,4 @@
 # Dotfiles kickstart
-
 ln -sv ~/.dotfiles/.zshrc ~
 ln -sv ~/.dotfiles/.tmux.conf ~
 ln -sv ~/.dotfiles/.gitconfig ~
@@ -7,8 +6,13 @@ ln -sv ~/.dotfiles/.gitignore ~
 
 ln -sv ~/.dotfiles/scripts ~/.scripts
 
+ln -sv ~/.dotfiles/ctags/ ~/.scripts
+
+mkdir ~/.config
+
+starship.toml
+coc-settings.json
+
 mkdir ~/.config/ranger && ln -sv ~/.dotfiles/ranger ~/.config/ranger
 mkdir ~/.config/nvim && ln -sv ~/.dotfiles/nvim/init.vim ~/.config/nvim
-mkdir ~/.config/alacritty && ln -sv ~/.dotfiles/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
-
-ln -sv ~/.dotfiles/ctags ~/.ctags.d
+mkdir ~/.config/bat && ln -sv ~/.dotfiles/bat/config ~/.config/bat

@@ -11,13 +11,8 @@ case `uname` in
     Linux)
         # commands for Linux go here
         path+=("$HOME/.npm-global/bin")
-        fpath+=("$HOME/.npm-global/lib/node_modules/pure-prompt/functions")
     ;;
 esac
-
-# Pure
-autoload -U promptinit; promptinit
-prompt pure
 
 # Zsh Plugin Manager
 
@@ -33,12 +28,10 @@ source ~/.zplug/init.zsh
 # Make sure to use double quotes to prevent shell expansion
 zplug "supercrabtree/k"
 zplug "b4b4r07/enhancd", use:init.sh
-
-zplug "b4b4r07/httpstat", as:command, use:"(*).sh", rename-to:"fetch"
-zplug "b4b4r07/pkill.sh", as:command, use:"pkill.sh", rename-to:"pkill"
-
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting"
+
+# Add a bunch more of your favorite packages!
 
 # Install packages that have not been installed yet
 if ! zplug check --verbose; then
@@ -59,21 +52,6 @@ bindkey -v
 
 # Easy to escape
 bindkey -M viins "jj" vi-cmd-mode
-
-# Use vim cli mode
-bindkey "^P" up-history
-bindkey "^N" down-history
-
-# backspace and ^h working even after
-# returning from command mode
-bindkey "^?" backward-delete-char
-bindkey "^h" backward-delete-char
-
-# ctrl-w removed word backwards
-bindkey "^w" backward-kill-word
-
-# ctrl-r starts searching history backward
-bindkey "^r" history-incremental-search-backward
 
 # zsh-autosuggestions
 bindkey "^ " autosuggest-execute
@@ -121,8 +99,6 @@ case `uname` in
         # commands for OS X go here
         alias clean="brew cleanup &&
             npm cache --force clean &&
-            zplug clean &&
-            zplug clear &&
             dscacheutil -flushcache"
 
         alias update="brew update &&
@@ -131,7 +107,6 @@ case `uname` in
             npm update npm -g &&
             npm update -g --force &&
             npm install -g npm@latest &&
-            zplug update &&
             brew doctor &&
             pip install --upgrade pip &&
             pip install --upgrade pynvim &&
@@ -140,8 +115,6 @@ case `uname` in
     Linux)
         # commands for Linux go here
         alias clean="npm cache --force clean &&
-            zplug clean &&
-            zplug clear &&
             sudo apt autoremove && 
             sudo apt-get purge && 
             sudo apt-get autoremove && 
@@ -151,7 +124,6 @@ case `uname` in
         alias update="npm update npm -g &&
             npm update -g --force &&
             npm install -g npm@latest &&
-            zplug update &&
             sudo apt update && 
             sudo apt upgrade && 
             sudo apt full-upgrade && 
@@ -162,3 +134,9 @@ case `uname` in
             sudo apt-get check"
     ;;
 esac
+
+# The Bash Screenshot Information Tool
+if [ -f /usr/local/bin/screenfetch ]; then screenfetch; fi
+
+# Cross-shell prompt
+eval "$(starship init zsh)"

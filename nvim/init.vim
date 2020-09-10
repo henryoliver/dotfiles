@@ -10,15 +10,15 @@ Plug 'sheerun/vim-polyglot'
 
 " Completion
 Plug 'honza/vim-snippets'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Search
 Plug 'haya14busa/is.vim'
 Plug 'unblevable/quick-scope'
 Plug 'nelstrom/vim-visual-star-search'
 
-Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
 
 " Integrations
 Plug 'kassio/neoterm'
@@ -34,7 +34,6 @@ Plug 'itspriddle/vim-marked',   { 'for': 'markdown' }
 Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
 Plug 'simnalamburt/vim-mundo'
-Plug 'liuchengxu/eleline.vim'
 
 " Commands
 Plug 'tomtom/tcomment_vim'
@@ -45,7 +44,7 @@ Plug 'machakann/vim-sandwich'
 Plug 'takac/vim-hardtime'
 Plug 'metakirby5/codi.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'ThePrimeagen/vim-be-good', {'do': './install.sh'}
+Plug 'ThePrimeagen/vim-be-good', { 'do': './install.sh' }
 
 " Initialize plugin system
 call plug#end()
@@ -92,7 +91,7 @@ set noruler                       " Hide the cursor position.
 set noshowcmd                     " Hide command in status line.
 set noshowmode                    " Hide vim mode message on the last line.
 set cmdheight=1                   " Number of screen lines to use for the command-line.
-set laststatus=2                  " Always show when the last window will have a status line
+set laststatus=0                  " Never show when the last window will have a status line
 set cmdwinheight=1                " Number of screen lines to use for the command-line window.
 
 set number                        " Show line numbers
@@ -117,9 +116,6 @@ set foldlevel=1
 set nofoldenable                  " Don't fold by default
 set foldnestmax=20                " Deepest fold is 20 levels
 set foldmethod=indent             " Fold based on indent
-
-" Status line
-set laststatus=0
 
 " User Interface
 syntax enable                     " Enable syntax highlighting.
@@ -154,35 +150,12 @@ colorscheme nord
 let g:python_highlight_space_errors = 0
 
 " Coc
-let g:coc_snippet_next = '<c-j>' " Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>' " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<C-j>' " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<C-k>' " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
 
 " Quick Scope
 let g:qs_max_chars=150
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-
-" FZF
-let g:fzf_tags_command = 'ctags -R'
-let g:fzf_layout = { 'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8, 'yoffset':0.5, 'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
-
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
-let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
-
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-            \ { 'fg':    ['fg', 'Normal'],
-            \ 'bg':      ['bg', 'Normal'],
-            \ 'hl':      ['fg', 'Comment'],
-            \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-            \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-            \ 'hl+':     ['fg', 'Statement'],
-            \ 'info':    ['fg', 'PreProc'],
-            \ 'border':  ['fg', 'Ignore'],
-            \ 'prompt':  ['fg', 'Conditional'],
-            \ 'pointer': ['fg', 'Exception'],
-            \ 'marker':  ['fg', 'Keyword'],
-            \ 'spinner': ['fg', 'Label'],
-            \ 'header':  ['fg', 'Comment'] }
 
 " Neoterm
 let g:neoterm_autoscroll = 1
@@ -190,18 +163,18 @@ let g:neoterm_repl_python = 'bpython'
 let g:neoterm_default_mod = 'vertical'
 
 " Vim-signify
+let g:signify_sign_add = '+'
+let g:signify_sign_change = '~'
+let g:signify_sign_delete = '_'
 let g:signify_vcs_list = ['git']
-let g:signify_sign_add               = '+'
-let g:signify_sign_delete            = '_'
 let g:signify_sign_delete_first_line = '‾'
-let g:signify_sign_change            = '~'
 
 " I find the numbers disctracting
 let g:signify_sign_show_text = 1
 let g:signify_sign_show_count = 0
 
 " Ranger
-let g:rnvimr_enable_ex = 1  " Enable Ranger to replace builtin Netrw to be a file explorer.
+let g:rnvimr_enable_ex = 1 " Enable Ranger to replace builtin Netrw to be a file explorer.
 let g:rnvimr_enable_bw = 1 " Make Neovim automatically execute |bwipeout| to wipe out the buffers deleted by Ranger.
 
 let g:rnvimr_enable_picker = 1 " Enable Ranger to be hidden after picking a file.
@@ -245,9 +218,6 @@ let g:mundo_right = 0
 let g:mundo_width = 100
 let g:mundo_preview_height = 40
 
-" Eleline.vim
-let g:eleline_powerline_fonts = 1
-
 " TComment
 let g:tcomment_maps = 0
 let g:tcomment_mapleader1 = ''
@@ -281,7 +251,7 @@ nnoremap E $
 noremap cp :let @+ = expand('%') <CR>
 
 " Apply Macros with Q
-" hit qq to record, q to stop recording, and Q to apply.
+" Hit qq to record, q to stop recording, and Q to apply.
 nnoremap Q @q
 vnoremap Q :norm @q<CR>
 
@@ -315,7 +285,7 @@ nnoremap <Leader>Q :qa!<CR>
 
 " Coc
 " Use <c-space> for trigger completion
-inoremap <silent><expr> <C-Space> coc#refresh()
+inoremap <silent><expr> <C-;> coc#refresh()
 
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
@@ -341,7 +311,7 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 " Formatting selected code.
-nmap <Leader>FF <Plug>(coc-format)
+nmap <silent> <Leader>FF <Plug>(coc-format)
 xmap <Leader>F <Plug>(coc-format-selected)
 nmap <Leader>F <Plug>(coc-format-selected)
 
@@ -349,9 +319,32 @@ nmap <Leader>F <Plug>(coc-format-selected)
 vmap <Leader>a <Plug>(coc-codeaction-selected)
 nmap <Leader>a <Plug>(coc-codeaction-selected)
 
+nmap <silent> <Leader>e :CocCommand explorer<CR>
+
 " FZF
-nnoremap <silent> <Leader>p :Files<CR>
-nnoremap <silent> <Leader>f :RG<CR>
+nnoremap <silent> <Leader>p :FzfPreviewProjectFiles<CR>
+nnoremap <silent> <Leader>pa :FzfPreviewDirectoryFiles<CR> 
+nnoremap <silent> <Leader>f :FzfPreviewProjectGrep . --add-fzf-arg=--nth=3<CR>
+
+nnoremap <silent> <Leader>pgf :FzfPreviewGitFiles<CR>
+nnoremap <silent> <Leader>pgs :FzfPreviewGitStatus<CR>
+nnoremap <silent> <Leader>pgb :FzfPreviewBlamePR<CR>
+
+nnoremap <silent> <Leader>pb :FzfPreviewBuffers<CR>
+nnoremap <silent> <Leader>pba :FzfPreviewAllBuffers<CR>
+
+nnoremap <silent> <Leader>pfr :FzfPreviewMrwFiles<CR>
+nnoremap <silent> <Leader>pfo :FzfPreviewProjectOldFiles<CR>
+nnoremap <silent> <Leader>pfu :FzfPreviewProjectMruFiles<CR>
+
+nnoremap <silent> <Leader>pt :FzfPreviewCtags<CR>
+nnoremap <silent> <Leader>ptb :FzfPreviewBufferTags<CR>
+
+nnoremap <silent> <Leader>pqf :FzfPreviewQuickFix<CR>
+nnoremap <silent> <Leader>pll :FzfPreviewLocationList<CR>
+nnoremap <silent> <Leader>pj :FzfPreviewJumps<CR>
+nnoremap <silent> <Leader>pc :FzfPreviewChanges<CR>
+nnoremap <silent> <Leader>pm :FzfPreviewMarks<CR>
 
 " Neoterm
 nnoremap <silent> <Leader>t :Tnew<CR>
@@ -367,8 +360,8 @@ vnoremap <silent> <Leader>tss :TREPLSendSelection<CR>
 nnoremap <Leader>gh :SignifyToggleHighlight<CR>
 nnoremap <Leader>gJ 9999<Leader>gj
 nnoremap <Leader>gK 9999<Leader>gk
-nmap <Leader>gj <Plug>(signify-next-hunk)
-nmap <Leader>gk <Plug>(signify-prev-hunk)
+nnoremap <Leader>gj <Plug>(signify-next-hunk)
+nnoremap <Leader>gk <Plug>(signify-prev-hunk)
 
 " Fugitive
 nnoremap <Leader>gs :G<CR>
@@ -407,35 +400,5 @@ endfunction
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
-
-" FZF
-" Get Files
-command! -bang -nargs=? -complete=dir Files
-            \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
-
-" Get text in files with Rg
-command! -bang -nargs=* Rg
-            \ call fzf#vim#grep(
-            \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-            \   fzf#vim#with_preview(), <bang>0)
-
-" Ripgrep advanced
-function! RipgrepFzf(query, fullscreen)
-    let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-    let initial_command = printf(command_fmt, shellescape(a:query))
-    let reload_command = printf(command_fmt, '{q}')
-    let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-    call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-" Git grep
-command! -bang -nargs=* GGrep
-            \ call fzf#vim#grep(
-            \   'git grep --line-number '.shellescape(<q-args>), 0,
-            \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
-
-" }}}
 
 " vim:foldmethod=marker

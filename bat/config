@@ -1,0 +1,8 @@
+# Set the theme to "TwoDark"
+--theme="Nord"
+
+# Use italic text on the terminal (not supported on all terminals)
+--italic-text=always
+
+# Use ".gitignore"-style highlighting for ".ignore" files
+--map-syntax ".ignore:Git Ignore"
