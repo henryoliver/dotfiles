@@ -11,7 +11,8 @@ ln -sv ~/.dotfiles/ctags/ ~/.scripts
 mkdir ~/.config
 
 starship.toml
-coc-settings.json
+
+ln -sv ~/.dotfiles/nvim/coc-settings.json ~/.config/nvim
 
 mkdir ~/.config/ranger && ln -sv ~/.dotfiles/ranger ~/.config/ranger
 mkdir ~/.config/nvim && ln -sv ~/.dotfiles/nvim/init.vim ~/.config/nvim

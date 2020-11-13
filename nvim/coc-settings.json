@@ -14,5 +14,17 @@
     "python.formatting.provider": "yapf",
 
     // Tsserver (JavaScript)
-    "javascript.format.enabled": true
+    "javascript.format.enabled": true,
+
+    // Explorer
+    "explorer.width": 40,
+    "explorer.icon.enableNerdfont": true,
+    "explorer.previewAction.onHover": false,
+    "explorer.keyMappings.global": {
+        "<cr>": ["expandable?", "expand", "open"],
+        "v": "open:vsplit"
+    },
+
+    // Spell Checker
+    "cSpell.enabledLanguageIds": ["markdown", "plaintext"]
 }

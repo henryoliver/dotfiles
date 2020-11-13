@@ -14,8 +14,11 @@ case `uname` in
     ;;
 esac
 
-# Zsh Plugin Manager
+# Pure (pretty, minimal and fast ZSH prompt)
+autoload -U promptinit; promptinit
+prompt pure
 
+# Zsh Plugin Manager
 # Check if zplug is installed
 if [[ ! -d ~/.zplug ]]; then
     git clone https://github.com/zplug/zplug ~/.zplug
@@ -52,6 +55,21 @@ bindkey -v
 
 # Easy to escape
 bindkey -M viins "jj" vi-cmd-mode
+
+# Use vim cli mode
+bindkey "^P" up-history
+bindkey "^N" down-history
+
+# backspace and ^h working even after
+# returning from command mode
+bindkey "^?" backward-delete-char
+bindkey "^h" backward-delete-char
+
+# ctrl-w removed word backwards
+bindkey "^w" backward-kill-word
+
+# ctrl-r starts searching history backward
+bindkey "^r" history-incremental-search-backward
 
 # zsh-autosuggestions
 bindkey "^ " autosuggest-execute
@@ -99,14 +117,14 @@ case `uname` in
         # commands for OS X go here
         alias clean="brew cleanup &&
             npm cache --force clean &&
+            npm list -g --depth 0 &&
             dscacheutil -flushcache"
 
         alias update="brew update &&
             brew upgrade &&
             brew update --all &&
-            npm update npm -g &&
-            npm update -g --force &&
             npm install -g npm@latest &&
+            npm update -g &&
             brew doctor &&
             pip install --upgrade pip &&
             pip install --upgrade pynvim &&
@@ -121,9 +139,8 @@ case `uname` in
             sudo apt-get clean && 
             sudo apt-get autoclean"
 
-        alias update="npm update npm -g &&
-            npm update -g --force &&
-            npm install -g npm@latest &&
+        alias update="npm install -g npm@latest &&
+            npm update -g &&
             sudo apt update && 
             sudo apt upgrade && 
             sudo apt full-upgrade && 
@@ -134,9 +151,3 @@ case `uname` in
             sudo apt-get check"
     ;;
 esac
-
-# The Bash Screenshot Information Tool
-if [ -f /usr/local/bin/screenfetch ]; then screenfetch; fi
-
-# Cross-shell prompt
-eval "$(starship init zsh)"

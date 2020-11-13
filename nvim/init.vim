@@ -13,17 +13,12 @@ Plug 'honza/vim-snippets'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Search
-Plug 'haya14busa/is.vim'
-Plug 'unblevable/quick-scope'
-Plug 'nelstrom/vim-visual-star-search'
-
+Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
 
 " Integrations
 Plug 'kassio/neoterm'
 
-Plug 'junegunn/gv.vim'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 
@@ -32,19 +27,17 @@ Plug 'itspriddle/vim-marked',   { 'for': 'markdown' }
 
 " Interface
 Plug 'mhinz/vim-startify'
-Plug 'ryanoasis/vim-devicons'
 Plug 'simnalamburt/vim-mundo'
+Plug 'ryanoasis/vim-devicons'
 
 " Commands
+Plug 'junegunn/vim-slash'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-unimpaired'
 Plug 'machakann/vim-sandwich'
 
 " Other
-Plug 'takac/vim-hardtime'
-Plug 'metakirby5/codi.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'ThePrimeagen/vim-be-good', { 'do': './install.sh' }
 
 " Initialize plugin system
 call plug#end()
@@ -62,6 +55,8 @@ set updatetime=300                " If this many milliseconds nothing is typed t
 set timeoutlen=600                " Time in milliseconds to wait for a mapped sequence to complete.
 set ttimeoutlen=40                " Time in milliseconds to wait for a key code sequence to complete.
 set clipboard+=unnamedplus        " Mac OS X clipboard sharing
+
+set tags=./.tags;,.tags;          " Tell Vim where to look for tags files
 
 " Search and Replace
 set magic                         " Use 'magic' patterns (extended regular expressions).
@@ -87,7 +82,7 @@ set listchars=tab:··,trail:·      " Show leading whitespace
 " Presentation
 set cf                            " Enable error jumping.
 set hidden                        " Allow hidden buffers.
-set noruler                       " Hide the cursor position.
+set ruler                         " Show the line and column number of the cursor position
 set noshowcmd                     " Hide command in status line.
 set noshowmode                    " Hide vim mode message on the last line.
 set cmdheight=1                   " Number of screen lines to use for the command-line.
@@ -97,8 +92,8 @@ set cmdwinheight=1                " Number of screen lines to use for the comman
 set number                        " Show line numbers
 set relativenumber                " Relative line numbers
 
-set wrap                          " Enable line wrapping.
 set cc=80                         " Highlight column at 80
+set wrap                          " Enable line wrapping.
 set linebreak                     " Wrap long lines at a character
 set linespace=0                   " Set line-spacing to minimum.
 
@@ -117,8 +112,9 @@ set nofoldenable                  " Don't fold by default
 set foldnestmax=20                " Deepest fold is 20 levels
 set foldmethod=indent             " Fold based on indent
 
+set formatoptions-=cro            " Disable auto-wrap and auto-insert comment
+
 " User Interface
-syntax enable                     " Enable syntax highlighting.
 set termguicolors                 " Enables 24-bit RGB color in the |TUI|.
 set signcolumn=yes                " When and how to draw the signcolumn.
 filetype plugin indent on         " Load syntax files for better indenting.
@@ -153,9 +149,10 @@ let g:python_highlight_space_errors = 0
 let g:coc_snippet_next = '<C-j>' " Use <C-j> for jump to next placeholder, it's default of coc.nvim
 let g:coc_snippet_prev = '<C-k>' " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
 
-" Quick Scope
-let g:qs_max_chars=150
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+" FZF
+let g:fzf_tags_command = 'ctags -Rf .tags .'
+let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+let $FZF_DEFAULT_OPTS = '--layout=reverse' " To pass additional options
 
 " Neoterm
 let g:neoterm_autoscroll = 1
@@ -184,8 +181,6 @@ let g:rnvimr_draw_border = 1 " Using builtin curses in Ranger to draw a border f
 let g:rnvimr_border_attr = {'fg': 14, 'bg': -1} " Change the border's color integer value is [-1, 255].
 let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"' " Set up only two columns
 
-let g:rnvimr_vanilla = 0 " Disable Rnvimr to import user configuration.
-
 " Customize the initial layout
 let g:rnvimr_layout = { 
             \ 'relative': 'editor',
@@ -193,7 +188,7 @@ let g:rnvimr_layout = {
             \ 'height': float2nr(round(0.8 * &lines)),
             \ 'col': float2nr(round(0.1 * &columns)),
             \ 'row': float2nr(round(0.1 * &lines)),
-            \ 'style': 'minimal' }
+            \ 'style': 'minimal'}
 
 " Startify
 let g:startify_lists = [
@@ -225,10 +220,6 @@ let g:tcomment_mapleader2 = ''
 let g:tcomment_mapleader_comment_anyway = ''
 let g:tcomment_textobject_inlinecomment = ''
 
-" Vim HardTime
-let g:hardtime_default_on = 1
-let g:hardtime_ignore_quickfix = 1
-
 " }}}
 
 " Mappings
@@ -244,38 +235,30 @@ inoremap jj <Esc>
 vno v <Esc>
 
 " Move to beginning/end of line
-nnoremap B ^
-nnoremap E $
+noremap B ^
+noremap E $
 
-" Copy current files path to clipboard
-noremap cp :let @+ = expand('%') <CR>
+" Sort lines by length
+vnoremap <silent> <Leader>sl : ! awk '{ print length(), $0 \| "sort -n \| cut -d\\  -f2-" }'<CR>
 
 " Apply Macros with Q
 " Hit qq to record, q to stop recording, and Q to apply.
 nnoremap Q @q
 vnoremap Q :norm @q<CR>
 
-" Control + Direction to Change Panes
-noremap <C-l> <C-w>l
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
+" Buffers
+" Completely deletes the current buffer, error if there are unwritten changes
+nnoremap <silent> <Leader>x :bwipeout<CR>
+" Completely deletes all buffers except those with unwritten changes
+nnoremap <silent> <Leader>X :bufdo! :bwipeout<CR>
 
 " Quickly edit/reload the vimrc file
 nnoremap <silent> <Leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <Leader>sv :so $MYVIMRC<CR>
 
-" Close buffers
-nnoremap <silent> <Leader>xx :only<CR>
-nnoremap <silent> <Leader>x :bdelete<CR>
-nnoremap <silent> <Leader>X :bufdo :bdelete<CR>
-
 " Save
 nnoremap <Leader>s :update<CR>
 nnoremap <Leader>ss :wall<CR>
-
-" Sort lines by length
-vnoremap <silent> <Leader>sl : ! awk '{ print length(), $0 \| "sort -n \| cut -d\\  -f2-" }'<CR>
 
 " Quit
 nnoremap <Leader>q :q<CR>
@@ -285,7 +268,7 @@ nnoremap <Leader>Q :qa!<CR>
 
 " Coc
 " Use <c-space> for trigger completion
-inoremap <silent><expr> <C-;> coc#refresh()
+inoremap <silent><expr> <C-Space> coc#refresh()
 
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
@@ -307,44 +290,41 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" Symbol renaming.
+nmap <silent> <Leader>rn <Plug>(coc-rename)
+nnoremap <silent> <Leader>rnp :CocSearch <C-r>=expand('<cword>')<CR><CR>
+
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 " Formatting selected code.
 nmap <silent> <Leader>FF <Plug>(coc-format)
-xmap <Leader>F <Plug>(coc-format-selected)
-nmap <Leader>F <Plug>(coc-format-selected)
+xmap <silent> <Leader>FF <Plug>(coc-format-selected)
 
 " CodeAction of selected region
 vmap <Leader>a <Plug>(coc-codeaction-selected)
 nmap <Leader>a <Plug>(coc-codeaction-selected)
 
-nmap <silent> <Leader>e :CocCommand explorer<CR>
+nnoremap <silent> <Leader>e :CocCommand explorer<CR>
 
 " FZF
-nnoremap <silent> <Leader>p :FzfPreviewProjectFiles<CR>
-nnoremap <silent> <Leader>pa :FzfPreviewDirectoryFiles<CR> 
-nnoremap <silent> <Leader>f :FzfPreviewProjectGrep . --add-fzf-arg=--nth=3<CR>
+" nnoremap <silent> <Leader>p :Files<CR>
+nnoremap <silent> <Leader>p :GFiles --exclude-standard --others --cached<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
 
-nnoremap <silent> <Leader>pgf :FzfPreviewGitFiles<CR>
-nnoremap <silent> <Leader>pgs :FzfPreviewGitStatus<CR>
-nnoremap <silent> <Leader>pgb :FzfPreviewBlamePR<CR>
+" nnoremap <silent> <Leader>f :Rg<CR>
+nnoremap <silent> <Leader>f :RG<CR>
 
-nnoremap <silent> <Leader>pb :FzfPreviewBuffers<CR>
-nnoremap <silent> <Leader>pba :FzfPreviewAllBuffers<CR>
+nnoremap <silent> <Leader>st :Tags<CR>
+nnoremap <silent> <Leader>sm :Marks<CR>
+nnoremap <silent> <Leader>scm :Commands<CR>
+nnoremap <silent> <Leader>sma :Maps<CR>
 
-nnoremap <silent> <Leader>pfr :FzfPreviewMrwFiles<CR>
-nnoremap <silent> <Leader>pfo :FzfPreviewProjectOldFiles<CR>
-nnoremap <silent> <Leader>pfu :FzfPreviewProjectMruFiles<CR>
-
-nnoremap <silent> <Leader>pt :FzfPreviewCtags<CR>
-nnoremap <silent> <Leader>ptb :FzfPreviewBufferTags<CR>
-
-nnoremap <silent> <Leader>pqf :FzfPreviewQuickFix<CR>
-nnoremap <silent> <Leader>pll :FzfPreviewLocationList<CR>
-nnoremap <silent> <Leader>pj :FzfPreviewJumps<CR>
-nnoremap <silent> <Leader>pc :FzfPreviewChanges<CR>
-nnoremap <silent> <Leader>pm :FzfPreviewMarks<CR>
+nnoremap <silent> <Leader>g :GGrep<CR>
+nnoremap <silent> <Leader>gt :GTags<CR>
+nnoremap <silent> <Leader>gc :Commits<CR>
+nnoremap <silent> <Leader>gb :GBranches<CR>
+nnoremap <silent> <Leader>gcb :BCommits<CR>
 
 " Neoterm
 nnoremap <silent> <Leader>t :Tnew<CR>
@@ -400,5 +380,31 @@ endfunction
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
+
+" FZF
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+    \   fzf#vim#with_preview(), <bang>0)
+
+" In the default implementation of Rg, ripgrep process starts only once with the initial query (e.g. :Rg foo) and fzf filters the output of the process.
+function! RipgrepFzf(query, fullscreen)
+    let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+    let initial_command = printf(command_fmt, shellescape(a:query))
+    let reload_command = printf(command_fmt, '{q}')
+    let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+
+    call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+command! -bang -nargs=* GGrep
+    \ call fzf#vim#grep(
+    \   'git grep --line-number -- '.shellescape(<q-args>), 0,
+    \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 
 " vim:foldmethod=marker
