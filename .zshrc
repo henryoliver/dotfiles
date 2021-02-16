@@ -34,8 +34,6 @@ zplug "b4b4r07/enhancd", use:init.sh
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting"
 
-# Add a bunch more of your favorite packages!
-
 # Install packages that have not been installed yet
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
@@ -84,8 +82,8 @@ bindkey "^ " autosuggest-execute
 # Aliases
 alias code="nvim"
 
-alias pip="pip3"
 alias python="python3"
+alias pip="pip3"
 
 # Copy
 alias rcp="rsync --archive --human-readable --progress --verbose --whole-file"
@@ -106,7 +104,6 @@ alias duh="du -h -d 0 [^.]*" # List folder sizes
 
 # Others
 alias c="clear"
-alias git="hub"
 alias grep="grep --color"
 alias myip="curl http://myip.dnsomatic.com && echo """
 alias flush="dscacheutil -flushcache"    # Flush your dns cache

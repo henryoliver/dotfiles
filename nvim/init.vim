@@ -6,38 +6,52 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'arcticicestudio/nord-vim'
 
 " Language
-Plug 'sheerun/vim-polyglot'
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 
 " Completion
-Plug 'honza/vim-snippets'
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'neovim/nvim-lspconfig'
+
+Plug 'onsails/lspkind-nvim' " Adds vscode-like pictograms to neovim built-in lsp
+Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-treesitter/completion-treesitter'
+
+Plug 'norcalli/snippets.nvim'
+Plug 'steelsojka/completion-buffers'
+Plug 'aca/completion-tabnine', { 'do': 'version=3.1.9 ./install.sh' }
+
+Plug 'windwp/nvim-autopairs'
 
 " Search
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+
+Plug 'kevinhwang91/nvim-hlslens'
+Plug 'nvim-telescope/telescope.nvim'
 
 " Integrations
-Plug 'kassio/neoterm'
-
-Plug 'mhinz/vim-signify'
-Plug 'tpope/vim-fugitive'
+Plug 'TimUntersberger/neogit'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'f-person/git-blame.nvim'
 
 Plug 'kevinhwang91/rnvimr' " Ranger
-Plug 'itspriddle/vim-marked',   { 'for': 'markdown' }
+Plug 'kyazdani42/nvim-tree.lua' " Explorer
+
+Plug 'editorconfig/editorconfig-vim'
+Plug 'npxbr/glow.nvim', { 'do': ':GlowInstall' }
 
 " Interface
 Plug 'mhinz/vim-startify'
-Plug 'simnalamburt/vim-mundo'
-Plug 'ryanoasis/vim-devicons'
+Plug 'kyazdani42/nvim-web-devicons'
+
+Plug 'akinsho/nvim-bufferline.lua'
+Plug 'glepnir/galaxyline.nvim' , { 'branch': 'main' }
 
 " Commands
-Plug 'junegunn/vim-slash'
-Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-unimpaired'
-Plug 'machakann/vim-sandwich'
+Plug 'b3nj5m1n/kommentary'
+Plug 'blackcauldron7/surround.nvim'
 
 " Other
-Plug 'editorconfig/editorconfig-vim'
+Plug 'takac/vim-hardtime'
 
 " Initialize plugin system
 call plug#end()
@@ -54,13 +68,12 @@ set lazyredraw                    " Don't bother updating screen during macro pl
 set updatetime=300                " If this many milliseconds nothing is typed the swap file will be written to disk.
 set timeoutlen=600                " Time in milliseconds to wait for a mapped sequence to complete.
 set ttimeoutlen=40                " Time in milliseconds to wait for a key code sequence to complete.
-set clipboard+=unnamedplus        " Mac OS X clipboard sharing
+set clipboard+=unnamedplus
 
 set tags=./.tags;,.tags;          " Tell Vim where to look for tags files
 
 " Search and Replace
 set magic                         " Use 'magic' patterns (extended regular expressions).
-set hlsearch                      " Highlight all search matches
 set gdefault                      " Use 'g' flag by default with :s/foo/bar/.
 set smartcase                     " ... unless the query has capital letters.
 set incsearch                     " Incremental search.
@@ -86,7 +99,6 @@ set ruler                         " Show the line and column number of the curso
 set noshowcmd                     " Hide command in status line.
 set noshowmode                    " Hide vim mode message on the last line.
 set cmdheight=1                   " Number of screen lines to use for the command-line.
-set laststatus=0                  " Never show when the last window will have a status line
 set cmdwinheight=1                " Number of screen lines to use for the command-line window.
 
 set number                        " Show line numbers
@@ -114,17 +126,23 @@ set foldmethod=indent             " Fold based on indent
 
 set formatoptions-=cro            " Disable auto-wrap and auto-insert comment
 
+set shortmess+=c                  " Avoid showing message extra message when using completion
+set pumheight=10                  " Maximum number of items to show in the popup menu
+set completeopt=menuone,noinsert,noselect " Set completeopt to have a better completion experience
+
 " User Interface
 set termguicolors                 " Enables 24-bit RGB color in the |TUI|.
 set signcolumn=yes                " When and how to draw the signcolumn.
 filetype plugin indent on         " Load syntax files for better indenting.
 
-" Ruby
-let g:ruby_host_prog = '/usr/local/lib/ruby/gems/2.7.0/bin/neovim-ruby-host'
-
 " Disable netrw
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
+
+" Providers
+let g:loaded_ruby_provider = 0
+let g:loaded_perl_provider = 0
+let g:loaded_python_provider = 0
 
 " Plugins
 
@@ -142,33 +160,149 @@ let g:nord_uniform_diff_background = 1
 
 colorscheme nord
 
-" Vim Polyglot
-let g:python_highlight_space_errors = 0
+" Treesitter
+lua require('nvim-treesitter.configs').setup({ ensure_installed = 'maintained', highlight = { enable = true }})
 
-" Coc
-let g:coc_snippet_next = '<C-j>' " Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<C-k>' " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+" Nvim LspConfig
+highlight LspDiagnosticsDefaultError guifg=#BF616A
+highlight LspDiagnosticsDefaultWarning guifg=#EBCB8B
 
-" FZF
-let g:fzf_tags_command = 'ctags -Rf .tags .'
-let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
-let $FZF_DEFAULT_OPTS = '--layout=reverse' " To pass additional options
+lua require('lspconfig').html.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').cssls.setup({ on_attach = require('completion').on_attach })
 
-" Neoterm
-let g:neoterm_autoscroll = 1
-let g:neoterm_repl_python = 'bpython'
-let g:neoterm_default_mod = 'vertical'
+lua require('lspconfig').vuels.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').jsonls.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').svelte.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').tsserver.setup({ on_attach = require('completion').on_attach })
 
-" Vim-signify
-let g:signify_sign_add = '+'
-let g:signify_sign_change = '~'
-let g:signify_sign_delete = '_'
-let g:signify_vcs_list = ['git']
-let g:signify_sign_delete_first_line = '‾'
+lua require('lspconfig').pyls.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').vimls.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').bashls.setup({ on_attach = require('completion').on_attach })
 
-" I find the numbers disctracting
-let g:signify_sign_show_text = 1
-let g:signify_sign_show_count = 0
+lua require('lspconfig').diagnosticls.setup({
+    \ on_attach = require('completion').on_attach,
+    \ filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'markdown' },
+    \ init_options = {
+        \ linters = {
+            \ eslint = {
+                \ debounce = 100,
+                \ command = 'eslint',
+                \ sourceName = 'eslint',
+                \ rootPatterns = { '.git' },
+                \ args = { '--stdin', '--stdin-filename', '%filepath', '--format', 'json' },
+                \ parseJson = {
+                    \ line = 'line',
+                    \ column = 'column',
+                    \ endLine = 'endLine',
+                    \ security = 'severity',
+                    \ endColumn = 'endColumn',
+                    \ errorsRoot = '[0].messages',
+                    \ message = '[eslint] ${message} [${ruleId}]'
+                \ },
+                \ securities = {
+                    \ [2] = 'error',
+                    \ [1] = 'warning'
+                \ }
+            \ },
+            \ stylelint = {
+                \ debounce = 100,
+                \ args = { '--stdin' },
+                \ command = 'stylelint ',
+                \ sourceName = 'stylelint',
+                \ rootPatterns = { '.git' }
+            \ },
+            \ markdownlint = {
+                \ debounce = 100,
+                \ offsetLine = 0,
+                \ formatLines = 1,
+                \ isStderr = true,
+                \ offsetColumn = 0,
+                \ args = { '--stdin' },
+                \ command = 'markdownlint',
+                \ rootPatterns = { '.git' },
+                \ sourceName = 'markdownlint',
+                \ securities = { undefined = 'hint' },
+                \ formatPattern = {
+                    \ '^.*:(\\d+)\\s+(.*)$',
+                    \ {
+                        \ line = 1,
+                        \ column = -1,
+                        \ message = 2
+                    \ }
+                \ }
+            \ }
+        \ },
+        \ filetypes = {
+            \ javascript = 'eslint',
+            \ javascriptreact = 'eslint',
+            \ typescript = 'eslint',
+            \ typescriptreact = 'eslint',
+            \ css = 'stylelint',
+            \ markdown = 'markdownlint'
+        \ },
+        \ formatters = {
+            \ prettierEslint = {
+                \ command = 'prettier-eslint',
+                \ args = { '--stdin' },
+                \ rootPatterns = { '.git' }
+            \ },
+            \ prettierStylelint = {
+                \ command = 'prettier-stylelint',
+                \ args = { '--stdin' },
+                \ rootPatterns = { '.git' }
+            \ },
+            \ prettier = {
+                \ command = 'prettier',
+                \ args = { '--stdin-filepath', '%filename' }
+            \ }
+        \ },
+        \ formatFiletypes = {
+            \ css = 'prettierStylelint',
+            \ javascript = 'prettierEslint',
+            \ javascriptreact = 'prettierEslint',
+            \ json = 'prettier',
+            \ typescript = 'prettierEslint',
+            \ typescriptreact = 'prettierEslint'
+        \ }
+    \ }
+\ })
+
+" Lspkind Nvim
+lua require('lspkind').init()
+
+" Completion Nvim
+" let g:completion_abbr_length = 20
+" let g:completion_menu_length = 20
+let g:completion_auto_change_source = 1
+let g:completion_confirm_key = "\<C-l>"
+let g:completion_enable_snippet = 'snippets.nvim'
+let g:completion_trigger_keyword_length = 2 " default = 1
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
+
+let g:completion_chain_complete_list = [
+    \ {'complete_items': ['tabnine']},
+    \ {'complete_items': ['ts']},
+    \ {'complete_items': ['lsp']},
+    \ {'complete_items': ['snippet']},
+    \ {'complete_items': ['buffer']},
+    \ {'mode': '<C-p>'},
+    \ {'mode': '<C-n>'}
+\]
+
+" Snippets.nvim
+lua require('snippets').use_suggested_mappings()
+
+" Nvim Autopairs
+lua require('nvim-autopairs').setup()
+
+" Nvim Hlslens
+lua require('hlslens').setup({ calm_down = true })
+
+" Gitsigns
+lua require('gitsigns').setup()
+
+" Git Blame
+let g:gitblame_enabled = 0
 
 " Ranger
 let g:rnvimr_enable_ex = 1 " Enable Ranger to replace builtin Netrw to be a file explorer.
@@ -183,42 +317,47 @@ let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"' " Set up only t
 
 " Customize the initial layout
 let g:rnvimr_layout = { 
-            \ 'relative': 'editor',
-            \ 'width': float2nr(round(0.8 * &columns)),
-            \ 'height': float2nr(round(0.8 * &lines)),
-            \ 'col': float2nr(round(0.1 * &columns)),
-            \ 'row': float2nr(round(0.1 * &lines)),
-            \ 'style': 'minimal'}
+    \ 'relative': 'editor',
+    \ 'width': float2nr(round(0.9 * &columns)),
+    \ 'height': float2nr(round(0.9 * &lines)),
+    \ 'col': float2nr(round(0.05 * &columns)),
+    \ 'row': float2nr(round(0.05 * &lines)),
+    \ 'style': 'minimal'
+\}
+
+" Nvim Tree
+let g:nvim_tree_git_hl = 1
+let g:nvim_tree_show_icons = { 'git': 1, 'folders': 1, 'files': 1 }
 
 " Startify
 let g:startify_lists = [
-            \ { 'type': 'files',     'header': ['   Files']            },
-            \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
-            \ { 'type': 'sessions',  'header': ['   Sessions']       },
-            \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-            \ ]
+    \ { 'type': 'files',     'header': ['   Files']            },
+    \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
+    \ { 'type': 'sessions',  'header': ['   Sessions']       },
+    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+\ ]
 
 let g:startify_bookmarks = [
-            \ { 'i': '~/.config/nvim/init.vim' },
-            \ { 'z': '~/.zshrc' },
-            \ '~/Projects'
-            \ ]
+    \ { 'i': '~/.config/nvim/init.vim' },
+    \ { 'z': '~/.zshrc' },
+    \ '~/Projects'
+\ ]
 
 let g:startify_enable_special = 0
 let g:startify_change_to_vcs_root = 1
 let g:startify_session_delete_buffers = 1
 
-" Mundo
-let g:mundo_right = 0
-let g:mundo_width = 100
-let g:mundo_preview_height = 40
+" Nvim Bufferline
+lua require('bufferline').setup()
 
-" TComment
-let g:tcomment_maps = 0
-let g:tcomment_mapleader1 = ''
-let g:tcomment_mapleader2 = ''
-let g:tcomment_mapleader_comment_anyway = ''
-let g:tcomment_textobject_inlinecomment = ''
+" Galaxyline
+lua require('galaxyline-eviline-theme')
+
+" Surround Nvim
+lua require('surround').setup({})
+
+" Vim Hardtime
+let g:hardtime_default_on = 1
 
 " }}}
 
@@ -238,8 +377,28 @@ vno v <Esc>
 noremap B ^
 noremap E $
 
+" Move selected line / block of text in visual mode
+" shift + k to move up
+" shift + j to move down
+xnoremap K :move '<-2<CR>gv-gv
+xnoremap J :move '>+1<CR>gv-gv
+
 " Sort lines by length
 vnoremap <silent> <Leader>sl : ! awk '{ print length(), $0 \| "sort -n \| cut -d\\  -f2-" }'<CR>
+
+" Better window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Quickfix list navigation
+nnoremap [q :cprevious<CR>
+nnoremap ]q :cnext<CR>
+
+" Location list navigation
+nnoremap [l :lrevious<CR>
+nnoremap ]l :lnext<CR>
 
 " Apply Macros with Q
 " Hit qq to record, q to stop recording, and Q to apply.
@@ -266,145 +425,96 @@ nnoremap <Leader>Q :qa!<CR>
 
 " Plugins
 
-" Coc
-" Use <c-space> for trigger completion
-inoremap <silent><expr> <C-Space> coc#refresh()
+" Nvim LspConfig
+nnoremap <Leader>ch :lua vim.lsp.buf.hover()<CR>
+nnoremap <Leader>cd :lua vim.lsp.buf.definition()<CR>
+nnoremap <Leader>cr :lua vim.lsp.buf.references()<CR>
+nnoremap <Leader>ci :lua vim.lsp.buf.implementation()<CR>
+nnoremap <Leader>cs :lua vim.lsp.buf.signature_help()<CR>
 
-" Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
+nnoremap <Leader>crn :lua vim.lsp.buf.rename()<CR>
+nnoremap <Leader>ca :lua vim.lsp.buf.code_action()<CR>
 
-" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
+nnoremap <Leader>cf :lua vim.lsp.buf.formatting()<CR>
+vnoremap <Leader>cf :lua vim.lsp.buf.range_formatting()<CR>
 
-" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
+nnoremap <silent>[g :lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent>]g :lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <Leader>cdd :lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
 
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" Completion Nvim
+imap <C-j> <Plug>(completion_next_source)
+imap <C-k> <Plug>(completion_prev_source)
 
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" Snippets.nvim
+" inoremap <C-l> :lua return require'snippets'.expand_or_advance(1)<CR>
+" inoremap <C-h> :lua return require'snippets'.advance_snippet(-1)<CR>
 
-" Symbol renaming.
-nmap <silent> <Leader>rn <Plug>(coc-rename)
-nnoremap <silent> <Leader>rnp :CocSearch <C-r>=expand('<cword>')<CR><CR>
+" Telescope
+" File Pickers
+nnoremap <Leader>ff :Telescope find_files<CR>
+nnoremap <Leader>fgf :Telescope git_files<CR>
+nnoremap <Leader>fg :Telescope live_grep<CR>
+nnoremap <Leader>fgs :Telescope grep_string<CR>
 
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Vim Pickers
+nnoremap <Leader>fb :Telescope buffers<CR>
+nnoremap <Leader>fh :Telescope help_tags<CR>
+nnoremap <Leader>fc :Telescope commands<CR>
+nnoremap <Leader>fch :Telescope command_history<CR>
+nnoremap <Leader>fm :Telescope marks<CR>
+nnoremap <Leader>fq :Telescope quickfix<CR>
+nnoremap <Leader>fl :Telescope loclist<CR>
+nnoremap <Leader>fr :Telescope registers<CR>
+nnoremap <Leader>fs :Telescope spell_suggest<CR>
+nnoremap <Leader>fk :Telescope keymaps<CR>
 
-" Formatting selected code.
-nmap <silent> <Leader>FF <Plug>(coc-format)
-xmap <silent> <Leader>FF <Plug>(coc-format-selected)
+" LSP Pickers
+nnoremap <Leader>flr :Telescope lsp_references<CR>
+nnoremap <Leader>fls :Telescope lsp_document_symbols<CR>
 
-" CodeAction of selected region
-vmap <Leader>a <Plug>(coc-codeaction-selected)
-nmap <Leader>a <Plug>(coc-codeaction-selected)
+" Git Pickers
+nnoremap <Leader>fgc :Telescope git_commits<CR>
+nnoremap <Leader>fgcb :Telescope git_bcommits<CR>
+nnoremap <Leader>fgb :Telescope git_branches<CR>
+nnoremap <Leader>fgst :Telescope git_status<CR>
 
-nnoremap <silent> <Leader>e :CocCommand explorer<CR>
+" Treesitter Picker
+nnoremap <Leader>ft :Telescope treesitter<CR>
 
-" FZF
-" nnoremap <silent> <Leader>p :Files<CR>
-nnoremap <silent> <Leader>p :GFiles --exclude-standard --others --cached<CR>
-nnoremap <silent> <Leader>b :Buffers<CR>
+" Neogit
+nnoremap <Leader>gs :Neogit<CR>
+" nnoremap <Leader>gl :diffget //2<CR>
+" nnoremap <Leader>gr :diffget //3<CR>
+" nnoremap <Leader>gd :Gvdiffsplit!<CR>
 
-" nnoremap <silent> <Leader>f :Rg<CR>
-nnoremap <silent> <Leader>f :RG<CR>
-
-nnoremap <silent> <Leader>st :Tags<CR>
-nnoremap <silent> <Leader>sm :Marks<CR>
-nnoremap <silent> <Leader>scm :Commands<CR>
-nnoremap <silent> <Leader>sma :Maps<CR>
-
-nnoremap <silent> <Leader>g :GGrep<CR>
-nnoremap <silent> <Leader>gt :GTags<CR>
-nnoremap <silent> <Leader>gc :Commits<CR>
-nnoremap <silent> <Leader>gb :GBranches<CR>
-nnoremap <silent> <Leader>gcb :BCommits<CR>
-
-" Neoterm
-nnoremap <silent> <Leader>t :Tnew<CR>
-nnoremap <silent> <Leader>tc :Tclear<CR>
-nnoremap <silent> <Leader>tk :Tkill<CR>
-nnoremap <silent> <Leader>tx :Tclose!<CR>
-nnoremap <silent> <Leader>txx :TcloseAll!<CR>
-nnoremap <silent> <Leader>tsf :TREPLSendFile<CR>
-nnoremap <silent> <Leader>tsl :TREPLSendLine<CR>
-vnoremap <silent> <Leader>tss :TREPLSendSelection<CR>
-
-" Signify
-nnoremap <Leader>gh :SignifyToggleHighlight<CR>
-nnoremap <Leader>gJ 9999<Leader>gj
-nnoremap <Leader>gK 9999<Leader>gk
-nnoremap <Leader>gj <Plug>(signify-next-hunk)
-nnoremap <Leader>gk <Plug>(signify-prev-hunk)
-
-" Fugitive
-nnoremap <Leader>gs :G<CR>
-nnoremap <Leader>gl :diffget //2<CR>
-nnoremap <Leader>gr :diffget //3<CR>
-nnoremap <Leader>gd :Gvdiffsplit!<CR>
+" Git Blame
+nnoremap <Leader>gb :GitBlameToggle<CR>
 
 " Ranger
 nnoremap <silent> <Leader>r :RnvimrToggle<CR>
 
-" Mundo
-nnoremap <silent> <Leader>u :MundoToggle<CR>
+" Nvim Tree
+nnoremap <Leader>t :NvimTreeToggle<CR>
+nnoremap <Leader>tr :NvimTreeRefresh<CR>
+nnoremap <Leader>tf :NvimTreeFindFile<CR>
 
-" TComment
-nnoremap <silent> <Leader>c :TComment<CR>
-vnoremap <silent> <Leader>c :TCommentBlock<CR>
+" Glow
+nnoremap <Leader>mg :Glow<CR>
+
+" Nvim Bufferline
+nnoremap <silent>[b :BufferLineCyclePrev<CR>
+nnoremap <silent>]b :BufferLineCycleNext<CR>
+
+" These commands will move the current buffer backwards or forwards in the bufferline
+nnoremap <silent>[t :BufferLineMovePrev<CR>
+nnoremap <silent>]t :BufferLineMoveNext<CR>
 
 " }}}
 
 " Functions
 " {{{ -------------------------------------------------------------------------
 
-" Copy file
-command! -nargs=1 -complete=file Cp :w <args> | :e <args>
-
 " Plugins
-
-" COC
-function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-    else
-        call CocAction('doHover')
-    endif
-endfunction
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" FZF
-command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-command! -bang -nargs=* Rg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
-    \   fzf#vim#with_preview(), <bang>0)
-
-" In the default implementation of Rg, ripgrep process starts only once with the initial query (e.g. :Rg foo) and fzf filters the output of the process.
-function! RipgrepFzf(query, fullscreen)
-    let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-    let initial_command = printf(command_fmt, shellescape(a:query))
-    let reload_command = printf(command_fmt, '{q}')
-    let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-
-    call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-command! -bang -nargs=* GGrep
-    \ call fzf#vim#grep(
-    \   'git grep --line-number -- '.shellescape(<q-args>), 0,
-    \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 
 " vim:foldmethod=marker

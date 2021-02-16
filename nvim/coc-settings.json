@@ -1,4 +1,21 @@
 {
+    // General
+    "suggest.snippetIndicator": "...",
+    "suggest.lowPrioritySourceLimit": 10,
+    "suggest.removeDuplicateItems": true,
+
+    "diagnostic.hintSign": "●",
+    "diagnostic.infoSign": "●",
+    "diagnostic.errorSign": "●",
+    "diagnostic.warningSign": "●",
+
+    "diagnostic.virtualTextPrefix": "○",
+    "diagnostic.virtualTextLineSeparator": "↩",
+
+    // Git
+    "git.virtualTextPrefix": "●",
+    "git.addGBlameToBufferVar": true,
+
     // Prettier
     "prettier.tabWidth": 4,
     "prettier.printWidth": 160,
@@ -7,14 +24,19 @@
     "prettier.stylelintIntegration": true,
 
     // HTML
-    "html.format.wrapLineLength": 160,
     "html.autoClosingTags": true,
+    "html.format.wrapLineLength": 160,
 
     // Python
     "python.formatting.provider": "yapf",
 
     // Tsserver (JavaScript)
     "javascript.format.enabled": true,
+
+    // Vetur (Vue.js)
+    "vetur.format.options.tabSize": 4,
+    "vetur.format.styleInitialIndent": true,
+    "vetur.format.scriptInitialIndent": true,
 
     // Explorer
     "explorer.width": 40,
