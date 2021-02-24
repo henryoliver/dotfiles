@@ -12,10 +12,6 @@
     "diagnostic.virtualTextPrefix": "○",
     "diagnostic.virtualTextLineSeparator": "↩",
 
-    // Git
-    "git.virtualTextPrefix": "●",
-    "git.addGBlameToBufferVar": true,
-
     // Prettier
     "prettier.tabWidth": 4,
     "prettier.printWidth": 160,

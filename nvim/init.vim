@@ -9,17 +9,8 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 
 " Completion
-Plug 'neovim/nvim-lspconfig'
-
-Plug 'onsails/lspkind-nvim' " Adds vscode-like pictograms to neovim built-in lsp
-Plug 'nvim-lua/completion-nvim'
-Plug 'nvim-treesitter/completion-treesitter'
-
-Plug 'norcalli/snippets.nvim'
-Plug 'steelsojka/completion-buffers'
-Plug 'aca/completion-tabnine', { 'do': 'version=3.1.9 ./install.sh' }
-
 Plug 'windwp/nvim-autopairs'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Search
 Plug 'nvim-lua/popup.nvim'
@@ -34,7 +25,6 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'f-person/git-blame.nvim'
 
 Plug 'kevinhwang91/rnvimr' " Ranger
-Plug 'kyazdani42/nvim-tree.lua' " Explorer
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'npxbr/glow.nvim', { 'do': ':GlowInstall' }
@@ -124,11 +114,8 @@ set nofoldenable                  " Don't fold by default
 set foldnestmax=20                " Deepest fold is 20 levels
 set foldmethod=indent             " Fold based on indent
 
-set formatoptions-=cro            " Disable auto-wrap and auto-insert comment
-
 set shortmess+=c                  " Avoid showing message extra message when using completion
-set pumheight=10                  " Maximum number of items to show in the popup menu
-set completeopt=menuone,noinsert,noselect " Set completeopt to have a better completion experience
+set formatoptions-=cro            " Disable auto-wrap and auto-insert comment
 
 " User Interface
 set termguicolors                 " Enables 24-bit RGB color in the |TUI|.
@@ -163,134 +150,6 @@ colorscheme nord
 " Treesitter
 lua require('nvim-treesitter.configs').setup({ ensure_installed = 'maintained', highlight = { enable = true }})
 
-" Nvim LspConfig
-highlight LspDiagnosticsDefaultError guifg=#BF616A
-highlight LspDiagnosticsDefaultWarning guifg=#EBCB8B
-
-lua require('lspconfig').html.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').cssls.setup({ on_attach = require('completion').on_attach })
-
-lua require('lspconfig').vuels.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').jsonls.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').svelte.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').tsserver.setup({ on_attach = require('completion').on_attach })
-
-lua require('lspconfig').pyls.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').vimls.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').bashls.setup({ on_attach = require('completion').on_attach })
-
-" lua require('lspconfig').diagnosticls.setup({
-"     \ on_attach = require('completion').on_attach,
-"     \ filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'markdown' },
-"     \ init_options = {
-"         \ linters = {
-"             \ eslint = {
-"                 \ debounce = 100,
-"                 \ command = 'eslint',
-"                 \ sourceName = 'eslint',
-"                 \ rootPatterns = { '.git' },
-"                 \ args = { '--stdin', '--stdin-filename', '%filepath', '--format', 'json' },
-"                 \ parseJson = {
-"                     \ line = 'line',
-"                     \ column = 'column',
-"                     \ endLine = 'endLine',
-"                     \ security = 'severity',
-"                     \ endColumn = 'endColumn',
-"                     \ errorsRoot = '[0].messages',
-"                     \ message = '[eslint] ${message} [${ruleId}]'
-"                 \ },
-"                 \ securities = {
-"                     \ [2] = 'error',
-"                     \ [1] = 'warning'
-"                 \ }
-"             \ },
-"             \ stylelint = {
-"                 \ debounce = 100,
-"                 \ args = { '--stdin' },
-"                 \ command = 'stylelint ',
-"                 \ sourceName = 'stylelint',
-"                 \ rootPatterns = { '.git' }
-"             \ },
-"             \ markdownlint = {
-"                 \ debounce = 100,
-"                 \ offsetLine = 0,
-"                 \ formatLines = 1,
-"                 \ isStderr = true,
-"                 \ offsetColumn = 0,
-"                 \ args = { '--stdin' },
-"                 \ command = 'markdownlint',
-"                 \ rootPatterns = { '.git' },
-"                 \ sourceName = 'markdownlint',
-"                 \ securities = { undefined = 'hint' },
-"                 \ formatPattern = {
-"                     \ '^.*:(\\d+)\\s+(.*)$',
-"                     \ {
-"                         \ line = 1,
-"                         \ column = -1,
-"                         \ message = 2
-"                     \ }
-"                 \ }
-"             \ }
-"         \ },
-"         \ filetypes = {
-"             \ javascript = 'eslint',
-"             \ javascriptreact = 'eslint',
-"             \ typescript = 'eslint',
-"             \ typescriptreact = 'eslint',
-"             \ css = 'stylelint',
-"             \ markdown = 'markdownlint'
-"         \ },
-"         \ formatters = {
-"             \ prettierEslint = {
-"                 \ command = 'prettier-eslint',
-"                 \ args = { '--stdin' },
-"                 \ rootPatterns = { '.git' }
-"             \ },
-"             \ prettierStylelint = {
-"                 \ command = 'prettier-stylelint',
-"                 \ args = { '--stdin' },
-"                 \ rootPatterns = { '.git' }
-"             \ },
-"             \ prettier = {
-"                 \ command = 'prettier',
-"                 \ args = { '--stdin-filepath', '%filename' }
-"             \ }
-"         \ },
-"         \ formatFiletypes = {
-"             \ css = 'prettierStylelint',
-"             \ javascript = 'prettierEslint',
-"             \ javascriptreact = 'prettierEslint',
-"             \ json = 'prettier',
-"             \ typescript = 'prettierEslint',
-"             \ typescriptreact = 'prettierEslint'
-"         \ }
-"     \ }
-" \ })
-
-" Lspkind Nvim
-lua require('lspkind').init()
-
-" Completion Nvim
-" let g:completion_abbr_length = 20
-" let g:completion_menu_length = 20
-let g:completion_auto_change_source = 1
-let g:completion_confirm_key = "\<C-l>"
-let g:completion_enable_snippet = 'snippets.nvim'
-let g:completion_trigger_keyword_length = 2 " default = 1
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
-
-let g:completion_chain_complete_list = [
-    \ {'complete_items': ['lsp', 'tabnine']},
-    \ {'complete_items': ['ts']},
-    \ {'complete_items': ['snippet']},
-    \ {'complete_items': ['buffer']},
-    \ {'mode': '<C-p>'},
-    \ {'mode': '<C-n>'}
-\]
-
-" Snippets.nvim
-lua require('snippets').use_suggested_mappings()
-
 " Nvim Autopairs
 lua require('nvim-autopairs').setup()
 
@@ -298,7 +157,15 @@ lua require('nvim-autopairs').setup()
 lua require('hlslens').setup({ calm_down = true })
 
 " Gitsigns
-lua require('gitsigns').setup()
+lua require('gitsigns').setup({
+    \ signs = {
+        \ add          = { hl = 'GitGutterAdd'   , text = '+' },
+        \ change       = { hl = 'GitGutterChange', text = '~' },
+        \ delete       = { hl = 'GitGutterDelete', text = '_' },
+        \ topdelete    = { hl = 'GitGutterDelete', text = '‾' },
+        \ changedelete = { hl = 'GitGutterChange', text = '~' },
+    \ }
+\ })
 
 " Git Blame
 let g:gitblame_enabled = 0
@@ -323,10 +190,6 @@ let g:rnvimr_layout = {
     \ 'row': float2nr(round(0.05 * &lines)),
     \ 'style': 'minimal'
 \}
-
-" Nvim Tree
-let g:nvim_tree_git_hl = 1
-let g:nvim_tree_show_icons = { 'git': 1, 'folders': 1, 'files': 1 }
 
 " Startify
 let g:startify_lists = [
@@ -424,30 +287,51 @@ nnoremap <Leader>Q :qa!<CR>
 
 " Plugins
 
-" Nvim LspConfig
-nnoremap <Leader>ch :lua vim.lsp.buf.hover()<CR>
-nnoremap <Leader>cd :lua vim.lsp.buf.definition()<CR>
-nnoremap <Leader>cr :lua vim.lsp.buf.references()<CR>
-nnoremap <Leader>ci :lua vim.lsp.buf.implementation()<CR>
-nnoremap <Leader>cs :lua vim.lsp.buf.signature_help()<CR>
+" Coc
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
 
-nnoremap <Leader>crn :lua vim.lsp.buf.rename()<CR>
-nnoremap <Leader>ca :lua vim.lsp.buf.code_action()<CR>
+" GoTo code navigation.
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
 
-nnoremap <Leader>cf :lua vim.lsp.buf.formatting()<CR>
-vnoremap <Leader>cf :lua vim.lsp.buf.range_formatting()<CR>
+" Symbol renaming.
+nnoremap <silent> <Leader>rn <Plug>(coc-rename)
+nnoremap <silent> <Leader>rnp :CocSearch <C-r>=expand('<cword>')<CR><CR>
 
-nnoremap <silent>[g :lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent>]g :lua vim.lsp.diagnostic.goto_next()<CR>
-nnoremap <Leader>cdd :lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-" Completion Nvim
-imap <C-j> <Plug>(completion_next_source)
-imap <C-k> <Plug>(completion_prev_source)
+" Formatting selected code.
+nnoremap <silent> <Leader>cf <Plug>(coc-format)
+xnoremap <silent> <Leader>cf <Plug>(coc-format-selected)
 
-" Snippets.nvim
-" inoremap <C-l> :lua return require'snippets'.expand_or_advance(1)<CR>
-" inoremap <C-h> :lua return require'snippets'.advance_snippet(-1)<CR>
+" CodeAction of selected region
+vnoremap <silent> <Leader>ca <Plug>(coc-codeaction-selected)
+nnoremap <silent> <Leader>ca <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nnoremap <silent> <Leader>cab <Plug>(coc-codeaction)
+
+" Apply AutoFix to problem on the current line.
+nnoremap <silent> <Leader>ci <Plug>(coc-fix-current)
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nnoremap <silent> <Leader>cs <Plug>(coc-range-select)
+xnoremap <silent> <Leader>cs <Plug>(coc-range-select)
+
+nnoremap <silent> <Leader>cl :Fold<CR>
+
+" Organize imports
+nnoremap <silent> <Leader>co :OR<CR>
+
+" Explorer
+nnoremap <silent> <Leader>e :CocCommand explorer<CR>
 
 " Telescope
 " File Pickers
@@ -493,11 +377,6 @@ nnoremap <Leader>gb :GitBlameToggle<CR>
 " Ranger
 nnoremap <silent> <Leader>r :RnvimrToggle<CR>
 
-" Nvim Tree
-nnoremap <Leader>t :NvimTreeToggle<CR>
-nnoremap <Leader>tr :NvimTreeRefresh<CR>
-nnoremap <Leader>tf :NvimTreeFindFile<CR>
-
 " Glow
 nnoremap <Leader>mg :Glow<CR>
 
@@ -515,5 +394,26 @@ nnoremap <silent>]t :BufferLineMoveNext<CR>
 " {{{ -------------------------------------------------------------------------
 
 " Plugins
+
+" Coc
+" Show documentation
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+        call CocActionAsync('doHover')
+    else
+        execute '!' . &keywordprg . " " . expand('<cword>')
+    endif
+endfunction
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " vim:foldmethod=marker
