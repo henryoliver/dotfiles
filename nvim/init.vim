@@ -179,93 +179,93 @@ lua require('lspconfig').pyls.setup({ on_attach = require('completion').on_attac
 lua require('lspconfig').vimls.setup({ on_attach = require('completion').on_attach })
 lua require('lspconfig').bashls.setup({ on_attach = require('completion').on_attach })
 
-lua require('lspconfig').diagnosticls.setup({
-    \ on_attach = require('completion').on_attach,
-    \ filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'markdown' },
-    \ init_options = {
-        \ linters = {
-            \ eslint = {
-                \ debounce = 100,
-                \ command = 'eslint',
-                \ sourceName = 'eslint',
-                \ rootPatterns = { '.git' },
-                \ args = { '--stdin', '--stdin-filename', '%filepath', '--format', 'json' },
-                \ parseJson = {
-                    \ line = 'line',
-                    \ column = 'column',
-                    \ endLine = 'endLine',
-                    \ security = 'severity',
-                    \ endColumn = 'endColumn',
-                    \ errorsRoot = '[0].messages',
-                    \ message = '[eslint] ${message} [${ruleId}]'
-                \ },
-                \ securities = {
-                    \ [2] = 'error',
-                    \ [1] = 'warning'
-                \ }
-            \ },
-            \ stylelint = {
-                \ debounce = 100,
-                \ args = { '--stdin' },
-                \ command = 'stylelint ',
-                \ sourceName = 'stylelint',
-                \ rootPatterns = { '.git' }
-            \ },
-            \ markdownlint = {
-                \ debounce = 100,
-                \ offsetLine = 0,
-                \ formatLines = 1,
-                \ isStderr = true,
-                \ offsetColumn = 0,
-                \ args = { '--stdin' },
-                \ command = 'markdownlint',
-                \ rootPatterns = { '.git' },
-                \ sourceName = 'markdownlint',
-                \ securities = { undefined = 'hint' },
-                \ formatPattern = {
-                    \ '^.*:(\\d+)\\s+(.*)$',
-                    \ {
-                        \ line = 1,
-                        \ column = -1,
-                        \ message = 2
-                    \ }
-                \ }
-            \ }
-        \ },
-        \ filetypes = {
-            \ javascript = 'eslint',
-            \ javascriptreact = 'eslint',
-            \ typescript = 'eslint',
-            \ typescriptreact = 'eslint',
-            \ css = 'stylelint',
-            \ markdown = 'markdownlint'
-        \ },
-        \ formatters = {
-            \ prettierEslint = {
-                \ command = 'prettier-eslint',
-                \ args = { '--stdin' },
-                \ rootPatterns = { '.git' }
-            \ },
-            \ prettierStylelint = {
-                \ command = 'prettier-stylelint',
-                \ args = { '--stdin' },
-                \ rootPatterns = { '.git' }
-            \ },
-            \ prettier = {
-                \ command = 'prettier',
-                \ args = { '--stdin-filepath', '%filename' }
-            \ }
-        \ },
-        \ formatFiletypes = {
-            \ css = 'prettierStylelint',
-            \ javascript = 'prettierEslint',
-            \ javascriptreact = 'prettierEslint',
-            \ json = 'prettier',
-            \ typescript = 'prettierEslint',
-            \ typescriptreact = 'prettierEslint'
-        \ }
-    \ }
-\ })
+" lua require('lspconfig').diagnosticls.setup({
+"     \ on_attach = require('completion').on_attach,
+"     \ filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'markdown' },
+"     \ init_options = {
+"         \ linters = {
+"             \ eslint = {
+"                 \ debounce = 100,
+"                 \ command = 'eslint',
+"                 \ sourceName = 'eslint',
+"                 \ rootPatterns = { '.git' },
+"                 \ args = { '--stdin', '--stdin-filename', '%filepath', '--format', 'json' },
+"                 \ parseJson = {
+"                     \ line = 'line',
+"                     \ column = 'column',
+"                     \ endLine = 'endLine',
+"                     \ security = 'severity',
+"                     \ endColumn = 'endColumn',
+"                     \ errorsRoot = '[0].messages',
+"                     \ message = '[eslint] ${message} [${ruleId}]'
+"                 \ },
+"                 \ securities = {
+"                     \ [2] = 'error',
+"                     \ [1] = 'warning'
+"                 \ }
+"             \ },
+"             \ stylelint = {
+"                 \ debounce = 100,
+"                 \ args = { '--stdin' },
+"                 \ command = 'stylelint ',
+"                 \ sourceName = 'stylelint',
+"                 \ rootPatterns = { '.git' }
+"             \ },
+"             \ markdownlint = {
+"                 \ debounce = 100,
+"                 \ offsetLine = 0,
+"                 \ formatLines = 1,
+"                 \ isStderr = true,
+"                 \ offsetColumn = 0,
+"                 \ args = { '--stdin' },
+"                 \ command = 'markdownlint',
+"                 \ rootPatterns = { '.git' },
+"                 \ sourceName = 'markdownlint',
+"                 \ securities = { undefined = 'hint' },
+"                 \ formatPattern = {
+"                     \ '^.*:(\\d+)\\s+(.*)$',
+"                     \ {
+"                         \ line = 1,
+"                         \ column = -1,
+"                         \ message = 2
+"                     \ }
+"                 \ }
+"             \ }
+"         \ },
+"         \ filetypes = {
+"             \ javascript = 'eslint',
+"             \ javascriptreact = 'eslint',
+"             \ typescript = 'eslint',
+"             \ typescriptreact = 'eslint',
+"             \ css = 'stylelint',
+"             \ markdown = 'markdownlint'
+"         \ },
+"         \ formatters = {
+"             \ prettierEslint = {
+"                 \ command = 'prettier-eslint',
+"                 \ args = { '--stdin' },
+"                 \ rootPatterns = { '.git' }
+"             \ },
+"             \ prettierStylelint = {
+"                 \ command = 'prettier-stylelint',
+"                 \ args = { '--stdin' },
+"                 \ rootPatterns = { '.git' }
+"             \ },
+"             \ prettier = {
+"                 \ command = 'prettier',
+"                 \ args = { '--stdin-filepath', '%filename' }
+"             \ }
+"         \ },
+"         \ formatFiletypes = {
+"             \ css = 'prettierStylelint',
+"             \ javascript = 'prettierEslint',
+"             \ javascriptreact = 'prettierEslint',
+"             \ json = 'prettier',
+"             \ typescript = 'prettierEslint',
+"             \ typescriptreact = 'prettierEslint'
+"         \ }
+"     \ }
+" \ })
 
 " Lspkind Nvim
 lua require('lspkind').init()
@@ -280,9 +280,8 @@ let g:completion_trigger_keyword_length = 2 " default = 1
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
 
 let g:completion_chain_complete_list = [
-    \ {'complete_items': ['tabnine']},
+    \ {'complete_items': ['lsp', 'tabnine']},
     \ {'complete_items': ['ts']},
-    \ {'complete_items': ['lsp']},
     \ {'complete_items': ['snippet']},
     \ {'complete_items': ['buffer']},
     \ {'mode': '<C-p>'},
