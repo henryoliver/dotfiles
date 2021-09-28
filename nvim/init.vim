@@ -3,128 +3,169 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " Themes
-Plug 'arcticicestudio/nord-vim'
+Plug 'shaunsingh/nord.nvim'
 
 " Language
+Plug 'folke/lsp-colors.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 
+Plug 'folke/trouble.nvim' " A pretty list for showing diagnostics, references...
+Plug 'simrat39/symbols-outline.nvim' " A tree like sidebar view for symbols
+
 " Completion
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
+Plug 'steelsojka/completion-buffers'
+
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'rafamadriz/friendly-snippets'
+
 Plug 'windwp/nvim-autopairs'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'windwp/nvim-ts-autotag'
 
 " Search
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 
-Plug 'kevinhwang91/nvim-hlslens'
+Plug 'windwp/nvim-spectre' " Search and replace
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'rktjmp/highlight-current-n.nvim'
+
+" Code display
+Plug 'mhartington/formatter.nvim'
 
 " Integrations
+Plug 'tanvirtin/vgit.nvim'
+Plug 'ruifm/gitlinker.nvim'
 Plug 'TimUntersberger/neogit'
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'f-person/git-blame.nvim'
+Plug 'sindrets/diffview.nvim'
 
 Plug 'kevinhwang91/rnvimr' " Ranger
+Plug 'kyazdani42/nvim-tree.lua' " Explorer
 
+Plug 'rizzatti/dash.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'npxbr/glow.nvim', { 'do': ':GlowInstall' }
+
+Plug 'MunifTanjim/nui.nvim'
+Plug 'vuki656/package-info.nvim', { 'for': 'json' } " Display latest package versions as virtual text
 
 " Interface
-Plug 'mhinz/vim-startify'
+Plug 'glepnir/dashboard-nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 
 Plug 'akinsho/nvim-bufferline.lua'
-Plug 'glepnir/galaxyline.nvim' , { 'branch': 'main' }
+Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
 
 " Commands
 Plug 'b3nj5m1n/kommentary'
 Plug 'blackcauldron7/surround.nvim'
 
 " Other
-Plug 'takac/vim-hardtime'
+Plug 'famiu/nvim-reload' " :Reload and :Restart commands.
+Plug 'famiu/bufdelete.nvim'
+Plug 'folke/which-key.nvim'
+Plug 'folke/todo-comments.nvim' " Highlight and search TODO, HACK, BUG
 
 " Initialize plugin system
 call plug#end()
+
+" Disable some built-in plugins
+let g:loaded_man = 1
+let g:loaded_matchit = 1
+let g:loaded_matchparen = 1
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_gzip = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_shada_plugin = 1
+
 " }}}
 
 " Settings
 " {{{ -------------------------------------------------------------------------
-set encoding=UTF-8                " UTF-8 as the default encoding.
+set encoding=UTF-8                  " UTF-8 as the default encoding.
 
-set nobackup                      " Make a backup before overwriting a file.
+set nobackup
 set nowritebackup
 
-set lazyredraw                    " Don't bother updating screen during macro playback
-set updatetime=300                " If this many milliseconds nothing is typed the swap file will be written to disk.
-set timeoutlen=600                " Time in milliseconds to wait for a mapped sequence to complete.
-set ttimeoutlen=40                " Time in milliseconds to wait for a key code sequence to complete.
+set lazyredraw                      " Don't bother updating screen during macro playback
+set updatetime=300                  " If this many milliseconds nothing is typed the swap file will be written to disk.
+set timeoutlen=600                  " Time in milliseconds to wait for a mapped sequence to complete.
+set ttimeoutlen=40                  " Time in milliseconds to wait for a key code sequence to complete.
 set clipboard+=unnamedplus
 
-set tags=./.tags;,.tags;          " Tell Vim where to look for tags files
-
 " Search and Replace
-set magic                         " Use 'magic' patterns (extended regular expressions).
-set gdefault                      " Use 'g' flag by default with :s/foo/bar/.
-set smartcase                     " ... unless the query has capital letters.
-set incsearch                     " Incremental search.
-set ignorecase                    " Make searching case insensitive
+set magic                           " Use 'magic' patterns (extended regular expressions).
+set gdefault                        " Use 'g' flag by default with :s/foo/bar/.
+set smartcase                       " ... unless the query has capital letters.
+set ignorecase                      " Make searching case insensitive
+
+set incsearch                       " Incremental search.
+set inccommand=split                " Icremental search to open preview window
+
+set wildignorecase                  " Ignore case in wildignore
+set wildignore=*.swp,*.bak,*.cache,*.min.*,**/dist/**,**/.git/**,*-lock.json " Wildignore paths
 
 " White Space
-set tabstop=4                     " Set tab to equal 4 spaces.
-set expandtab                     " Expand tabs into spaces.
-set shiftwidth=4                  " Set auto indent spacing.
-set softtabstop=4                 " Set soft tabs equal to 4 spaces.
-set smartindent                   " Does the right thing (mostly) in programs
-set shiftround                    " Shift to the next round tab stop.
-set textwidth=0                   " Hard-wrap long lines as you type them.
-set conceallevel=0                " Text is shown normally
+set expandtab                       " Expand tabs into spaces.
+set tabstop=4                       " Set tab to equal 4 spaces.
+set shiftround                      " Shift to the next round tab stop.
+set shiftwidth=4                    " Set auto indent spacing.
+set softtabstop=4                   " Set soft tabs equal to 4 spaces.
 
-set list                          " Displays whitespace
-set listchars=tab:··,trail:·      " Show leading whitespace
+set smartindent                     " Does the right thing (mostly) in programs
+set conceallevel=0                  " Text is shown normally
+
+set wrap                            " Enable line wrapping.
+set linebreak                       " Wrap long lines at a character
+set textwidth=0                     " Hard-wrap long lines as you type them.
+set linespace=0                     " Set line-spacing to minimum.
+
+set list                            " Displays whitespace
+set listchars=tab:··,trail:·        " Show leading whitespace
 
 " Presentation
-set cf                            " Enable error jumping.
-set hidden                        " Allow hidden buffers.
-set ruler                         " Show the line and column number of the cursor position
-set noshowcmd                     " Hide command in status line.
-set noshowmode                    " Hide vim mode message on the last line.
-set cmdheight=1                   " Number of screen lines to use for the command-line.
-set cmdwinheight=1                " Number of screen lines to use for the command-line window.
+set hidden                          " Allow hidden buffers.
 
-set number                        " Show line numbers
-set relativenumber                " Relative line numbers
-
-set cc=80                         " Highlight column at 80
-set wrap                          " Enable line wrapping.
-set linebreak                     " Wrap long lines at a character
-set linespace=0                   " Set line-spacing to minimum.
-
-set nojoinspaces                  " Prevents inserting two spaces after punctuation on a join (J)
-set matchpairs+=<:>               " Pairs to match.
-
-set splitbelow                    " Horizontal split below current.
-set splitright                    " Vertical split to right of current.
-
-set scrolloff=3                   " Show next 3 lines while scrolling.
-set nostartofline                 " Do not jump to first character with page commands.
-set sidescrolloff=5               " Show next 5 columns while side-scrolling.
+set cc=80                           " Highlight column at 80
+set number                          " Show line numbers
+set relativenumber                  " Relative line numbers
+set signcolumn=yes                  " When and how to draw the signcolumn.
 
 set foldlevel=1
-set nofoldenable                  " Don't fold by default
-set foldnestmax=20                " Deepest fold is 20 levels
-set foldmethod=indent             " Fold based on indent
+set nofoldenable                    " Don't fold by default
+set foldnestmax=20                  " Deepest fold is 20 levels
+set foldmethod=indent               " Fold based on indent
 
-set shortmess+=c                  " Avoid showing message extra message when using completion
-set formatoptions-=cro            " Disable auto-wrap and auto-insert comment
+set scrolloff=3                     " Show next 3 lines while scrolling.
+set nostartofline                   " Do not jump to first character with page commands.
+set sidescrolloff=5                 " Show next 5 columns while side-scrolling.
+
+set laststatus=2                    " Always display statusline
+set showtabline=2                   " Always show tabs
+
+set ruler                           " Show the line and column number of the cursor position
+set noshowcmd                       " Hide command in status line.
+set noshowmode                      " Hide vim mode message on the last line.
+set cmdheight=1                     " Number of screen lines to use for the command-line.
+set cmdwinheight=1                  " Number of screen lines to use for the command-line window.
+
+set nojoinspaces                    " Prevents inserting two spaces after punctuation on a join (J)
+
+set splitbelow                      " Horizontal split below current.
+set splitright                      " Vertical split to right of current.
+
+set shortmess+=c                    " Avoid showing message extra message when using completion
+set pumheight=10                    " Maximum number of items to show in the popup menu
+set completeopt=menuone,noinsert,noselect " Set completeopt to have a better completion experience
 
 " User Interface
-set termguicolors                 " Enables 24-bit RGB color in the |TUI|.
-set signcolumn=yes                " When and how to draw the signcolumn.
-filetype plugin indent on         " Load syntax files for better indenting.
-
-" Disable netrw
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
+set termguicolors                   " Enables 24-bit RGB color in the |TUI|.
+filetype plugin indent on           " Load syntax files for better indenting.
 
 " Providers
 let g:loaded_ruby_provider = 0
@@ -136,39 +177,157 @@ let g:loaded_python_provider = 0
 " Nord theme
 augroup nord-overrides
     autocmd!
-    autocmd ColorScheme nord highlight Italic cterm=italic gui=italic
-    autocmd ColorScheme nord highlight Folded cterm=italic,bold gui=italic,bold ctermbg=none guibg=none
-    autocmd ColorScheme nord highlight Search ctermbg=3 ctermfg=0 guibg=#434C5E guifg=#D8DEE9
+    autocmd ColorScheme nord highlight Folded cterm=italic,bold gui=italic,bold guifg=#4C566A ctermbg=none guibg=none
 augroup END
 
-let g:nord_underline = 1
-let g:nord_italic_comments = 1
-let g:nord_uniform_diff_background = 1
+let g:nord_italic = v:true
+let g:nord_borders = v:true
+let g:nord_contrast = v:true
+let g:nord_disable_background = v:true
 
 colorscheme nord
 
 " Treesitter
 lua require('nvim-treesitter.configs').setup({ ensure_installed = 'maintained', highlight = { enable = true }})
 
+" Trouble
+lua require('trouble').setup()
+
+" Nvim LspConfig
+highlight LspDiagnosticsDefaultError guifg=#BF616A
+highlight LspDiagnosticsDefaultWarning guifg=#EBCB8B
+
+lua << EOF
+    local signs = { Error = ' ', Warning = ' ', Hint = ' ', Information = ' ' }
+
+    for type, icon in pairs(signs) do
+        local hl = 'LspDiagnosticsSign' .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
+    end
+
+    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false,
+        signs = true,
+        underline = false,
+        update_in_insert = false,
+    })
+EOF
+
+lua << EOF
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+    require'lspconfig'.html.setup { on_attach = require('completion').on_attach, capabilities = capabilities }
+    require'lspconfig'.cssls.setup { on_attach = require('completion').on_attach, capabilities = capabilities }
+    require'lspconfig'.jsonls.setup { on_attach = require('completion').on_attach, capabilities = capabilities }
+EOF
+
+lua require('lspconfig').tailwindcss.setup({ filetypes = { 'css' }, on_attach = require('completion').on_attach })
+
+lua require('lspconfig').vuels.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').svelte.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').tsserver.setup({ on_attach = require('completion').on_attach })
+
+lua require('lspconfig').pylsp.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').vimls.setup({ on_attach = require('completion').on_attach })
+lua require('lspconfig').bashls.setup({ on_attach = require('completion').on_attach })
+
+" Completion Nvim
+let g:completion_sorting = 'length'
+let g:completion_trigger_on_delete = 1
+let g:completion_auto_change_source = 0
+
+let g:completion_enable_snippet = 'vim-vsnip'
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
+
+let g:completion_chain_complete_list = [
+    \ {'complete_items': ['lsp']},
+    \ {'complete_items': ['snippet']},
+    \ {'complete_items': ['buffer']},
+    \ {'complete_items': ['buffers']},
+    \ {'complete_items': ['path'], 'triggered_only': ['/']}
+\]
+
 " Nvim Autopairs
 lua require('nvim-autopairs').setup()
 
-" Nvim Hlslens
-lua require('hlslens').setup({ calm_down = true })
+" Nvim TS Autotag
+lua require('nvim-ts-autotag').setup()
 
-" Gitsigns
-lua require('gitsigns').setup({
-    \ signs = {
-        \ add          = { hl = 'GitGutterAdd'   , text = '+' },
-        \ change       = { hl = 'GitGutterChange', text = '~' },
-        \ delete       = { hl = 'GitGutterDelete', text = '_' },
-        \ topdelete    = { hl = 'GitGutterDelete', text = '‾' },
-        \ changedelete = { hl = 'GitGutterChange', text = '~' },
+" Nvim-spectre
+lua require('spectre').setup()
+
+" Telescope
+lua require('telescope').setup({ defaults = { layout_config = { prompt_position = 'top' }, sorting_strategy = 'ascending' } })
+
+" Formatter.nvim
+lua require('formatter').setup({ 
+    \ logging = false, 
+    \ filetype = { 
+        \ html = { function() return { 
+            \ exe = 'prettier', 
+            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end },
+        \ css = { function() return { 
+            \ exe = 'stylelint', 
+            \ args = { '--fix --stdin-filename', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end },
+        \ javascript = { function() return { 
+            \ exe = 'prettier', 
+            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end },
+        \ javascriptreact = { function() return { 
+            \ exe = 'prettier', 
+            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end },
+        \ typescript = { function() return { 
+            \ exe = 'prettier', 
+            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end },
+        \ typescriptreact = { function() return { 
+            \ exe = 'prettier', 
+            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end },
+        \ svelte = { function() return { 
+            \ exe = 'prettier', 
+            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end },
+        \ vue = { function() return { 
+            \ exe = 'prettier', 
+            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end },
+        \ json = { function() return { 
+            \ exe = 'prettier', 
+            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end },
+        \ vim = { function() return { 
+            \ exe = 'prettier', 
+            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+            \ stdin = true 
+        \ } end }
     \ }
-\ })
+\})
 
-" Git Blame
-let g:gitblame_enabled = 0
+" VGit
+lua require('vgit').setup({ controller = { blames_enabled = false, diff_preference = 'horizontal' } })
+
+" GitLinker
+lua require('gitlinker').setup({ mappings = nil })
+
+" Neogit
+lua require('neogit').setup()
+
+" Diffview.nvim
+lua require('diffview').setup()
 
 " Ranger
 let g:rnvimr_enable_ex = 1 " Enable Ranger to replace builtin Netrw to be a file explorer.
@@ -191,35 +350,49 @@ let g:rnvimr_layout = {
     \ 'style': 'minimal'
 \}
 
-" Startify
-let g:startify_lists = [
-    \ { 'type': 'files',     'header': ['   Files']            },
-    \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
-    \ { 'type': 'sessions',  'header': ['   Sessions']       },
-    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-\ ]
+" Nvim Tree
+let g:nvim_tree_git_hl = 1
+let g:nvim_tree_show_icons = { 'git': 1, 'folders': 1, 'files': 1 }
 
-let g:startify_bookmarks = [
-    \ { 'i': '~/.config/nvim/init.vim' },
-    \ { 'z': '~/.zshrc' },
-    \ '~/Projects'
-\ ]
+" Package Info
+lua require('package-info').setup()
 
-let g:startify_enable_special = 0
-let g:startify_change_to_vcs_root = 1
-let g:startify_session_delete_buffers = 1
+" Nvim Dashboard
+let g:dashboard_default_executive = 'telescope'
 
 " Nvim Bufferline
 lua require('bufferline').setup()
 
 " Galaxyline
-lua require('galaxyline-eviline-theme')
+lua require('galaxyline-settings')
 
 " Surround Nvim
 lua require('surround').setup({})
 
-" Vim Hardtime
-let g:hardtime_default_on = 1
+" Which Key
+lua require('which-key').setup({ 
+    \ plugins = {
+        \ marks = false,
+        \ registers = false,
+        \ spelling = {
+            \ enabled = false,
+            \ suggestions = 20
+        \ },
+        \ presets = {
+            \ operators = true,
+            \ motions = true,
+            \ text_objects = true,
+            \ windows = true,
+            \ nav = true, 
+            \ z = true,
+            \ g = true
+        \ },
+    \ },
+    \ ignore_missing = true 
+\})
+
+" Todo Comments
+let g:kommentary_create_default_mappings = 0
 
 " }}}
 
@@ -240,13 +413,26 @@ noremap B ^
 noremap E $
 
 " Move selected line / block of text in visual mode
-" shift + k to move up
-" shift + j to move down
-xnoremap K :move '<-2<CR>gv-gv
-xnoremap J :move '>+1<CR>gv-gv
+vnoremap J :move '>+1<CR>gv=gv
+vnoremap K :move '<-2<CR>gv=gv
 
-" Sort lines by length
-vnoremap <silent> <Leader>sl : ! awk '{ print length(), $0 \| "sort -n \| cut -d\\  -f2-" }'<CR>
+" Undo break points
+inoremap , ,<C-g>u
+inoremap . .<C-g>u
+inoremap ! !<C-g>u
+inoremap ? ?<C-g>u
+
+" Repeat change/replace of word multiple times
+nnoremap cn *``cgn
+nnoremap cN *``cgN
+
+" Jumplist mutations
+nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
+nnoremap <expr> j (v:count > 5 ? "m'" . v:count : "") . 'j'
+
+" Sort lines 
+vnoremap <silent> <Leader>la :\'<,\'>sort<CR>
+vnoremap <silent> <Leader>ll :! awk '{ print length(), $0 \| "sort -n \| cut -d\\  -f2-" }'<CR>
 
 " Better window navigation
 nnoremap <C-h> <C-w>h
@@ -268,117 +454,143 @@ nnoremap Q @q
 vnoremap Q :norm @q<CR>
 
 " Buffers
-" Completely deletes the current buffer, error if there are unwritten changes
-nnoremap <silent> <Leader>x :bwipeout<CR>
-" Completely deletes all buffers except those with unwritten changes
-nnoremap <silent> <Leader>X :bufdo! :bwipeout<CR>
+nnoremap <silent> <Leader>x :Bwipeout<CR>
+nnoremap <silent> <Leader>X :bufdo! :Bwipeout<CR>
 
 " Quickly edit/reload the vimrc file
-nnoremap <silent> <Leader>ev :e $MYVIMRC<CR>
-nnoremap <silent> <Leader>sv :so $MYVIMRC<CR>
+lua require('which-key').register({ 
+    \ ['<Leader>v'] = { name = 'Vim' },
+    \ ['<Leader>ve'] = { ':e $MYVIMRC<CR>', 'Edit' },
+    \ ['<Leader>vs'] = { ':so $MYVIMRC<CR>', 'Source' },
+    \ ['<Leader>vr'] = { ':Reload<CR>', 'Reload' },
+    \ ['<Leader>vR'] = { ':Restart<CR>', 'Restart' }
+\})
 
-" Save
-nnoremap <Leader>s :update<CR>
-nnoremap <Leader>ss :wall<CR>
-
-" Quit
-nnoremap <Leader>q :q<CR>
-nnoremap <Leader>Q :qa!<CR>
+" Write (Save)
+nnoremap <Leader>w :update<CR>
+nnoremap <Leader>W :wall<CR>
 
 " Plugins
 
-" Coc
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
-nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
+" Trouble
+lua require('which-key').register({ 
+    \ ['<Leader>t'] = { name = 'Trouble' },
+    \ ['<Leader>tt'] = { ':TroubleToggle<CR>', 'Toggle' },
+    \ ['<Leader>tr'] = { ':TroubleToggle lsp_references<CR>', 'References LSP' },
+    \ ['<Leader>tw'] = { ':TroubleToggle lsp_workspace_diagnostics<CR>', 'Workspace LSP' },
+    \ ['<Leader>td'] = { ':TroubleToggle lsp_document_diagnostics<CR>', 'Document LSP' },
+    \ ['<Leader>tT'] = { ':TodoTrouble<CR>', 'Todos' }
+\})
 
-" GoTo code navigation.
-nnoremap <silent> gd <Plug>(coc-definition)
-nnoremap <silent> gy <Plug>(coc-type-definition)
-nnoremap <silent> gi <Plug>(coc-implementation)
-nnoremap <silent> gr <Plug>(coc-references)
+" Nvim LspConfig & Symbols Outline & Formatter.nvim
+lua require('which-key').register({ 
+    \ ['<Leader>l'] = { name = 'LSP Client' },
+    \ ['<Leader>lh'] = { ':lua vim.lsp.buf.hover()<CR>', 'Hover' },
+    \ ['<Leader>ls'] = { ':lua vim.lsp.buf.signature_help()<CR>', 'Signature' },
+    \ ['<Leader>lo'] = { ':SymbolsOutline<CR>', 'Symbols Outline' },
+    \ ['<Leader>ld'] = { ':lua vim.lsp.buf.definition()<CR>', 'Definition' },
+    \ ['<Leader>lD'] = { ':Dash<CR>', 'Dash' },
+    \ ['<Leader>lr'] = { ':lua vim.lsp.buf.references()<CR>', 'References' },
+    \ ['<Leader>li'] = { ':lua vim.lsp.buf.implementation()<CR>', 'Implementation' },
+    \ ['<Leader>la'] = { ':lua vim.lsp.buf.code_action()<CR>', 'Action' },
+    \ ['<Leader>ln'] = { ':lua vim.lsp.buf.rename()<CR>', 'Rename' },
+    \ ['<Leader>lf'] = { ':lua vim.lsp.buf.formatting()<CR>', 'Format LSP' },
+    \ ['<Leader>lF'] = { ':Format<CR>', 'Format' }
+\})
 
-" Symbol renaming.
-nnoremap <silent> <Leader>rn <Plug>(coc-rename)
-nnoremap <silent> <Leader>rnp :CocSearch <C-r>=expand('<cword>')<CR><CR>
+lua require('which-key').register({ 
+    \ ['<Leader>l'] = { name = 'LSP Client' },
+    \ ['<Leader>lf'] = { ':lua vim.lsp.buf.range_formatting()<CR>', 'Format Range' }
+\}, { mode = 'v' })
 
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent>[g :lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent>]g :lua vim.lsp.diagnostic.goto_next()<CR>
 
-" Formatting selected code.
-nnoremap <silent> <Leader>cf <Plug>(coc-format)
-xnoremap <silent> <Leader>cf <Plug>(coc-format-selected)
+" Completion Nvim
+imap <C-l> <Plug>(completion_next_source)
+imap <C-h> <Plug>(completion_prev_source)
 
-" CodeAction of selected region
-vnoremap <silent> <Leader>ca <Plug>(coc-codeaction-selected)
-nnoremap <silent> <Leader>ca <Plug>(coc-codeaction-selected)
+" Nvim-spectre
+lua require('which-key').register({ 
+    \ ['<Leader>f'] = { name = 'Find & Replace' },
+    \ ['<Leader>fp'] = { ':lua require(\'spectre\').open()<CR>', 'Project-Wide' },
+    \ ['<Leader>fb'] = { ':lua require(\'spectre\').open_file_search()<CR>', 'Buffer' },
+    \ ['<Leader>fw'] = { ':lua require(\'spectre\').open_visual({ select_word = true })<CR>', 'Current Word' }
+\})
 
-" Remap keys for applying codeAction to the current buffer.
-nnoremap <silent> <Leader>cab <Plug>(coc-codeaction)
-
-" Apply AutoFix to problem on the current line.
-nnoremap <silent> <Leader>ci <Plug>(coc-fix-current)
-
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of language server.
-nnoremap <silent> <Leader>cs <Plug>(coc-range-select)
-xnoremap <silent> <Leader>cs <Plug>(coc-range-select)
-
-nnoremap <silent> <Leader>cl :Fold<CR>
-
-" Organize imports
-nnoremap <silent> <Leader>co :OR<CR>
-
-" Explorer
-nnoremap <silent> <Leader>e :CocCommand explorer<CR>
+lua require('which-key').register({ 
+    \ ['<Leader>f'] = { name = 'Find & Replace' },
+    \ ['<Leader>fw'] = { ':lua require(\'spectre\').open_visual()<CR>', 'Word' }
+\}, { mode = 'v' })
 
 " Telescope
-" File Pickers
-nnoremap <Leader>ff :Telescope find_files<CR>
-nnoremap <Leader>fgf :Telescope git_files<CR>
-nnoremap <Leader>fg :Telescope live_grep<CR>
-nnoremap <Leader>fgs :Telescope grep_string<CR>
+lua require('which-key').register({ 
+    \ ['<Leader>s'] = { name = 'Search' },
+    \ ['<Leader>sf'] = { ':Telescope find_files<CR>', 'Project Files' },
+    \ ['<Leader>sw'] = { ':Telescope live_grep<CR>', 'Project Words' },
+    \ ['<Leader>sW'] = { ':Telescope grep_string<CR>', 'Project Current Word' },
+    \ ['<Leader>sb'] = { ':Telescope buffers<CR>', 'Buffers' },
+    \ ['<Leader>sc'] = { ':Telescope commands<CR>', 'Commands' },
+    \ ['<Leader>sm'] = { ':Telescope marks<CR>', 'Marks' },
+    \ ['<Leader>sr'] = { ':Telescope registers<CR>', 'Registers' },
+    \ ['<Leader>st'] = { ':TodoTelescope<CR>', 'Todos' },
+    \ ['<Leader>sg'] = { name = 'Git' },
+    \ ['<Leader>sgf'] = { ':Telescope git_files<CR>', 'Files' },
+    \ ['<Leader>sgc'] = { ':Telescope git_bcommits<CR>', 'Commits' },
+    \ ['<Leader>sgC'] = { ':Telescope git_commits<CR>', 'Project Commits' },
+    \ ['<Leader>sgb'] = { ':Telescope git_branches<CR>', 'Branches' }
+\})
 
-" Vim Pickers
-nnoremap <Leader>fb :Telescope buffers<CR>
-nnoremap <Leader>fh :Telescope help_tags<CR>
-nnoremap <Leader>fc :Telescope commands<CR>
-nnoremap <Leader>fch :Telescope command_history<CR>
-nnoremap <Leader>fm :Telescope marks<CR>
-nnoremap <Leader>fq :Telescope quickfix<CR>
-nnoremap <Leader>fl :Telescope loclist<CR>
-nnoremap <Leader>fr :Telescope registers<CR>
-nnoremap <Leader>fs :Telescope spell_suggest<CR>
-nnoremap <Leader>fk :Telescope keymaps<CR>
+" Highlight-Current-n
+nmap n <Plug>(highlight-current-n-n)
+nmap N <Plug>(highlight-current-n-N)
+nmap * *N
 
-" LSP Pickers
-nnoremap <Leader>flr :Telescope lsp_references<CR>
-nnoremap <Leader>fls :Telescope lsp_document_symbols<CR>
+" VGit & Neogit & GitLinker
+lua require('which-key').register({ 
+    \ ['<Leader>g'] = { name = 'Git' },
+    \ ['<Leader>gs'] = { ':Neogit<CR>', 'Status (Neogit)' },
+    \ ['<Leader>gb'] = { ':VGit toggle_buffer_blames<CR>', 'Blame Toggle' },
+    \ ['<Leader>gh'] = { name = 'Hunk' },
+    \ ['<Leader>ght'] = { ':VGit toggle_buffer_hunks<CR>', 'Toggle' },
+    \ ['<Leader>ghp'] = { ':VGit hunk_preview<CR>', 'Preview' },
+    \ ['<Leader>ghr'] = { ':VGit hunk_reset<CR>', 'Reset' },
+    \ ['<Leader>gd'] = { name = 'Diff' },
+    \ ['<Leader>gdd'] = { ':VGit diff<CR>', 'Diff' },
+    \ ['<Leader>gdD'] = { ':DiffviewOpen HEAD<CR>', 'Diffview' },
+    \ ['<Leader>gdb'] = { ':VGit buffer_preview<CR>', 'Buffer Preview' },
+    \ ['<Leader>gdh'] = { ':VGit buffer_history<CR>', 'Buffer History' },
+    \ ['<Leader>gdr'] = { ':VGit buffer_reset<CR>', 'Buffer Reset' },
+    \ ['<Leader>gl'] = { name = 'Linker' },
+    \ ['<Leader>gly'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\')<CR>', 'Yank' },
+    \ ['<Leader>glO'] = { ':lua require(\'gitlinker\').get_repo_url({ action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Project' },
+    \ ['<Leader>glo'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\', { action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Selected' },
+\})
 
-" Git Pickers
-nnoremap <Leader>fgc :Telescope git_commits<CR>
-nnoremap <Leader>fgcb :Telescope git_bcommits<CR>
-nnoremap <Leader>fgb :Telescope git_branches<CR>
-nnoremap <Leader>fgst :Telescope git_status<CR>
+lua require('which-key').register({ 
+    \ ['<Leader>g'] = { name = 'Git' },
+    \ ['<Leader>gly'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'v\')<CR>', 'Yank' },
+    \ ['<Leader>glo'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'v\', { action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Selected' }
+\}, { mode = 'v' })
 
-" Treesitter Picker
-nnoremap <Leader>ft :Telescope treesitter<CR>
-
-" Neogit
-nnoremap <Leader>gs :Neogit<CR>
-" nnoremap <Leader>gl :diffget //2<CR>
-" nnoremap <Leader>gr :diffget //3<CR>
-" nnoremap <Leader>gd :Gvdiffsplit!<CR>
-
-" Git Blame
-nnoremap <Leader>gb :GitBlameToggle<CR>
+nnoremap <silent>[h :VGit hunk_up<CR>
+nnoremap <silent>]h :VGit hunk_down<CR>
 
 " Ranger
-nnoremap <silent> <Leader>r :RnvimrToggle<CR>
+lua require('which-key').register({ ['<Leader>r'] = { ':RnvimrToggle<CR>', 'Ranger' } })
 
-" Glow
-nnoremap <Leader>mg :Glow<CR>
+" Nvim Tree
+lua require('which-key').register({ ['<Leader>e'] = { ':NvimTreeToggle<CR>', 'Explorer' } })
+
+" Package Info
+lua require('which-key').register({ 
+    \ ['<Leader>p'] = { name = 'Package Info' },
+    \ ['<Leader>pu'] = { ':lua require(\'package-info\').update()<CR>', 'Update Package' },
+    \ ['<Leader>pd'] = { ':lua require(\'package-info\').delete()<CR>', 'Delete Package' },
+    \ ['<Leader>pi'] = { ':lua require(\'package-info\').install()<CR>', 'Install New Package' },
+    \ ['<Leader>pr'] = { ':lua require(\'package-info\').reinstall()<CR>', 'Reinstall Dependencies' },
+    \ ['<Leader>pv'] = { ':lua require(\'package-info\').change_version()<CR>', 'Install Different Version' },
+\})
 
 " Nvim Bufferline
 nnoremap <silent>[b :BufferLineCyclePrev<CR>
@@ -388,32 +600,26 @@ nnoremap <silent>]b :BufferLineCycleNext<CR>
 nnoremap <silent>[t :BufferLineMovePrev<CR>
 nnoremap <silent>]t :BufferLineMoveNext<CR>
 
+" Kommentary
+lua require('which-key').register({ 
+    \ ['<Leader>c'] = { name = 'Comment Text' },
+    \ ['<Leader>cc'] = { '<Plug>kommentary_line_default', 'Line' },
+    \ ['<Leader>cm'] = { '<Plug>kommentary_motion_default', 'Motion' }
+\})
+
+lua require('which-key').register({ 
+    \ ['<Leader>c'] = { name = 'Comment Text' },
+    \ ['<Leader>cc'] = { '<Plug>kommentary_visual_default', 'Visual' }
+\}, { mode = 'v' })
+
 " }}}
 
 " Functions
 " {{{ -------------------------------------------------------------------------
 
+" Clear registers
+command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
+
 " Plugins
-
-" Coc
-" Show documentation
-function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-    elseif (coc#rpc#ready())
-        call CocActionAsync('doHover')
-    else
-        execute '!' . &keywordprg . " " . expand('<cword>')
-    endif
-endfunction
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " vim:foldmethod=marker

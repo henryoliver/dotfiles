@@ -10,6 +10,7 @@ mkdir ~/.config/nvim
 
 ln -sv ~/.dotfiles/bat ~/.config/bat
 ln -sv ~/.dotfiles/ranger ~/.config/ranger
+ln -sv ~/.dotfiles/nvim/lua ~/.config/nvim/lua
 ln -sv ~/.dotfiles/nvim/init.vim ~/.config/nvim
 ln -sv ~/.dotfiles/nvim/coc-settings.json ~/.config/nvim
 

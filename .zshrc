@@ -113,6 +113,8 @@ case `uname` in
     Darwin)
         # commands for OS X go here
         alias clean="brew cleanup &&
+            zplug clean --force &&
+            zplug clear &&
             npm cache --force clean &&
             npm list -g --depth 0 &&
             dscacheutil -flushcache"
@@ -120,9 +122,10 @@ case `uname` in
         alias update="brew update &&
             brew upgrade &&
             brew update --all &&
+            brew doctor &&
             npm install -g npm@latest &&
             npm update -g &&
-            brew doctor &&
+            zplug update --force &&
             pip install --upgrade pip &&
             pip install --upgrade pynvim &&
             pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U"
