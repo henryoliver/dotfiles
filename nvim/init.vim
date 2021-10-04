@@ -379,16 +379,16 @@ lua require('which-key').setup({
             \ suggestions = 20
         \ },
         \ presets = {
-            \ operators = true,
-            \ motions = true,
-            \ text_objects = true,
+            \ operators = false,
+            \ motions = false,
+            \ text_objects = false,
             \ windows = true,
-            \ nav = true, 
-            \ z = true,
-            \ g = true
-        \ },
+            \ nav = false, 
+            \ z = false,
+            \ g = false
+        \ }
     \ },
-    \ ignore_missing = true 
+    \ ignore_missing = true
 \})
 
 " Todo Comments
@@ -564,7 +564,7 @@ lua require('which-key').register({
     \ ['<Leader>gl'] = { name = 'Linker' },
     \ ['<Leader>gly'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\')<CR>', 'Yank' },
     \ ['<Leader>glO'] = { ':lua require(\'gitlinker\').get_repo_url({ action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Project' },
-    \ ['<Leader>glo'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\', { action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Selected' },
+    \ ['<Leader>glo'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\', { action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Selected' }
 \})
 
 lua require('which-key').register({ 
@@ -589,7 +589,7 @@ lua require('which-key').register({
     \ ['<Leader>pd'] = { ':lua require(\'package-info\').delete()<CR>', 'Delete Package' },
     \ ['<Leader>pi'] = { ':lua require(\'package-info\').install()<CR>', 'Install New Package' },
     \ ['<Leader>pr'] = { ':lua require(\'package-info\').reinstall()<CR>', 'Reinstall Dependencies' },
-    \ ['<Leader>pv'] = { ':lua require(\'package-info\').change_version()<CR>', 'Install Different Version' },
+    \ ['<Leader>pv'] = { ':lua require(\'package-info\').change_version()<CR>', 'Install Different Version' }
 \})
 
 " Nvim Bufferline
