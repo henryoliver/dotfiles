@@ -5,8 +5,7 @@ export EDITOR="nvim"
 case `uname` in
     Darwin)
         # commands for OS X go here
-        path=("/usr/local/bin" "/usr/local/opt/ruby/bin" $path)
-        path+=("/usr/local/sbin")
+        path=("/usr/local/bin" "/usr/local/sbin" $path)
     ;;
     Linux)
         # commands for Linux go here

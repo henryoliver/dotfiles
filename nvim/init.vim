@@ -6,31 +6,29 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'shaunsingh/nord.nvim'
 
 " Language
-Plug 'folke/lsp-colors.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
-
 Plug 'folke/trouble.nvim' " A pretty list for showing diagnostics, references...
-Plug 'simrat39/symbols-outline.nvim' " A tree like sidebar view for symbols
 
 " Completion
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
-Plug 'steelsojka/completion-buffers'
 
+Plug 'hrsh7th/nvim-cmp'
+Plug 'onsails/lspkind-nvim' " Adds vscode-like pictograms to neovim built-in lsp
+
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'lukas-reineke/cmp-rg'
+
+Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'rafamadriz/friendly-snippets'
 
 Plug 'windwp/nvim-autopairs'
 Plug 'windwp/nvim-ts-autotag'
 
 " Search
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/plenary.nvim' " Some plugins dependency
 
 Plug 'windwp/nvim-spectre' " Search and replace
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'rktjmp/highlight-current-n.nvim'
 
 " Code display
 Plug 'mhartington/formatter.nvim'
@@ -41,31 +39,34 @@ Plug 'ruifm/gitlinker.nvim'
 Plug 'TimUntersberger/neogit'
 Plug 'sindrets/diffview.nvim'
 
-Plug 'kevinhwang91/rnvimr' " Ranger
-Plug 'kyazdani42/nvim-tree.lua' " Explorer
-
 Plug 'rizzatti/dash.vim'
 Plug 'editorconfig/editorconfig-vim'
 
-Plug 'MunifTanjim/nui.nvim'
+Plug 'MunifTanjim/nui.nvim' " Nvim Package Info dependency
 Plug 'vuki656/package-info.nvim', { 'for': 'json' } " Display latest package versions as virtual text
 
 " Interface
 Plug 'glepnir/dashboard-nvim'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'yamatsum/nvim-nonicons'
+
+Plug 'is0n/fm-nvim' " File managers
+Plug 'kyazdani42/nvim-tree.lua' " File explorer
 
 Plug 'akinsho/nvim-bufferline.lua'
 Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
 
 " Commands
-Plug 'b3nj5m1n/kommentary'
 Plug 'blackcauldron7/surround.nvim'
+
+Plug 'numToStr/Comment.nvim'
+Plug 'folke/todo-comments.nvim' " Highlight and search TODO, HACK, BUG
 
 " Other
 Plug 'famiu/nvim-reload' " :Reload and :Restart commands.
-Plug 'famiu/bufdelete.nvim'
 Plug 'folke/which-key.nvim'
-Plug 'folke/todo-comments.nvim' " Highlight and search TODO, HACK, BUG
+Plug 'famiu/bufdelete.nvim'
+Plug 'max397574/better-escape.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -136,10 +137,8 @@ set number                          " Show line numbers
 set relativenumber                  " Relative line numbers
 set signcolumn=yes                  " When and how to draw the signcolumn.
 
-set foldlevel=1
-set nofoldenable                    " Don't fold by default
-set foldnestmax=20                  " Deepest fold is 20 levels
-set foldmethod=indent               " Fold based on indent
+set foldmethod=expr                 " Tree-sitter based folding
+set foldexpr=nvim_treesitter#foldexpr()
 
 set scrolloff=3                     " Show next 3 lines while scrolling.
 set nostartofline                   " Do not jump to first character with page commands.
@@ -160,8 +159,7 @@ set splitbelow                      " Horizontal split below current.
 set splitright                      " Vertical split to right of current.
 
 set shortmess+=c                    " Avoid showing message extra message when using completion
-set pumheight=10                    " Maximum number of items to show in the popup menu
-set completeopt=menuone,noinsert,noselect " Set completeopt to have a better completion experience
+set completeopt=menu,menuone,noselect " Set completeopt to have a better completion experience
 
 " User Interface
 set termguicolors                   " Enables 24-bit RGB color in the |TUI|.
@@ -180,142 +178,147 @@ augroup nord-overrides
     autocmd ColorScheme nord highlight Folded cterm=italic,bold gui=italic,bold guifg=#4C566A ctermbg=none guibg=none
 augroup END
 
-let g:nord_italic = v:true
-let g:nord_borders = v:true
-let g:nord_contrast = v:true
-let g:nord_disable_background = v:true
+lua << EOF
+    -- Example config in lua
+    vim.g.nord_italic = true
+    vim.g.nord_borders = true
+    vim.g.nord_contrast = true
+    vim.g.nord_disable_background = true
 
-colorscheme nord
+    -- Load the colorscheme
+    require('nord').set()
+EOF
 
 " Treesitter
-lua require('nvim-treesitter.configs').setup({ ensure_installed = 'maintained', highlight = { enable = true }})
-
-" Trouble
-lua require('trouble').setup()
+lua << EOF
+    require('nvim-treesitter.configs').setup({ 
+        ensure_installed = 'maintained', 
+        highlight = { enable = true },
+        indent = { enable = true }
+    })
+EOF
 
 " Nvim LspConfig
 highlight LspDiagnosticsDefaultError guifg=#BF616A
 highlight LspDiagnosticsDefaultWarning guifg=#EBCB8B
 
+" Nvim CMP
 lua << EOF
-    local signs = { Error = ' ', Warning = ' ', Hint = ' ', Information = ' ' }
+    -- Setup nvim-cmp.
+    local cmp = require('cmp')
+    local lspkind = require('lspkind')
+    local lspconfig = require('lspconfig')
+    local cmp_nvim_lsp = require('cmp_nvim_lsp')
 
-    for type, icon in pairs(signs) do
-        local hl = 'LspDiagnosticsSign' .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
-    end
-
-    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false,
-        signs = true,
-        underline = false,
-        update_in_insert = false,
+    cmp.setup({ 
+        snippet = {
+            -- REQUIRED - you must specify a snippet engine
+            expand = function(args)
+                vim.fn['vsnip#anonymous'](args.body) -- For `vsnip` users.
+            end
+        },
+        sources = { 
+            { name = 'nvim_lsp' }, 
+            { name = 'vsnip' }, 
+            { name = 'rg' }
+        },
+        mapping = { 
+            ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
+        },
+        formatting = {
+            format = lspkind.cmp_format({
+                with_text = false, -- do not show text alongside icons
+                maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                preset = 'codicons',
+                menu = {
+                    nvim_lsp = '[LSP]',
+                    vsnip = '[snip]',
+                    rg = '[ripgrep]'
+                }
+            })
+        },
+        experimental = { native_menu = false, ghost_text = true }
     })
+
+    -- Setup lspconfig.
+    local capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    
+    lspconfig.html.setup({ capabilities = capabilities })
+    lspconfig.cssls.setup({ capabilities = capabilities })
+    lspconfig.tailwindcss.setup({})
+
+    lspconfig.vuels.setup({})
+    lspconfig.svelte.setup({})
+    lspconfig.tsserver.setup({})
+
+    lspconfig.jsonls.setup({ capabilities = capabilities })
+
+    lspconfig.pylsp.setup({})
+    lspconfig.vimls.setup({})
+    lspconfig.bashls.setup({})
 EOF
-
-lua << EOF
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-    require'lspconfig'.html.setup { on_attach = require('completion').on_attach, capabilities = capabilities }
-    require'lspconfig'.cssls.setup { on_attach = require('completion').on_attach, capabilities = capabilities }
-    require'lspconfig'.jsonls.setup { on_attach = require('completion').on_attach, capabilities = capabilities }
-EOF
-
-lua require('lspconfig').tailwindcss.setup({ filetypes = { 'css' }, on_attach = require('completion').on_attach })
-
-lua require('lspconfig').vuels.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').svelte.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').tsserver.setup({ on_attach = require('completion').on_attach })
-
-lua require('lspconfig').pylsp.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').vimls.setup({ on_attach = require('completion').on_attach })
-lua require('lspconfig').bashls.setup({ on_attach = require('completion').on_attach })
-
-" Completion Nvim
-let g:completion_sorting = 'length'
-let g:completion_trigger_on_delete = 1
-let g:completion_auto_change_source = 0
-
-let g:completion_enable_snippet = 'vim-vsnip'
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
-
-let g:completion_chain_complete_list = [
-    \ {'complete_items': ['lsp']},
-    \ {'complete_items': ['snippet']},
-    \ {'complete_items': ['buffer']},
-    \ {'complete_items': ['buffers']},
-    \ {'complete_items': ['path'], 'triggered_only': ['/']}
-\]
-
-" Nvim Autopairs
-lua require('nvim-autopairs').setup()
-
-" Nvim TS Autotag
-lua require('nvim-ts-autotag').setup()
-
-" Nvim-spectre
-lua require('spectre').setup()
 
 " Telescope
 lua require('telescope').setup({ defaults = { layout_config = { prompt_position = 'top' }, sorting_strategy = 'ascending' } })
 
 " Formatter.nvim
-lua require('formatter').setup({ 
-    \ logging = false, 
-    \ filetype = { 
-        \ html = { function() return { 
-            \ exe = 'prettier', 
-            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end },
-        \ css = { function() return { 
-            \ exe = 'stylelint', 
-            \ args = { '--fix --stdin-filename', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end },
-        \ javascript = { function() return { 
-            \ exe = 'prettier', 
-            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end },
-        \ javascriptreact = { function() return { 
-            \ exe = 'prettier', 
-            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end },
-        \ typescript = { function() return { 
-            \ exe = 'prettier', 
-            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end },
-        \ typescriptreact = { function() return { 
-            \ exe = 'prettier', 
-            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end },
-        \ svelte = { function() return { 
-            \ exe = 'prettier', 
-            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end },
-        \ vue = { function() return { 
-            \ exe = 'prettier', 
-            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end },
-        \ json = { function() return { 
-            \ exe = 'prettier', 
-            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end },
-        \ vim = { function() return { 
-            \ exe = 'prettier', 
-            \ args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-            \ stdin = true 
-        \ } end }
-    \ }
-\})
+lua << EOF
+    require('formatter').setup({ 
+        logging = false, 
+        filetype = { 
+            html = { function() return { 
+                exe = 'prettier', 
+                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end },
+            css = { function() return { 
+                exe = 'stylelint', 
+                args = { '--fix --stdin-filename', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end },
+            javascript = { function() return { 
+                exe = 'prettier', 
+                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end },
+            javascriptreact = { function() return { 
+                exe = 'prettier', 
+                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end },
+            typescript = { function() return { 
+                exe = 'prettier', 
+                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end },
+            typescriptreact = { function() return { 
+                exe = 'prettier', 
+                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end },
+            svelte = { function() return { 
+                exe = 'prettier', 
+                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end },
+            vue = { function() return { 
+                exe = 'prettier', 
+                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end },
+            json = { function() return { 
+                exe = 'prettier', 
+                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end },
+            vim = { function() return { 
+                exe = 'prettier', 
+                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
+                stdin = true 
+            } end }
+        }
+    })
+EOF
 
 " VGit
 lua require('vgit').setup({ controller = { blames_enabled = false, diff_preference = 'horizontal' } })
@@ -323,76 +326,41 @@ lua require('vgit').setup({ controller = { blames_enabled = false, diff_preferen
 " GitLinker
 lua require('gitlinker').setup({ mappings = nil })
 
-" Neogit
-lua require('neogit').setup()
-
-" Diffview.nvim
-lua require('diffview').setup()
-
-" Ranger
-let g:rnvimr_enable_ex = 1 " Enable Ranger to replace builtin Netrw to be a file explorer.
-let g:rnvimr_enable_bw = 1 " Make Neovim automatically execute |bwipeout| to wipe out the buffers deleted by Ranger.
-
-let g:rnvimr_enable_picker = 1 " Enable Ranger to be hidden after picking a file.
-let g:rnvimr_hide_gitignore = 1 " Make Ranger to hide the files included in gitignore when show_hidden=False in Ranger.
-
-let g:rnvimr_draw_border = 1 " Using builtin curses in Ranger to draw a border for the floating window.
-let g:rnvimr_border_attr = {'fg': 14, 'bg': -1} " Change the border's color integer value is [-1, 255].
-let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"' " Set up only two columns
-
-" Customize the initial layout
-let g:rnvimr_layout = { 
-    \ 'relative': 'editor',
-    \ 'width': float2nr(round(0.9 * &columns)),
-    \ 'height': float2nr(round(0.9 * &lines)),
-    \ 'col': float2nr(round(0.05 * &columns)),
-    \ 'row': float2nr(round(0.05 * &lines)),
-    \ 'style': 'minimal'
-\}
-
-" Nvim Tree
-let g:nvim_tree_git_hl = 1
-let g:nvim_tree_show_icons = { 'git': 1, 'folders': 1, 'files': 1 }
-
-" Package Info
-lua require('package-info').setup()
-
 " Nvim Dashboard
 let g:dashboard_default_executive = 'telescope'
 
 " Nvim Bufferline
-lua require('bufferline').setup()
+lua require('bufferline').setup({})
 
 " Galaxyline
 lua require('galaxyline-settings')
 
-" Surround Nvim
-lua require('surround').setup({})
-
 " Which Key
-lua require('which-key').setup({ 
-    \ plugins = {
-        \ marks = false,
-        \ registers = false,
-        \ spelling = {
-            \ enabled = false,
-            \ suggestions = 20
-        \ },
-        \ presets = {
-            \ operators = false,
-            \ motions = false,
-            \ text_objects = false,
-            \ windows = true,
-            \ nav = false, 
-            \ z = false,
-            \ g = false
-        \ }
-    \ },
-    \ ignore_missing = true
-\})
+lua << EOF
+    require('which-key').setup({ 
+        plugins = {
+            marks = false,
+            registers = false,
+            spelling = {
+                enabled = false,
+                suggestions = 20
+            },
+            presets = {
+                operators = false,
+                motions = false,
+                text_objects = false,
+                windows = false,
+                nav = false, 
+                z = false,
+                g = false
+            }
+        },
+        ignore_missing = true
+    })
+EOF
 
-" Todo Comments
-let g:kommentary_create_default_mappings = 0
+" Better-escape.nvim
+lua require('better_escape').setup()
 
 " }}}
 
@@ -402,9 +370,6 @@ let g:kommentary_create_default_mappings = 0
 " Leader
 let mapleader = ' '
 
-" Remap esc
-inoremap jj <Esc>
-
 " Use v to toggle visual mode.
 vno v <Esc>
 
@@ -412,19 +377,11 @@ vno v <Esc>
 noremap B ^
 noremap E $
 
-" Move selected line / block of text in visual mode
-vnoremap J :move '>+1<CR>gv=gv
-vnoremap K :move '<-2<CR>gv=gv
-
 " Undo break points
 inoremap , ,<C-g>u
 inoremap . .<C-g>u
 inoremap ! !<C-g>u
 inoremap ? ?<C-g>u
-
-" Repeat change/replace of word multiple times
-nnoremap cn *``cgn
-nnoremap cN *``cgN
 
 " Jumplist mutations
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
@@ -458,13 +415,15 @@ nnoremap <silent> <Leader>x :Bwipeout<CR>
 nnoremap <silent> <Leader>X :bufdo! :Bwipeout<CR>
 
 " Quickly edit/reload the vimrc file
-lua require('which-key').register({ 
-    \ ['<Leader>v'] = { name = 'Vim' },
-    \ ['<Leader>ve'] = { ':e $MYVIMRC<CR>', 'Edit' },
-    \ ['<Leader>vs'] = { ':so $MYVIMRC<CR>', 'Source' },
-    \ ['<Leader>vr'] = { ':Reload<CR>', 'Reload' },
-    \ ['<Leader>vR'] = { ':Restart<CR>', 'Restart' }
-\})
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>v'] = { name = 'Vim' },
+        ['<Leader>ve'] = { ':e $MYVIMRC<CR>', 'Edit' },
+        ['<Leader>vs'] = { ':so $MYVIMRC<CR>', 'Source' },
+        ['<Leader>vr'] = { ':Reload<CR>', 'Reload' },
+        ['<Leader>vR'] = { ':Restart<CR>', 'Restart' }
+    })
+EOF
 
 " Write (Save)
 nnoremap <Leader>w :update<CR>
@@ -473,124 +432,131 @@ nnoremap <Leader>W :wall<CR>
 " Plugins
 
 " Trouble
-lua require('which-key').register({ 
-    \ ['<Leader>t'] = { name = 'Trouble' },
-    \ ['<Leader>tt'] = { ':TroubleToggle<CR>', 'Toggle' },
-    \ ['<Leader>tr'] = { ':TroubleToggle lsp_references<CR>', 'References LSP' },
-    \ ['<Leader>tw'] = { ':TroubleToggle lsp_workspace_diagnostics<CR>', 'Workspace LSP' },
-    \ ['<Leader>td'] = { ':TroubleToggle lsp_document_diagnostics<CR>', 'Document LSP' },
-    \ ['<Leader>tT'] = { ':TodoTrouble<CR>', 'Todos' }
-\})
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>t'] = { name = 'Trouble' },
+        ['<Leader>tt'] = { ':TroubleToggle<CR>', 'Toggle' },
+        ['<Leader>tr'] = { ':TroubleToggle lsp_references<CR>', 'References LSP' },
+        ['<Leader>tw'] = { ':TroubleToggle lsp_workspace_diagnostics<CR>', 'Workspace LSP' },
+        ['<Leader>td'] = { ':TroubleToggle lsp_document_diagnostics<CR>', 'Document LSP' },
+        ['<Leader>tT'] = { ':TodoTrouble<CR>', 'Todos' }
+    })
+EOF
 
 " Nvim LspConfig & Symbols Outline & Formatter.nvim
-lua require('which-key').register({ 
-    \ ['<Leader>l'] = { name = 'LSP Client' },
-    \ ['<Leader>lh'] = { ':lua vim.lsp.buf.hover()<CR>', 'Hover' },
-    \ ['<Leader>ls'] = { ':lua vim.lsp.buf.signature_help()<CR>', 'Signature' },
-    \ ['<Leader>lo'] = { ':SymbolsOutline<CR>', 'Symbols Outline' },
-    \ ['<Leader>ld'] = { ':lua vim.lsp.buf.definition()<CR>', 'Definition' },
-    \ ['<Leader>lD'] = { ':Dash<CR>', 'Dash' },
-    \ ['<Leader>lr'] = { ':lua vim.lsp.buf.references()<CR>', 'References' },
-    \ ['<Leader>li'] = { ':lua vim.lsp.buf.implementation()<CR>', 'Implementation' },
-    \ ['<Leader>la'] = { ':lua vim.lsp.buf.code_action()<CR>', 'Action' },
-    \ ['<Leader>ln'] = { ':lua vim.lsp.buf.rename()<CR>', 'Rename' },
-    \ ['<Leader>lf'] = { ':lua vim.lsp.buf.formatting()<CR>', 'Format LSP' },
-    \ ['<Leader>lF'] = { ':Format<CR>', 'Format' }
-\})
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>l'] = { name = 'LSP Client' },
+        ['<Leader>lh'] = { ':lua vim.lsp.buf.hover()<CR>', 'Hover' },
+        ['<Leader>ls'] = { ':lua vim.lsp.buf.signature_help()<CR>', 'Signature' },
+        ['<Leader>ld'] = { ':lua vim.lsp.buf.definition()<CR>', 'Definition' },
+        ['<Leader>lD'] = { ':Dash<CR>', 'Dash' },
+        ['<Leader>lr'] = { ':lua vim.lsp.buf.references()<CR>', 'References' },
+        ['<Leader>li'] = { ':lua vim.lsp.buf.implementation()<CR>', 'Implementation' },
+        ['<Leader>la'] = { ':lua vim.lsp.buf.code_action()<CR>', 'Action' },
+        ['<Leader>ln'] = { ':lua vim.lsp.buf.rename()<CR>', 'Rename' },
+        ['<Leader>lf'] = { ':lua vim.lsp.buf.formatting()<CR>', 'Format LSP' },
+        ['<Leader>lF'] = { ':Format<CR>', 'Format' }
+    })
+EOF
 
-lua require('which-key').register({ 
-    \ ['<Leader>l'] = { name = 'LSP Client' },
-    \ ['<Leader>lf'] = { ':lua vim.lsp.buf.range_formatting()<CR>', 'Format Range' }
-\}, { mode = 'v' })
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>l'] = { name = 'LSP Client' },
+        ['<Leader>lf'] = { ':lua vim.lsp.buf.range_formatting()<CR>', 'Format Range' }
+    }, { mode = 'v' })
+EOF
 
 nnoremap <silent>[g :lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent>]g :lua vim.lsp.diagnostic.goto_next()<CR>
 
-" Completion Nvim
-imap <C-l> <Plug>(completion_next_source)
-imap <C-h> <Plug>(completion_prev_source)
-
 " Nvim-spectre
-lua require('which-key').register({ 
-    \ ['<Leader>f'] = { name = 'Find & Replace' },
-    \ ['<Leader>fp'] = { ':lua require(\'spectre\').open()<CR>', 'Project-Wide' },
-    \ ['<Leader>fb'] = { ':lua require(\'spectre\').open_file_search()<CR>', 'Buffer' },
-    \ ['<Leader>fw'] = { ':lua require(\'spectre\').open_visual({ select_word = true })<CR>', 'Current Word' }
-\})
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>f'] = { name = 'Find & Replace' },
+        ['<Leader>fp'] = { ':lua require(\'spectre\').open()<CR>', 'Project-Wide' },
+        ['<Leader>fb'] = { ':lua require(\'spectre\').open_file_search()<CR>', 'Buffer' },
+        ['<Leader>fw'] = { ':lua require(\'spectre\').open_visual({ select_word = true })<CR>', 'Current Word' }
+    })
+EOF
 
-lua require('which-key').register({ 
-    \ ['<Leader>f'] = { name = 'Find & Replace' },
-    \ ['<Leader>fw'] = { ':lua require(\'spectre\').open_visual()<CR>', 'Word' }
-\}, { mode = 'v' })
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>f'] = { name = 'Find & Replace' },
+        ['<Leader>fw'] = { ':lua require(\'spectre\').open_visual()<CR>', 'Word' }
+    }, { mode = 'v' })
+EOF
 
 " Telescope
-lua require('which-key').register({ 
-    \ ['<Leader>s'] = { name = 'Search' },
-    \ ['<Leader>sf'] = { ':Telescope find_files<CR>', 'Project Files' },
-    \ ['<Leader>sw'] = { ':Telescope live_grep<CR>', 'Project Words' },
-    \ ['<Leader>sW'] = { ':Telescope grep_string<CR>', 'Project Current Word' },
-    \ ['<Leader>sb'] = { ':Telescope buffers<CR>', 'Buffers' },
-    \ ['<Leader>sc'] = { ':Telescope commands<CR>', 'Commands' },
-    \ ['<Leader>sm'] = { ':Telescope marks<CR>', 'Marks' },
-    \ ['<Leader>sr'] = { ':Telescope registers<CR>', 'Registers' },
-    \ ['<Leader>st'] = { ':TodoTelescope<CR>', 'Todos' },
-    \ ['<Leader>sg'] = { name = 'Git' },
-    \ ['<Leader>sgf'] = { ':Telescope git_files<CR>', 'Files' },
-    \ ['<Leader>sgc'] = { ':Telescope git_bcommits<CR>', 'Commits' },
-    \ ['<Leader>sgC'] = { ':Telescope git_commits<CR>', 'Project Commits' },
-    \ ['<Leader>sgb'] = { ':Telescope git_branches<CR>', 'Branches' }
-\})
-
-" Highlight-Current-n
-nmap n <Plug>(highlight-current-n-n)
-nmap N <Plug>(highlight-current-n-N)
-nmap * *N
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>s'] = { name = 'Search' },
+        ['<Leader>sf'] = { ':Telescope git_files<CR>', 'Project Files' },
+        ['<Leader>sw'] = { ':Telescope live_grep<CR>', 'Project Words' },
+        ['<Leader>sW'] = { ':Telescope grep_string<CR>', 'Project Current Word' },
+        ['<Leader>sb'] = { ':Telescope buffers<CR>', 'Buffers' },
+        ['<Leader>sc'] = { ':Telescope commands<CR>', 'Commands' },
+        ['<Leader>sm'] = { ':Telescope marks<CR>', 'Marks' },
+        ['<Leader>sr'] = { ':Telescope registers<CR>', 'Registers' },
+        ['<Leader>st'] = { ':TodoTelescope<CR>', 'Todos' },
+        ['<Leader>sg'] = { name = 'Git' },
+        ['<Leader>sgc'] = { ':Telescope git_bcommits<CR>', 'Commits' },
+        ['<Leader>sgC'] = { ':Telescope git_commits<CR>', 'Project Commits' },
+        ['<Leader>sgb'] = { ':Telescope git_branches<CR>', 'Branches' }
+    })
+EOF
 
 " VGit & Neogit & GitLinker
-lua require('which-key').register({ 
-    \ ['<Leader>g'] = { name = 'Git' },
-    \ ['<Leader>gs'] = { ':Neogit<CR>', 'Status (Neogit)' },
-    \ ['<Leader>gb'] = { ':VGit toggle_buffer_blames<CR>', 'Blame Toggle' },
-    \ ['<Leader>gh'] = { name = 'Hunk' },
-    \ ['<Leader>ght'] = { ':VGit toggle_buffer_hunks<CR>', 'Toggle' },
-    \ ['<Leader>ghp'] = { ':VGit hunk_preview<CR>', 'Preview' },
-    \ ['<Leader>ghr'] = { ':VGit hunk_reset<CR>', 'Reset' },
-    \ ['<Leader>gd'] = { name = 'Diff' },
-    \ ['<Leader>gdd'] = { ':VGit diff<CR>', 'Diff' },
-    \ ['<Leader>gdD'] = { ':DiffviewOpen HEAD<CR>', 'Diffview' },
-    \ ['<Leader>gdb'] = { ':VGit buffer_preview<CR>', 'Buffer Preview' },
-    \ ['<Leader>gdh'] = { ':VGit buffer_history<CR>', 'Buffer History' },
-    \ ['<Leader>gdr'] = { ':VGit buffer_reset<CR>', 'Buffer Reset' },
-    \ ['<Leader>gl'] = { name = 'Linker' },
-    \ ['<Leader>gly'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\')<CR>', 'Yank' },
-    \ ['<Leader>glO'] = { ':lua require(\'gitlinker\').get_repo_url({ action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Project' },
-    \ ['<Leader>glo'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\', { action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Selected' }
-\})
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>g'] = { name = 'Git' },
+        ['<Leader>gs'] = { ':Neogit<CR>', 'Status (Neogit)' },
+        ['<Leader>gb'] = { ':VGit toggle_buffer_blames<CR>', 'Blame Toggle' },
+        ['<Leader>gh'] = { name = 'Hunk' },
+        ['<Leader>ght'] = { ':VGit toggle_buffer_hunks<CR>', 'Toggle' },
+        ['<Leader>ghp'] = { ':VGit hunk_preview<CR>', 'Preview' },
+        ['<Leader>ghr'] = { ':VGit hunk_reset<CR>', 'Reset' },
+        ['<Leader>gd'] = { name = 'Diff' },
+        ['<Leader>gdd'] = { ':VGit diff<CR>', 'Diff' },
+        ['<Leader>gdD'] = { ':DiffviewOpen HEAD<CR>', 'Diffview' },
+        ['<Leader>gdb'] = { ':VGit buffer_preview<CR>', 'Buffer Preview' },
+        ['<Leader>gdh'] = { ':VGit buffer_history<CR>', 'Buffer History' },
+        ['<Leader>gdr'] = { ':VGit buffer_reset<CR>', 'Buffer Reset' },
+        ['<Leader>gl'] = { name = 'Linker' },
+        ['<Leader>gly'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\')<CR>', 'Yank' },
+        ['<Leader>glO'] = { ':lua require(\'gitlinker\').get_repo_url({ action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Project' },
+        ['<Leader>glo'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\', { action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Selected' }
+    })
+EOF
 
-lua require('which-key').register({ 
-    \ ['<Leader>g'] = { name = 'Git' },
-    \ ['<Leader>gly'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'v\')<CR>', 'Yank' },
-    \ ['<Leader>glo'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'v\', { action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Selected' }
-\}, { mode = 'v' })
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>g'] = { name = 'Git' },
+        ['<Leader>gly'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'v\')<CR>', 'Yank' },
+        ['<Leader>glo'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'v\', { action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Selected' }
+    }, { mode = 'v' })
+EOF
 
 nnoremap <silent>[h :VGit hunk_up<CR>
 nnoremap <silent>]h :VGit hunk_down<CR>
 
-" Ranger
-lua require('which-key').register({ ['<Leader>r'] = { ':RnvimrToggle<CR>', 'Ranger' } })
+" Package Info
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>p'] = { name = 'Package Info' },
+        ['<Leader>pu'] = { ':lua require(\'package-info\').update()<CR>', 'Update Package' },
+        ['<Leader>pd'] = { ':lua require(\'package-info\').delete()<CR>', 'Delete Package' },
+        ['<Leader>pi'] = { ':lua require(\'package-info\').install()<CR>', 'Install New Package' },
+        ['<Leader>pr'] = { ':lua require(\'package-info\').reinstall()<CR>', 'Reinstall Dependencies' },
+        ['<Leader>pv'] = { ':lua require(\'package-info\').change_version()<CR>', 'Install Different Version' }
+    })
+EOF
+
+" FM Nvim
+lua require('which-key').register({ ['<Leader>r'] = { ':Ranger<CR>', 'Ranger' } })
 
 " Nvim Tree
-lua require('which-key').register({ ['<Leader>e'] = { ':NvimTreeToggle<CR>', 'Explorer' } })
-
-" Package Info
-lua require('which-key').register({ 
-    \ ['<Leader>p'] = { name = 'Package Info' },
-    \ ['<Leader>pu'] = { ':lua require(\'package-info\').update()<CR>', 'Update Package' },
-    \ ['<Leader>pd'] = { ':lua require(\'package-info\').delete()<CR>', 'Delete Package' },
-    \ ['<Leader>pi'] = { ':lua require(\'package-info\').install()<CR>', 'Install New Package' },
-    \ ['<Leader>pr'] = { ':lua require(\'package-info\').reinstall()<CR>', 'Reinstall Dependencies' },
-    \ ['<Leader>pv'] = { ':lua require(\'package-info\').change_version()<CR>', 'Install Different Version' }
-\})
+lua require('which-key').register({ ['<Leader>e'] = { ':NvimTreeToggle<CR>', 'NvimTree' } })
 
 " Nvim Bufferline
 nnoremap <silent>[b :BufferLineCyclePrev<CR>
@@ -600,25 +566,10 @@ nnoremap <silent>]b :BufferLineCycleNext<CR>
 nnoremap <silent>[t :BufferLineMovePrev<CR>
 nnoremap <silent>]t :BufferLineMoveNext<CR>
 
-" Kommentary
-lua require('which-key').register({ 
-    \ ['<Leader>c'] = { name = 'Comment Text' },
-    \ ['<Leader>cc'] = { '<Plug>kommentary_line_default', 'Line' },
-    \ ['<Leader>cm'] = { '<Plug>kommentary_motion_default', 'Motion' }
-\})
-
-lua require('which-key').register({ 
-    \ ['<Leader>c'] = { name = 'Comment Text' },
-    \ ['<Leader>cc'] = { '<Plug>kommentary_visual_default', 'Visual' }
-\}, { mode = 'v' })
-
 " }}}
 
 " Functions
 " {{{ -------------------------------------------------------------------------
-
-" Clear registers
-command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
 
 " Plugins
 
