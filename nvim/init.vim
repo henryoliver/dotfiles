@@ -1,4 +1,5 @@
 " Plugins
+" {{{ -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 
 " Themes
@@ -48,11 +49,10 @@ Plug 'MunifTanjim/nui.nvim' " Nvim Package Info dependency
 Plug 'vuki656/package-info.nvim', { 'for': 'json' } " Display latest package versions as virtual text
 
 " Interface
-Plug 'glepnir/dashboard-nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'yamatsum/nvim-nonicons'
 
-Plug 'is0n/fm-nvim' " File managers
+Plug 'kevinhwang91/rnvimr' " Ranger
 Plug 'kyazdani42/nvim-tree.lua' " File explorer
 
 Plug 'akinsho/nvim-bufferline.lua'
@@ -69,7 +69,6 @@ Plug 'folke/todo-comments.nvim' " Highlight and search TODO, HACK, BUG
 Plug 'famiu/nvim-reload' " :Reload and :Restart commands.
 Plug 'folke/which-key.nvim'
 Plug 'famiu/bufdelete.nvim'
-Plug 'max397574/better-escape.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -87,7 +86,10 @@ let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 let g:loaded_shada_plugin = 1
 
+" }}}
+
 " Settings
+" {{{ -------------------------------------------------------------------------
 set encoding=UTF-8                  " UTF-8 as the default encoding.
 
 set nobackup
@@ -298,6 +300,12 @@ lua << EOF
     lspconfig.sumneko_lua.setup({ on_attach = custom_attach })
 EOF
 
+" Nvim Autopairs
+lua require('nvim-autopairs').setup()
+
+" Nvim TS Autotag
+lua require('nvim-ts-autotag').setup()
+
 " Telescope
 lua << EOF
     local telescope = require('telescope')
@@ -352,22 +360,64 @@ lua << EOF
 EOF
 
 " VGit
-lua require('vgit').setup({ controller = { blames_enabled = false, diff_preference = 'horizontal' } })
+lua << EOF
+    require('vgit').setup({ 
+        settings = { 
+            live_blame = {
+                enabled = false
+            }
+        }
+    })
+EOF
 
 " GitLinker
 lua require('gitlinker').setup({ mappings = nil })
 
-" Nvim Dashboard
-let g:dashboard_default_executive = 'telescope'
+" Ranger
+let g:rnvimr_enable_ex = 1 " Enable Ranger to replace builtin Netrw to be a file explorer.
+let g:rnvimr_enable_bw = 1 " Make Neovim automatically execute |bwipeout| to wipe out the buffers deleted by Ranger.
+
+let g:rnvimr_enable_picker = 1 " Enable Ranger to be hidden after picking a file.
+let g:rnvimr_hide_gitignore = 1 " Make Ranger to hide the files included in gitignore when show_hidden=False in Ranger.
+
+let g:rnvimr_draw_border = 1 " Using builtin curses in Ranger to draw a border for the floating window.
+let g:rnvimr_border_attr = {'fg': 14, 'bg': -1} " Change the border's color integer value is [-1, 255].
+let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"' " Set up only two columns
+
+" Customize the initial layout
+let g:rnvimr_layout = { 
+    \ 'relative': 'editor',
+    \ 'width': float2nr(round(0.8 * &columns)),
+    \ 'height': float2nr(round(0.8 * &lines)),
+    \ 'col': float2nr(round(0.08 * &columns)),
+    \ 'row': float2nr(round(0.08 * &lines)),
+    \ 'style': 'minimal'
+\}
 
 " Nvim Tree
-lua require('nvim-tree').setup()
+lua << EOF
+    require('nvim-tree').setup({
+        disable_netrw = true,
+        hijack_netrw = true,
+        hijack_cursor = true,
+        update_to_buf_dir = {
+            enable = true,
+            auto_open = false
+        }
+    })
+EOF
+
+let g:nvim_tree_git_hl = 1
+let g:nvim_tree_show_icons = { 'git': 1, 'folders': 1, 'files': 1 }
 
 " Nvim Bufferline
 lua require('bufferline').setup({})
 
 " Galaxyline
 lua require('galaxyline-settings')
+
+" Surround Nvim
+lua require('surround').setup({})
 
 " Comment
 lua require('Comment').setup({ mappings = { basic = false, extra = false, extended = false } })
@@ -396,13 +446,16 @@ lua << EOF
     })
 EOF
 
-" Better-escape.nvim
-lua require('better_escape').setup()
+" }}}
 
 " Mappings
+" {{{ -------------------------------------------------------------------------
 
 " Leader
 let mapleader = ' '
+
+" Remap esc
+inoremap jj <Esc>
 
 " Use v to toggle visual mode.
 vno v <Esc>
@@ -416,6 +469,10 @@ inoremap , ,<C-g>u
 inoremap . .<C-g>u
 inoremap ! !<C-g>u
 inoremap ? ?<C-g>u
+
+" Repeat change/replace of word multiple times
+nnoremap cn *``cgn
+nnoremap cN *``cgN
 
 " Jumplist mutations
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
@@ -576,7 +633,7 @@ lua << EOF
 EOF
 
 " FM Nvim
-lua require('which-key').register({ ['<Leader>r'] = { ':Ranger<CR>', 'Ranger' } })
+lua require('which-key').register({ ['<Leader>r'] = { ':RnvimrToggle<CR>', 'Ranger' } })
 
 " Nvim Tree
 lua require('which-key').register({ ['<Leader>e'] = { ':NvimTreeToggle<CR>', 'NvimTree' } })
@@ -604,7 +661,11 @@ lua << EOF
     }, { mode = 'v' })
 EOF
 
+" }}}
+
 " Functions
+" {{{ -------------------------------------------------------------------------
 
 " Plugins
 
+" vim:foldmethod=marker
