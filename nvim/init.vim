@@ -1,5 +1,4 @@
 " Plugins
-" {{{ -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 
 " Themes
@@ -16,7 +15,9 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'onsails/lspkind-nvim' " Adds vscode-like pictograms to neovim built-in lsp
 
 Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'lukas-reineke/cmp-rg'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
 
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
@@ -29,9 +30,10 @@ Plug 'nvim-lua/plenary.nvim' " Some plugins dependency
 
 Plug 'windwp/nvim-spectre' " Search and replace
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 " Code display
-Plug 'mhartington/formatter.nvim'
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
 " Integrations
 Plug 'tanvirtin/vgit.nvim'
@@ -57,6 +59,7 @@ Plug 'akinsho/nvim-bufferline.lua'
 Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
 
 " Commands
+Plug 'AckslD/nvim-neoclip.lua'
 Plug 'blackcauldron7/surround.nvim'
 
 Plug 'numToStr/Comment.nvim'
@@ -84,10 +87,7 @@ let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 let g:loaded_shada_plugin = 1
 
-" }}}
-
 " Settings
-" {{{ -------------------------------------------------------------------------
 set encoding=UTF-8                  " UTF-8 as the default encoding.
 
 set nobackup
@@ -132,11 +132,12 @@ set listchars=tab:··,trail:·        " Show leading whitespace
 " Presentation
 set hidden                          " Allow hidden buffers.
 
-set cc=80                           " Highlight column at 80
+set colorcolumn=80                  " Highlight column at 80
 set number                          " Show line numbers
 set relativenumber                  " Relative line numbers
 set signcolumn=yes                  " When and how to draw the signcolumn.
 
+set nofoldenable                    " Don't fold by default
 set foldmethod=expr                 " Tree-sitter based folding
 set foldexpr=nvim_treesitter#foldexpr()
 
@@ -179,7 +180,6 @@ augroup nord-overrides
 augroup END
 
 lua << EOF
-    -- Example config in lua
     vim.g.nord_italic = true
     vim.g.nord_borders = true
     vim.g.nord_contrast = true
@@ -212,19 +212,19 @@ lua << EOF
 
     cmp.setup({ 
         snippet = {
-            -- REQUIRED - you must specify a snippet engine
             expand = function(args)
                 vim.fn['vsnip#anonymous'](args.body) -- For `vsnip` users.
             end
         },
-        sources = { 
-            { name = 'nvim_lsp' }, 
-            { name = 'vsnip' }, 
-            { name = 'rg' }
-        },
         mapping = { 
             ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
         },
+        sources = cmp.config.sources({
+            { name = 'nvim_lsp' },
+            { name = 'vsnip' } -- For vsnip users.
+        }, {
+            { name = 'buffer' }
+        }),
         formatting = {
             format = lspkind.cmp_format({
                 with_text = false, -- do not show text alongside icons
@@ -233,89 +233,120 @@ lua << EOF
                 menu = {
                     nvim_lsp = '[LSP]',
                     vsnip = '[snip]',
-                    rg = '[ripgrep]'
+                    buffer = '[buffer]',
+                    path = '[path]'
                 }
             })
         },
         experimental = { native_menu = false, ghost_text = true }
     })
 
+    -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline('/', {
+        sources = {
+            { name = 'buffer' }
+        }
+    })
+
+    -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline(':', {
+        sources = cmp.config.sources({
+            { name = 'path' }
+        }, {
+            { name = 'cmdline' }
+        })
+    })
+
     -- Setup lspconfig.
-    local capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
-    
-    lspconfig.html.setup({ capabilities = capabilities })
-    lspconfig.cssls.setup({ capabilities = capabilities })
-    lspconfig.tailwindcss.setup({})
+    local signs = { Error = ' ', Warning = ' ', Hint = ' ', Information = ' ' }
 
-    lspconfig.vuels.setup({})
-    lspconfig.svelte.setup({})
-    lspconfig.tsserver.setup({})
+    for type, icon in pairs(signs) do
+        local hl = 'DiagnosticSign' .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+    end
 
-    lspconfig.jsonls.setup({ capabilities = capabilities })
+    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+            signs = true,
+            underline = false,
+            virtual_text = false,
+            update_in_insert = false
+        }
+    )
 
-    lspconfig.pylsp.setup({})
-    lspconfig.vimls.setup({})
-    lspconfig.bashls.setup({})
+    local custom_attach = function(client)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+    end
+
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+
+    lspconfig.html.setup({ on_attach = custom_attach, capabilities = capabilities })
+    lspconfig.cssls.setup({ on_attach = custom_attach, capabilities = capabilities })
+    lspconfig.tailwindcss.setup({ on_attach = custom_attach })
+
+    lspconfig.vuels.setup({ on_attach = custom_attach })
+    lspconfig.svelte.setup({ on_attach = custom_attach })
+    lspconfig.tsserver.setup({ on_attach = custom_attach })
+
+    lspconfig.jsonls.setup({ on_attach = custom_attach, capabilities = capabilities })
+
+    lspconfig.pylsp.setup({ on_attach = custom_attach })
+    lspconfig.vimls.setup({ on_attach = custom_attach })
+    lspconfig.bashls.setup({ on_attach = custom_attach })
+    lspconfig.sumneko_lua.setup({ on_attach = custom_attach })
 EOF
 
 " Telescope
-lua require('telescope').setup({ defaults = { layout_config = { prompt_position = 'top' }, sorting_strategy = 'ascending' } })
-
-" Formatter.nvim
 lua << EOF
-    require('formatter').setup({ 
-        logging = false, 
-        filetype = { 
-            html = { function() return { 
-                exe = 'prettier', 
-                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end },
-            css = { function() return { 
-                exe = 'stylelint', 
-                args = { '--fix --stdin-filename', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end },
-            javascript = { function() return { 
-                exe = 'prettier', 
-                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end },
-            javascriptreact = { function() return { 
-                exe = 'prettier', 
-                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end },
-            typescript = { function() return { 
-                exe = 'prettier', 
-                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end },
-            typescriptreact = { function() return { 
-                exe = 'prettier', 
-                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end },
-            svelte = { function() return { 
-                exe = 'prettier', 
-                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end },
-            vue = { function() return { 
-                exe = 'prettier', 
-                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end },
-            json = { function() return { 
-                exe = 'prettier', 
-                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end },
-            vim = { function() return { 
-                exe = 'prettier', 
-                args = { '--stdin-filepath', vim.api.nvim_buf_get_name(0) }, 
-                stdin = true 
-            } end }
+    local telescope = require('telescope')
+
+    telescope.setup({ 
+        defaults = { 
+            layout_config = { prompt_position = 'top' }, 
+            sorting_strategy = 'ascending' 
+        },
+        extensions = {
+            fzy_native = {
+                override_generic_sorter = true,
+                override_file_sorter = true
+            }
+        }
+    })
+
+    -- Plugins
+    telescope.load_extension('fzy_native')
+EOF
+
+" Null-ls
+lua << EOF
+    local null_ls = require('null-ls')
+    local formatting = null_ls.builtins.formatting
+    local diagnostics = null_ls.builtins.diagnostics
+    local code_actions = null_ls.builtins.code_actions
+    
+    null_ls.setup({
+        sources = { -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#available-sources
+            -- Style
+            diagnostics.stylelint, -- filetypes = { "scss", "less", "css", "sass" }
+            
+            -- JavaScript
+            formatting.prettier, -- filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "html", "json", "yaml", "markdown", "graphql" }
+            diagnostics.eslint, -- filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" }
+            code_actions.eslint,
+
+            -- Lua
+            formatting.stylua,
+
+            -- Python
+            formatting.black,
+            diagnostics.pylint,
+
+            -- Others
+            diagnostics.vint,
+            diagnostics.markdownlint,
+            diagnostics.cspell.with({ filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'html', 'json', 'markdown' } })
         }
     })
 EOF
@@ -329,11 +360,17 @@ lua require('gitlinker').setup({ mappings = nil })
 " Nvim Dashboard
 let g:dashboard_default_executive = 'telescope'
 
+" Nvim Tree
+lua require('nvim-tree').setup()
+
 " Nvim Bufferline
 lua require('bufferline').setup({})
 
 " Galaxyline
 lua require('galaxyline-settings')
+
+" Comment
+lua require('Comment').setup({ mappings = { basic = false, extra = false, extended = false } })
 
 " Which Key
 lua << EOF
@@ -362,10 +399,7 @@ EOF
 " Better-escape.nvim
 lua require('better_escape').setup()
 
-" }}}
-
 " Mappings
-" {{{ -------------------------------------------------------------------------
 
 " Leader
 let mapleader = ' '
@@ -443,7 +477,7 @@ lua << EOF
     })
 EOF
 
-" Nvim LspConfig & Symbols Outline & Formatter.nvim
+" Nvim LspConfig
 lua << EOF
     require('which-key').register({ 
         ['<Leader>l'] = { name = 'LSP Client' },
@@ -455,16 +489,8 @@ lua << EOF
         ['<Leader>li'] = { ':lua vim.lsp.buf.implementation()<CR>', 'Implementation' },
         ['<Leader>la'] = { ':lua vim.lsp.buf.code_action()<CR>', 'Action' },
         ['<Leader>ln'] = { ':lua vim.lsp.buf.rename()<CR>', 'Rename' },
-        ['<Leader>lf'] = { ':lua vim.lsp.buf.formatting()<CR>', 'Format LSP' },
-        ['<Leader>lF'] = { ':Format<CR>', 'Format' }
+        ['<Leader>lf'] = { ':lua vim.lsp.buf.formatting_sync()<CR>', 'Format LSP' },
     })
-EOF
-
-lua << EOF
-    require('which-key').register({ 
-        ['<Leader>l'] = { name = 'LSP Client' },
-        ['<Leader>lf'] = { ':lua vim.lsp.buf.range_formatting()<CR>', 'Format Range' }
-    }, { mode = 'v' })
 EOF
 
 nnoremap <silent>[g :lua vim.lsp.diagnostic.goto_prev()<CR>
@@ -478,9 +504,7 @@ lua << EOF
         ['<Leader>fb'] = { ':lua require(\'spectre\').open_file_search()<CR>', 'Buffer' },
         ['<Leader>fw'] = { ':lua require(\'spectre\').open_visual({ select_word = true })<CR>', 'Current Word' }
     })
-EOF
-
-lua << EOF
+    
     require('which-key').register({ 
         ['<Leader>f'] = { name = 'Find & Replace' },
         ['<Leader>fw'] = { ':lua require(\'spectre\').open_visual()<CR>', 'Word' }
@@ -499,6 +523,7 @@ lua << EOF
         ['<Leader>sm'] = { ':Telescope marks<CR>', 'Marks' },
         ['<Leader>sr'] = { ':Telescope registers<CR>', 'Registers' },
         ['<Leader>st'] = { ':TodoTelescope<CR>', 'Todos' },
+        ['<Leader>sy'] = { ':Telescope neoclip<CR>', 'Clipboard' },
         ['<Leader>sg'] = { name = 'Git' },
         ['<Leader>sgc'] = { ':Telescope git_bcommits<CR>', 'Commits' },
         ['<Leader>sgC'] = { ':Telescope git_commits<CR>', 'Project Commits' },
@@ -527,9 +552,7 @@ lua << EOF
         ['<Leader>glO'] = { ':lua require(\'gitlinker\').get_repo_url({ action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Project' },
         ['<Leader>glo'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\', { action_callback = require(\'gitlinker.actions\').open_in_browser })<CR>', 'Open Selected' }
     })
-EOF
-
-lua << EOF
+    
     require('which-key').register({ 
         ['<Leader>g'] = { name = 'Git' },
         ['<Leader>gly'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'v\')<CR>', 'Yank' },
@@ -566,11 +589,22 @@ nnoremap <silent>]b :BufferLineCycleNext<CR>
 nnoremap <silent>[t :BufferLineMovePrev<CR>
 nnoremap <silent>]t :BufferLineMoveNext<CR>
 
-" }}}
+" Comment
+lua << EOF
+    require('which-key').register({ 
+        ['<Leader>c'] = { name = 'Comment' },
+        ['<Leader>cc'] = { ':lua require(\'Comment.api\').toggle_current_linewise()<CR>', 'Comment current line' },
+        ['<Leader>cb'] = { ':lua require(\'Comment.api\').toggle_current_blockwise()<CR>', 'Comment current line blockwise' }
+    })
+    
+    require('which-key').register({ 
+        ['<Leader>c'] = { name = 'Comment' },
+        ['<Leader>cc'] = { ':lua require(\'Comment.api\').toggle_linewise_op(vim.fn.visualmode())<CR>', 'Comment selection' },
+        ['<Leader>cb'] = { ':lua require(\'Comment.api\').toggle_blockwise_op(vim.fn.visualmode())<CR>', 'Comment selection blockwise' }
+    }, { mode = 'v' })
+EOF
 
 " Functions
-" {{{ -------------------------------------------------------------------------
 
 " Plugins
 
-" vim:foldmethod=marker
