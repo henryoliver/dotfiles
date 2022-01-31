@@ -18,6 +18,7 @@
     eol = lf
     editor = "nvim"
     autocrlf = input
+    ignorecase = false
     excludesfile = ~/.gitignore
 
 [merge]

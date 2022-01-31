@@ -7,7 +7,9 @@ Plug 'shaunsingh/nord.nvim'
 
 " Language
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+
 Plug 'folke/trouble.nvim' " A pretty list for showing diagnostics, references...
+Plug 'rmagatti/goto-preview' " Previewing native LSP's goto definition calls
 
 " Completion
 Plug 'neovim/nvim-lspconfig'
@@ -19,6 +21,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
+Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
@@ -29,12 +32,14 @@ Plug 'windwp/nvim-ts-autotag'
 " Search
 Plug 'nvim-lua/plenary.nvim' " Some plugins dependency
 
-Plug 'windwp/nvim-spectre' " Search and replace
+Plug 'windwp/nvim-spectre' " Find/Search and replace
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 " Code display
-Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'mfussenegger/nvim-lint'
+Plug 'mhartington/formatter.nvim'
+Plug 'anuvyklack/pretty-fold.nvim'
 
 " Integrations
 Plug 'tanvirtin/vgit.nvim'
@@ -55,8 +60,8 @@ Plug 'yamatsum/nvim-nonicons'
 Plug 'kevinhwang91/rnvimr' " Ranger
 Plug 'kyazdani42/nvim-tree.lua' " File explorer
 
+Plug 'tamton-aquib/staline.nvim'
 Plug 'akinsho/nvim-bufferline.lua'
-Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
 
 " Commands
 Plug 'AckslD/nvim-neoclip.lua'
@@ -120,7 +125,6 @@ set shiftround                      " Shift to the next round tab stop.
 set shiftwidth=4                    " Set auto indent spacing.
 set softtabstop=4                   " Set soft tabs equal to 4 spaces.
 
-set smartindent                     " Does the right thing (mostly) in programs
 set conceallevel=0                  " Text is shown normally
 
 set wrap                            " Enable line wrapping.
@@ -139,9 +143,10 @@ set number                          " Show line numbers
 set relativenumber                  " Relative line numbers
 set signcolumn=yes                  " When and how to draw the signcolumn.
 
+set foldlevel=1
 set nofoldenable                    " Don't fold by default
-set foldmethod=expr                 " Tree-sitter based folding
-set foldexpr=nvim_treesitter#foldexpr()
+set foldnestmax=20                  " Deepest fold is 20 levels
+set foldmethod=indent               " Fold based on indent
 
 set scrolloff=3                     " Show next 3 lines while scrolling.
 set nostartofline                   " Do not jump to first character with page commands.
@@ -200,9 +205,8 @@ lua << EOF
     })
 EOF
 
-" Nvim LspConfig
-highlight LspDiagnosticsDefaultError guifg=#BF616A
-highlight LspDiagnosticsDefaultWarning guifg=#EBCB8B
+" Goto preview
+lua require('goto-preview').setup({ border = nil })
 
 " Nvim CMP
 lua << EOF
@@ -211,6 +215,16 @@ lua << EOF
     local lspkind = require('lspkind')
     local lspconfig = require('lspconfig')
     local cmp_nvim_lsp = require('cmp_nvim_lsp')
+
+    local source_mapping = {
+        cmp_tabnine = '[AI]',
+        nvim_lsp = '[LSP]',
+        vsnip = '[snip]',
+        buffer = '[buffer]',
+        path = '[path]'
+    }
+
+    local compare = require('cmp.config.compare')
 
     cmp.setup({ 
         snippet = {
@@ -222,23 +236,44 @@ lua << EOF
             ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
         },
         sources = cmp.config.sources({
+            { name = 'cmp_tabnine' },
             { name = 'nvim_lsp' },
             { name = 'vsnip' } -- For vsnip users.
         }, {
             { name = 'buffer' }
         }),
         formatting = {
-            format = lspkind.cmp_format({
-                with_text = false, -- do not show text alongside icons
-                maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                preset = 'codicons',
-                menu = {
-                    nvim_lsp = '[LSP]',
-                    vsnip = '[snip]',
-                    buffer = '[buffer]',
-                    path = '[path]'
-                }
-            })
+            format = function(entry, vim_item)
+                local menu = source_mapping[entry.source.name]
+
+                vim_item.kind = lspkind.presets.default[vim_item.kind]
+
+                if entry.source.name == 'cmp_tabnine' then
+                    if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
+                        menu = entry.completion_item.data.detail .. ' ' .. menu
+                    end
+
+                    vim_item.kind = ''
+                end
+
+                vim_item.menu = menu
+
+                return vim_item
+            end
+        },
+        sorting = {
+            priority_weight = 2,
+            comparators = {
+                require('cmp_tabnine.compare'),
+                compare.offset,
+                compare.exact,
+                compare.score,
+                compare.recently_used,
+                compare.kind,
+                compare.sort_text,
+                compare.length,
+                compare.order
+            }
         },
         experimental = { native_menu = false, ghost_text = true }
     })
@@ -260,44 +295,23 @@ lua << EOF
     })
 
     -- Setup lspconfig.
-    local signs = { Error = ' ', Warning = ' ', Hint = ' ', Information = ' ' }
-
-    for type, icon in pairs(signs) do
-        local hl = 'DiagnosticSign' .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-    end
-
-    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-        vim.lsp.diagnostic.on_publish_diagnostics, {
-            signs = true,
-            underline = false,
-            virtual_text = false,
-            update_in_insert = false
-        }
-    )
-
-    local custom_attach = function(client)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
-    end
-
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
-    lspconfig.html.setup({ on_attach = custom_attach, capabilities = capabilities })
-    lspconfig.cssls.setup({ on_attach = custom_attach, capabilities = capabilities })
-    lspconfig.tailwindcss.setup({ on_attach = custom_attach })
+    lspconfig.html.setup({ capabilities = capabilities })
+    lspconfig.cssls.setup({ capabilities = capabilities })
+    lspconfig.tailwindcss.setup({ filetypes = { 'css', 'typescriptreact' } })
 
-    lspconfig.vuels.setup({ on_attach = custom_attach })
-    lspconfig.svelte.setup({ on_attach = custom_attach })
-    lspconfig.tsserver.setup({ on_attach = custom_attach })
+    lspconfig.vuels.setup({})
+    lspconfig.svelte.setup({})
+    lspconfig.tsserver.setup({})
 
-    lspconfig.jsonls.setup({ on_attach = custom_attach, capabilities = capabilities })
+    lspconfig.jsonls.setup({ capabilities = capabilities })
 
-    lspconfig.pylsp.setup({ on_attach = custom_attach })
-    lspconfig.vimls.setup({ on_attach = custom_attach })
-    lspconfig.bashls.setup({ on_attach = custom_attach })
-    lspconfig.sumneko_lua.setup({ on_attach = custom_attach })
+    lspconfig.pylsp.setup({})
+    lspconfig.vimls.setup({})
+    lspconfig.bashls.setup({})
+    lspconfig.sumneko_lua.setup({})
 EOF
 
 " Nvim Autopairs
@@ -327,37 +341,105 @@ lua << EOF
     telescope.load_extension('fzy_native')
 EOF
 
-" Null-ls
+" Nvim-lint
 lua << EOF
-    local null_ls = require('null-ls')
-    local formatting = null_ls.builtins.formatting
-    local diagnostics = null_ls.builtins.diagnostics
-    local code_actions = null_ls.builtins.code_actions
-    
-    null_ls.setup({
-        sources = { -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#available-sources
-            -- Style
-            diagnostics.stylelint, -- filetypes = { "scss", "less", "css", "sass" }
-            
-            -- JavaScript
-            formatting.prettier, -- filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "html", "json", "yaml", "markdown", "graphql" }
-            diagnostics.eslint, -- filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" }
-            code_actions.eslint,
+    local signs = { Error = '', Warn = '', Hint = '', Info = '' }
 
-            -- Lua
-            formatting.stylua,
+    for type, icon in pairs(signs) do
+        local hl = 'DiagnosticSign' .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+    end
 
-            -- Python
-            formatting.black,
-            diagnostics.pylint,
+    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+            signs = true,
+            underline = false,
+            virtual_text = false,
+            update_in_insert = false
+        }
+    )
 
-            -- Others
-            diagnostics.vint,
-            diagnostics.markdownlint,
-            diagnostics.cspell.with({ filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'html', 'json', 'markdown' } })
+    require('lint').linters_by_ft = {
+        html = {'tidy'},
+        css = {'stylelint'},
+        javascript = {'eslint'},
+        python = {'pylint'},
+        vim = {'vint'}
+    }
+EOF
+
+" Formatter.nvim
+lua << EOF
+    require('formatter').setup({ 
+        logging = false, 
+        filetype = { 
+            html = { function() return { 
+                exe = 'prettier', 
+                args = {'--stdin-filepath', vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))},
+                stdin = true 
+            } end },
+            css = { function() return { 
+                exe = 'prettier', 
+                args = {'--stdin-filepath', vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))},
+                stdin = true 
+            } end },
+            javascript = { function() return { 
+                exe = 'prettier', 
+                args = {'--stdin-filepath', vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), '--single-quote'},
+                stdin = true 
+            } end },
+            javascriptreact = { function() return { 
+                exe = 'prettier', 
+                args = {'--stdin-filepath', vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), '--single-quote'},
+                stdin = true 
+            } end },
+            typescript = { function() return { 
+                exe = 'prettier', 
+                args = {'--stdin-filepath', vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), '--single-quote'},
+                stdin = true 
+            } end },
+            typescriptreact = { function() return { 
+                exe = 'prettier', 
+                args = {'--stdin-filepath', vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), '--single-quote'},
+                stdin = true 
+            } end },
+            svelte = { function() return { 
+                exe = 'prettier', 
+                args = {'--stdin-filepath', vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), '--single-quote'},
+                stdin = true 
+            } end },
+            vue = { function() return { 
+                exe = 'prettier', 
+                args = {'--stdin-filepath', vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), '--single-quote'},
+                stdin = true 
+            } end },
+            json = { function() return { 
+                exe = 'prettier', 
+                args = {'--stdin-filepath', vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))},
+                stdin = true 
+            } end },
+            python = { function() return { 
+                exe = 'black',
+                args = { '-' },
+                stdin = true
+            } end },
+            lua = { function() return { 
+                exe = 'stylua',
+                args = { '-' },
+                stdin = true
+            } end },
+            vim = { function() return { 
+                exe = 'vint',
+                args = { '-' },
+                stdin = true
+            } end }
         }
     })
 EOF
+
+" Pretty Fold
+lua require('pretty-fold').setup({})
+lua require('pretty-fold.preview').setup({ key = 'l' })
 
 " VGit
 lua << EOF
@@ -410,17 +492,39 @@ EOF
 let g:nvim_tree_git_hl = 1
 let g:nvim_tree_show_icons = { 'git': 1, 'folders': 1, 'files': 1 }
 
+" Staline
+lua << EOF
+    require('staline').setup({
+        sections = {
+            left = { '  ', 'mode', ' ', 'branch', ' ', 'lsp' },
+            mid = {},
+            right = {'file_name', 'line_column' }
+        },
+        mode_colors = {
+            i = '#d4be98',
+            n = '#84a598',
+            c = '#8fbf7f',
+            v = '#fc802d',
+        },
+        defaults = {
+            true_colors = true,
+            line_column = ' [%l/%L] :%c  ',
+            branch_symbol = ' '
+        }
+    })
+EOF
+
 " Nvim Bufferline
 lua require('bufferline').setup({})
-
-" Galaxyline
-lua require('galaxyline-settings')
 
 " Surround Nvim
 lua require('surround').setup({})
 
 " Comment
 lua require('Comment').setup({ mappings = { basic = false, extra = false, extended = false } })
+
+" Todo Comments
+lua require('todo-comments').setup({})
 
 " Which Key
 lua << EOF
@@ -433,16 +537,16 @@ lua << EOF
                 suggestions = 20
             },
             presets = {
-                operators = false,
-                motions = false,
+                operators = true,
+                motions = true,
                 text_objects = false,
-                windows = false,
+                windows = true,
                 nav = false, 
-                z = false,
-                g = false
+                z = true,
+                g = true
             }
         },
-        ignore_missing = true
+        ignore_missing = false
     })
 EOF
 
@@ -528,8 +632,8 @@ lua << EOF
         ['<Leader>t'] = { name = 'Trouble' },
         ['<Leader>tt'] = { ':TroubleToggle<CR>', 'Toggle' },
         ['<Leader>tr'] = { ':TroubleToggle lsp_references<CR>', 'References LSP' },
-        ['<Leader>tw'] = { ':TroubleToggle lsp_workspace_diagnostics<CR>', 'Workspace LSP' },
-        ['<Leader>td'] = { ':TroubleToggle lsp_document_diagnostics<CR>', 'Document LSP' },
+        ['<Leader>tw'] = { ':TroubleToggle workspace_diagnostics<CR>', 'Workspace LSP' },
+        ['<Leader>td'] = { ':TroubleToggle document_diagnostics<CR>', 'Document LSP' },
         ['<Leader>tT'] = { ':TodoTrouble<CR>', 'Todos' }
     })
 EOF
@@ -538,20 +642,27 @@ EOF
 lua << EOF
     require('which-key').register({ 
         ['<Leader>l'] = { name = 'LSP Client' },
+        ['<Leader>lD'] = { ':Dash<CR>', 'Dash' },
+        ['<Leader>ld'] = { ':lua require(\'goto-preview\').goto_preview_definition()<CR>', 'Definition' },
+        ['<Leader>lr'] = { ':lua require(\'goto-preview\').goto_preview_references()<CR>', 'References' },
+        ['<Leader>li'] = { ':lua require(\'goto-preview\').goto_preview_implementation()<CR>', 'Implementation' },
+        ['<Leader>lx'] = { ':lua require(\'goto-preview\').close_all_win()<CR>', 'Close Windows' },
         ['<Leader>lh'] = { ':lua vim.lsp.buf.hover()<CR>', 'Hover' },
         ['<Leader>ls'] = { ':lua vim.lsp.buf.signature_help()<CR>', 'Signature' },
-        ['<Leader>ld'] = { ':lua vim.lsp.buf.definition()<CR>', 'Definition' },
-        ['<Leader>lD'] = { ':Dash<CR>', 'Dash' },
-        ['<Leader>lr'] = { ':lua vim.lsp.buf.references()<CR>', 'References' },
-        ['<Leader>li'] = { ':lua vim.lsp.buf.implementation()<CR>', 'Implementation' },
         ['<Leader>la'] = { ':lua vim.lsp.buf.code_action()<CR>', 'Action' },
         ['<Leader>ln'] = { ':lua vim.lsp.buf.rename()<CR>', 'Rename' },
-        ['<Leader>lf'] = { ':lua vim.lsp.buf.formatting_sync()<CR>', 'Format LSP' },
+        ['<Leader>lf'] = { ':lua vim.lsp.buf.formatting()<CR>', 'Format LSP' },
+        ['<Leader>lF'] = { ':Format<CR>', 'Format' }
     })
+
+    require('which-key').register({ 
+        ['<Leader>l'] = { name = 'LSP Client' },
+        ['<Leader>lf'] = { ':lua vim.lsp.buf.range_formatting()<CR>', 'Format Range' }
+    }, { mode = 'v' })
 EOF
 
-nnoremap <silent>[g :lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent>]g :lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent>[g :lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent>]g :lua vim.diagnostic.goto_next()<CR>
 
 " Nvim-spectre
 lua << EOF
@@ -593,16 +704,16 @@ lua << EOF
     require('which-key').register({ 
         ['<Leader>g'] = { name = 'Git' },
         ['<Leader>gs'] = { ':Neogit<CR>', 'Status (Neogit)' },
-        ['<Leader>gb'] = { ':VGit toggle_buffer_blames<CR>', 'Blame Toggle' },
+        ['<Leader>gb'] = { ':VGit toggle_live_blame<CR>', 'Blame Toggle' },
         ['<Leader>gh'] = { name = 'Hunk' },
-        ['<Leader>ght'] = { ':VGit toggle_buffer_hunks<CR>', 'Toggle' },
-        ['<Leader>ghp'] = { ':VGit hunk_preview<CR>', 'Preview' },
-        ['<Leader>ghr'] = { ':VGit hunk_reset<CR>', 'Reset' },
+        ['<Leader>ght'] = { ':VGit toggle_live_gutter<CR>', 'Toggle' },
+        ['<Leader>ghp'] = { ':VGit buffer_hunk_preview<CR>', 'Preview' },
+        ['<Leader>ghr'] = { ':VGit buffer_hunk_reset<CR>', 'Reset' },
         ['<Leader>gd'] = { name = 'Diff' },
-        ['<Leader>gdd'] = { ':VGit diff<CR>', 'Diff' },
+        ['<Leader>gdd'] = { ':VGit buffer_diff_preview<CR>', 'Diff' },
         ['<Leader>gdD'] = { ':DiffviewOpen HEAD<CR>', 'Diffview' },
-        ['<Leader>gdb'] = { ':VGit buffer_preview<CR>', 'Buffer Preview' },
-        ['<Leader>gdh'] = { ':VGit buffer_history<CR>', 'Buffer History' },
+        ['<Leader>gdb'] = { ':VGit buffer_diff_preview<CR>', 'Buffer Preview' },
+        ['<Leader>gdh'] = { ':VGit buffer_history_preview<CR>', 'Buffer History' },
         ['<Leader>gdr'] = { ':VGit buffer_reset<CR>', 'Buffer Reset' },
         ['<Leader>gl'] = { name = 'Linker' },
         ['<Leader>gly'] = { ':lua require(\'gitlinker\').get_buf_range_url(\'n\')<CR>', 'Yank' },
@@ -667,5 +778,11 @@ EOF
 " {{{ -------------------------------------------------------------------------
 
 " Plugins
+
+" Nvim-lint
+" Autocmd to trigger linting - InsertLeave or TextChanged events
+augroup lint
+    au BufWritePost <buffer> lua require('lint').try_lint()
+augroup END
 
 " vim:foldmethod=marker
