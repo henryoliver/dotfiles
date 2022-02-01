@@ -298,6 +298,7 @@ lua << EOF
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
+    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
     lspconfig.html.setup({ capabilities = capabilities })
     lspconfig.cssls.setup({ capabilities = capabilities })
     lspconfig.tailwindcss.setup({ filetypes = { 'css', 'typescriptreact' } })
@@ -425,7 +426,7 @@ lua << EOF
             } end },
             lua = { function() return { 
                 exe = 'stylua',
-                args = { '-' },
+                args = { '--config-path ' .. os.getenv('HOME') .. '/.config/lsp/stylua.toml', '-' },
                 stdin = true
             } end },
             vim = { function() return { 
@@ -743,7 +744,7 @@ lua << EOF
     })
 EOF
 
-" FM Nvim
+" Rnvimr
 lua require('which-key').register({ ['<Leader>r'] = { ':RnvimrToggle<CR>', 'Ranger' } })
 
 " Nvim Tree
