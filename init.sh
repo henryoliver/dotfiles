@@ -12,5 +12,5 @@ ln -sv ~/.dotfiles/bat ~/.config/bat
 ln -sv ~/.dotfiles/lsp ~/.config/lsp
 ln -sv ~/.dotfiles/kitty ~/.config/kitty
 ln -sv ~/.dotfiles/ranger ~/.config/ranger
-ln -sv ~/.dotfiles/nvim/init.vim ~/.config/nvim
+ln -sv ~/.dotfiles/nvim/init.lua ~/.config/nvim
 

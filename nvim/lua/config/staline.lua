@@ -5,10 +5,10 @@ require('staline').setup({
         right = { 'file_name', 'line_column' },
     },
     mode_colors = {
-        i = 'yellow',
-        n = 'green',
-        c = 'blue',
-        v = 'orange',
+        i = '#d8dee9',
+        n = '#8fbcbb',
+        c = '#88c0d0',
+        v = '#bf616a',
     },
     defaults = {
         true_colors = true,

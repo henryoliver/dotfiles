@@ -53,7 +53,7 @@ vim.bo.expandtab = true
 vim.bo.smartindent = true
 
 vim.wo.list = true
-vim.wo.listchars = { tab = '··', trail = '·' }
+vim.wo.listchars = [[tab:··,trail:·]]
 
 -- Presentation
 vim.o.hidden = true
@@ -76,7 +76,7 @@ vim.o.showtabline = 2
 vim.o.showcmd = false
 vim.o.showmode = false
 
-vim.o.colorcolumn = 80
+vim.o.colorcolumn = '80'
 vim.wo.wrap = true
 vim.o.linespace = 0
 vim.wo.linebreak = true

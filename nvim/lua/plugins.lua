@@ -1,3 +1,9 @@
+-- Returns the require for use in `config` parameter of packer's use
+-- expects the name of the config file
+function get_config(name)
+    return string.format("require(\"config/%s\")", name)
+end
+
 require('packer').startup(function()
     -- Packer can manage itself
     -- https://github.com/wbthomason/packer.nvim#specifying-plugins
@@ -29,7 +35,7 @@ require('packer').startup(function()
     use('onsails/lspkind-nvim')
 
     -- Search
-    use({'rktjmp/highlight-current-n.nvim', config = get_config('highlight')})
+    use('rktjmp/highlight-current-n.nvim')
     use({ 'windwp/nvim-spectre', requires = { 'nvim-lua/plenary.nvim' } })
 
     use({
