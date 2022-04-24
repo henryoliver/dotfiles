@@ -1,9 +1,9 @@
-local telescope = require('telescope')
+local telescope = require("telescope")
 
 telescope.setup({
     defaults = {
-        layout_config = { prompt_position = 'top' },
-        sorting_strategy = 'ascending',
+        layout_config = { prompt_position = "top" },
+        sorting_strategy = "ascending",
     },
     extensions = {
         fzy_native = {
@@ -14,4 +14,4 @@ telescope.setup({
 })
 
 -- Plugins
-telescope.load_extension('fzy_native')
+telescope.load_extension("fzy_native")

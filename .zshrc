@@ -29,6 +29,7 @@ source ~/.zplug/init.zsh
 
 # Make sure to use double quotes to prevent shell expansion
 zplug "supercrabtree/k"
+zplug "jeffreytse/zsh-vi-mode"
 zplug "b4b4r07/enhancd", use:init.sh
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting"
@@ -47,26 +48,9 @@ zplug load
 
 # Key Bindings
 
-# Vi mode
-bindkey -v
-
-# Easy to escape
-bindkey -M viins "jj" vi-cmd-mode
-
-# Use vim cli mode
-bindkey "^P" up-history
-bindkey "^N" down-history
-
-# backspace and ^h working even after
-# returning from command mode
-bindkey "^?" backward-delete-char
-bindkey "^h" backward-delete-char
-
-# ctrl-w removed word backwards
-bindkey "^w" backward-kill-word
-
-# ctrl-r starts searching history backward
-bindkey "^r" history-incremental-search-backward
+# zsh-vi-mode
+# bindkey -M viins "jj" vi-cmd-mode
+ZVM_VI_ESCAPE_BINDKEY="jj"
 
 # zsh-autosuggestions
 bindkey "^ " autosuggest-execute
@@ -132,21 +116,21 @@ case `uname` in
     Linux)
         # commands for Linux go here
         alias clean="npm cache --force clean &&
-            sudo apt autoremove && 
-            sudo apt-get purge && 
-            sudo apt-get autoremove && 
-            sudo apt-get clean && 
+            sudo apt autoremove &&
+            sudo apt-get purge &&
+            sudo apt-get autoremove &&
+            sudo apt-get clean &&
             sudo apt-get autoclean"
 
         alias update="npm install -g npm@latest &&
             npm update -g &&
-            sudo apt update && 
-            sudo apt upgrade && 
-            sudo apt full-upgrade && 
-            sudo apt-get update && 
-            sudo apt-get upgrade && 
-            sudo apt-get dist-upgrade && 
-            sudo apt-get dselect-upgrade && 
+            sudo apt update &&
+            sudo apt upgrade &&
+            sudo apt full-upgrade &&
+            sudo apt-get update &&
+            sudo apt-get upgrade &&
+            sudo apt-get dist-upgrade &&
+            sudo apt-get dselect-upgrade &&
             sudo apt-get check"
     ;;
 esac

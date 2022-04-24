@@ -1,37 +1,36 @@
-vim.bo.fileencoding = 'utf-8'
+vim.opt.fileencoding = "utf-8"
 
 -- Backup, undo, swap options
-local home = vim.fn.stdpath('config')
+local home = vim.fn.stdpath("config")
 
-vim.o.backup = true
-vim.o.writebackup = true
-vim.bo.undofile = true
+vim.opt.backup = true
+vim.opt.writebackup = true
+vim.opt.undofile = true
 
-vim.o.backupdir = home .. '/tmp/dir_backup/'
-vim.o.directory = home .. '/tmp/dir_swap/,' .. vim.o.directory
-vim.o.undodir = home .. '/tmp/dir_undo/'
+vim.opt.backupdir = home .. "/tmp/dir_backup/"
+vim.opt.directory = home .. "/tmp/dir_swap/," .. vim.o.directory
+vim.opt.undodir = home .. "/tmp/dir_undo/"
 
-vim.o.lazyredraw = true
-vim.o.updatetime = 300
-vim.o.timeoutlen = 400
-vim.o.ttimeoutlen = 0
+vim.opt.lazyredraw = true
+vim.opt.updatetime = 300
+vim.opt.timeoutlen = 400
+vim.opt.ttimeoutlen = 0
 
-vim.o.path = '.,,**'
-vim.o.errorformat = vim.o.errorformat .. ',%f,'
-vim.o.clipboard = 'unnamedplus'
+vim.opt.path = ".,,**"
+vim.opt.errorformat = vim.o.errorformat .. ",%f,"
+vim.opt.clipboard = "unnamedplus"
 
 -- Search and replace
-vim.o.magic = true
-vim.o.gdefault = true
-vim.o.smartcase = true
-vim.o.ignorecase = true
-vim.o.grepprg = 'rg --hidden --vimgrep --smart-case --' -- use rg instead of grep
+vim.opt.gdefault = true
+vim.opt.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.grepprg = "rg --hidden --vimgrep --smart-case --" -- use rg instead of grep
 
-vim.o.incsearch = true
-vim.o.inccommand = 'split'
+vim.opt.incsearch = true
+vim.opt.inccommand = "split"
 
-vim.o.wildignorecase = true
-vim.o.wildignore = [[
+vim.opt.wildignorecase = true
+vim.opt.wildignore = [[
     .git,.hg,.svn
     *.aux,*.out,*.toc
     *.o,*.obj,*.exe,*.dll,*.manifest,*.rbc,*.class
@@ -46,57 +45,58 @@ vim.o.wildignore = [[
 ]]
 
 -- White space
-vim.bo.tabstop = 4
-vim.wo.wrap = false
-vim.wo.conceallevel = 0
-vim.bo.expandtab = true
-vim.bo.smartindent = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.expandtab = true
 
-vim.wo.list = true
-vim.wo.listchars = [[tab:··,trail:·]]
+vim.opt.smartindent = true
+vim.opt.breakindent = true
+
+vim.opt.list = true
+vim.opt.listchars = [[tab:··,trail:·]]
 
 -- Presentation
-vim.o.hidden = true
-vim.o.pumheight = 10
+vim.opt.hidden = true
+vim.opt.pumheight = 10
 
-vim.wo.number = true
-vim.wo.relativenumber = true
+vim.opt.number = true
+vim.opt.relativenumber = true
 
-vim.wo.cursorline = true
-vim.wo.signcolumn = 'number'
+vim.opt.cursorline = true
 
-vim.o.ruler = false
+vim.opt.ruler = false
 
-vim.o.cmdheight = 1
-vim.o.cmdwinheight = 1
+vim.opt.cmdheight = 1
+vim.opt.cmdwinheight = 1
 
-vim.o.laststatus = 2
-vim.o.showtabline = 2
+vim.opt.laststatus = 2
+vim.opt.showtabline = 2
 
-vim.o.showcmd = false
-vim.o.showmode = false
+vim.opt.showcmd = false
+vim.opt.showmode = false
 
-vim.o.colorcolumn = '80'
-vim.wo.wrap = true
-vim.o.linespace = 0
-vim.wo.linebreak = true
+vim.opt.colorcolumn = "80"
+vim.opt.linespace = 1
+vim.opt.linebreak = true
+vim.opt.scrolloff = 5
 
-vim.o.foldenable = false
-vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.foldlevel = 0
+vim.opt.foldmethod = "indent"
 
-vim.o.joinspaces = false
+vim.opt.joinspaces = false
 
-vim.o.splitbelow = true
-vim.o.splitright = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.equalalways = true
 
 -- Interface options
-vim.o.termguicolors = true
-vim.o.completeopt = 'menu,menuone,noselect,noinsert'
-vim.o.shortmess = vim.o.shortmess .. 'c'
+vim.opt.termguicolors = true
+vim.opt.completeopt = "menu,menuone,noselect,noinsert"
+vim.opt.shortmess = vim.o.shortmess .. "c"
 
-vim.cmd('filetype plugin indent on')
-vim.cmd('syntax on')
+vim.cmd("filetype plugin indent on")
+vim.cmd("syntax on")
 
 -- Providers
 vim.g.loaded_ruby_provider = 0

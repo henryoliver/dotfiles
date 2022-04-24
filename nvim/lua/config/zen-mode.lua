@@ -1,4 +1,4 @@
-require('zen-mode').setup({
+require("zen-mode").setup({
     window = {
         backdrop = 0.95, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
         -- height and width can be:
@@ -36,7 +36,7 @@ require('zen-mode').setup({
         -- - listen_on unix:/tmp/kitty
         kitty = {
             enabled = true,
-            font = '+4', -- font size increment
+            font = "+4", -- font size increment
         },
     },
     -- callback where you can add custom code when the Zen window opens
