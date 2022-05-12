@@ -9,9 +9,11 @@ null_ls.setup({
         diagnostics.stylelint,
 
         -- JavaScript
-        formatting.prettier.with({ extra_args = { "--config", vim.fn.expand("./.prettierrc.json, ~/.config/lsp/prettierrc.json") } }),
+        formatting.prettier,
+        -- formatting.prettier.with({ extra_args = { "--config", vim.fn.expand("~/.config/lsp/prettierrc.json") } }),
 
-        diagnostics.eslint.with({ extra_args = { "--config", vim.fn.expand("./.stylelintrc.json, ~/.config/lsp/stylelintrc.json") } }),
+        diagnostics.eslint,
+        -- diagnostics.eslint.with({ extra_args = { "--config", vim.fn.expand("~/.config/lsp/stylelintrc.json") } }),
 
         code_actions.eslint,
 

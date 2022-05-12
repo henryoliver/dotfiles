@@ -11,11 +11,11 @@ require("packer").startup(function(use)
 
     -- Themes
     use({ "shaunsingh/nord.nvim", config = get_config("nord") })
-    
+
     -- Language
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = get_config("treesitter") })
     use({ "neovim/nvim-lspconfig", config = get_config("lsp") })
-    
+
     use({ "folke/trouble.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
     use({ "rmagatti/goto-preview", config = get_config("goto-preview") }) -- Previewing native LSP's goto definition calls
 
@@ -41,7 +41,7 @@ require("packer").startup(function(use)
     -- Search
     use("rktjmp/highlight-current-n.nvim")
     use({ "windwp/nvim-spectre", requires = { "nvim-lua/plenary.nvim" } })
-    
+
     use({
         "nvim-telescope/telescope.nvim",
         requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } },
@@ -51,19 +51,24 @@ require("packer").startup(function(use)
 
     -- Code display
     use("gpanders/editorconfig.nvim")
+    use({ "norcalli/nvim-colorizer.lua", config = get_config("colorizer") })
     use({ "jose-elias-alvarez/null-ls.nvim", config = get_config("null-ls") })
-    use({ "anuvyklack/pretty-fold.nvim", config = get_config("pretty-fold") })
+    use({
+        "anuvyklack/pretty-fold.nvim",
+        requires = "anuvyklack/nvim-keymap-amend", -- only for preview
+        config = get_config("pretty-fold"),
+    })
 
     -- Integrations
     use({ "sindrets/diffview.nvim", requires = { "nvim-lua/plenary.nvim" } })
     use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" }, config = get_config("gitsigns") })
 
     use({ "vuki656/package-info.nvim", requires = { "MunifTanjim/nui.nvim" }, config = get_config("package-info") })
-    
+
     -- Interface
     use({ "folke/zen-mode.nvim", config = get_config("zen-mode") })
     use({ "yamatsum/nvim-nonicons", requires = { "kyazdani42/nvim-web-devicons" } })
-    
+
     use({ "kevinhwang91/rnvimr", config = get_config("rnvimr") })
     use({ "kyazdani42/nvim-tree.lua", requires = { "kyazdani42/nvim-web-devicons" }, config = get_config("nvim-tree") })
 
@@ -75,7 +80,7 @@ require("packer").startup(function(use)
     use({ "ur4ltz/surround.nvim", config = get_config("surround") })
     use({ "numToStr/Comment.nvim", config = get_config("comment") })
     use({ "folke/todo-comments.nvim", requires = { "nvim-lua/plenary.nvim" }, config = get_config("todo") })
-    
+
     -- Other
     use("famiu/bufdelete.nvim")
     use({ "nathom/filetype.nvim", config = get_config("filetype") }) -- Easily speed up your neovim startup time!

@@ -66,6 +66,7 @@ vim.opt.relativenumber = true
 vim.opt.cursorline = true
 
 vim.opt.ruler = false
+vim.opt.signcolumn = "yes:2"
 
 vim.opt.cmdheight = 1
 vim.opt.cmdwinheight = 1
@@ -81,7 +82,7 @@ vim.opt.linespace = 1
 vim.opt.linebreak = true
 vim.opt.scrolloff = 5
 
-vim.opt.foldlevel = 0
+vim.opt.foldlevel = 1
 vim.opt.foldmethod = "indent"
 
 vim.opt.joinspaces = false
