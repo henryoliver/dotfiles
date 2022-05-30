@@ -61,12 +61,12 @@ vim.opt.hidden = true
 vim.opt.pumheight = 10
 
 vim.opt.number = true
+vim.opt.signcolumn = "yes:2"
 vim.opt.relativenumber = true
 
 vim.opt.cursorline = true
 
 vim.opt.ruler = false
-vim.opt.signcolumn = "yes:2"
 
 vim.opt.cmdheight = 1
 vim.opt.cmdwinheight = 1
