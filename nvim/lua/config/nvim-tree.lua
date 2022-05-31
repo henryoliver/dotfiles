@@ -1,5 +1,3 @@
-vim.g.nvim_tree_show_icons = { git = 1, folders = 1, files = 1, folder_arrows = 1 }
-
 require("nvim-tree").setup({
     disable_netrw = true,
     hijack_netrw = true,
@@ -7,5 +5,11 @@ require("nvim-tree").setup({
     hijack_directories = {
         enable = true,
         auto_open = false,
+    },
+    renderer = {
+        highlight_git = true,
+        icons = {
+            show = { file = true, folder = true, folder_arrow = true },
+        },
     },
 })
