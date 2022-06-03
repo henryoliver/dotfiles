@@ -64,6 +64,7 @@ bindkey "^ " autosuggest-execute
 
 # Aliases
 alias code="nvim"
+alias session-photoday="kitty --session ~/.config/kitty/startup-photoday.conf"
 
 alias python="python3"
 alias pip="pip3"
@@ -108,6 +109,7 @@ case `uname` in
             brew doctor &&
             npm install -g npm@latest &&
             npm update -g &&
+            curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin &&
             zplug update --force &&
             pip install --upgrade pip &&
             pip install --upgrade pynvim &&
