@@ -65,6 +65,7 @@ bindkey "^ " autosuggest-execute
 # Aliases
 alias code="nvim"
 alias session-photoday="kitty --session ~/.config/kitty/startup-photoday.conf"
+alias session-lodon="kitty --session ~/.config/kitty/startup-london.conf"
 
 alias python="python3"
 alias pip="pip3"
