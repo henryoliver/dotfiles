@@ -19,6 +19,12 @@ require("packer").startup(function(use)
     use({ "folke/trouble.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
     use({ "rmagatti/goto-preview", config = get_config("goto-preview") }) -- Previewing native LSP's goto definition calls
 
+    use({
+        "bennypowers/nvim-regexplainer",
+        requires = { "nvim-treesitter/nvim-treesitter", "MunifTanjim/nui.nvim" },
+        config = get_config("regexplainer"),
+    })
+
     -- Completion
     use({
         "hrsh7th/nvim-cmp",
@@ -66,6 +72,7 @@ require("packer").startup(function(use)
     use({ "vuki656/package-info.nvim", requires = { "MunifTanjim/nui.nvim" }, config = get_config("package-info") })
 
     -- Interface
+    use({ "folke/twilight.nvim", config = get_config("twilight") })
     use({ "folke/zen-mode.nvim", config = get_config("zen-mode") })
     use({ "yamatsum/nvim-nonicons", requires = { "kyazdani42/nvim-web-devicons" } })
 
@@ -76,8 +83,12 @@ require("packer").startup(function(use)
     use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" }, config = get_config("bufferline") })
 
     -- Commands
+    use({ "gbprod/cutlass.nvim", config = get_config("cutlass") }) -- Overrides the delete operations to actually just delete
     use({ "Pocco81/AutoSave.nvim", config = get_config("autosave") })
+
     use({ "ur4ltz/surround.nvim", config = get_config("surround") })
+    use({ "gbprod/substitute.nvim", config = get_config("substitute") })
+
     use({ "numToStr/Comment.nvim", config = get_config("comment") })
     use({ "folke/todo-comments.nvim", requires = { "nvim-lua/plenary.nvim" }, config = get_config("todo") })
 

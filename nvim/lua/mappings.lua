@@ -162,3 +162,9 @@ map("n", "[b", "<Cmd>BufferLineCyclePrev<CR>", default_options)
 map("n", "]b", "<Cmd>BufferLineCycleNext<CR>", default_options)
 map("n", "[t", "<Cmd>BufferLineMovePrev<CR>", default_options)
 map("n", "]t", "<Cmd>BufferLineMoveNext<CR>", default_options)
+
+-- Substitute
+map("n", "s", "<Cmd>lua require('substitute').operator()<cr>", { noremap = true })
+map("n", "ss", "<Cmd>lua require('substitute').line()<cr>", { noremap = true })
+map("n", "S", "<Cmd>lua require('substitute').eol()<cr>", { noremap = true })
+map("x", "s", "<Cmd>lua require('substitute').visual()<cr>", { noremap = true })
