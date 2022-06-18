@@ -11,8 +11,39 @@ capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 lspconfig.html.setup({ on_attach = on_attach, capabilities = capabilities })
-lspconfig.cssls.setup({ on_attach = on_attach, capabilities = capabilities })
-lspconfig.tailwindcss.setup({ filetypes = { "css", "typescriptreact" } })
+lspconfig.cssls.setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        css = {
+            validate = false,
+        },
+        less = {
+            validate = false,
+        },
+        scss = {
+            validate = false,
+        },
+    },
+})
+lspconfig.tailwindcss.setup({
+    filetypes = { "css", "typescriptreact" },
+    settings = {
+        tailwindCSS = {
+            lint = {
+                invalidScreen = "error",
+                invalidVariant = "error",
+                invalidTailwindDirective = "error",
+                invalidApply = "error",
+
+                invalidConfigPath = "error",
+                cssConflict = "warning",
+                recommendedVariantOrder = "warning",
+            },
+            validate = true,
+        },
+    },
+})
 
 lspconfig.vuels.setup({ on_attach = on_attach })
 lspconfig.svelte.setup({ on_attach = on_attach })
@@ -23,7 +54,15 @@ lspconfig.jsonls.setup({ on_attach = on_attach, capabilities = capabilities })
 lspconfig.pylsp.setup({ on_attach = on_attach })
 lspconfig.vimls.setup({ on_attach = on_attach })
 lspconfig.bashls.setup({ on_attach = on_attach })
-lspconfig.sumneko_lua.setup({ on_attach = on_attach })
+lspconfig.sumneko_lua.setup({
+    on_attach = on_attach,
+    settings = {
+        Lua = {
+            -- Get the language server to recognize the `vim` global
+            diagnostics = { globals = { "vim" } },
+        },
+    },
+})
 
 -- Diagnostics
 vim.diagnostic.config({

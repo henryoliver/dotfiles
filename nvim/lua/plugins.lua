@@ -83,7 +83,6 @@ require("packer").startup(function(use)
     use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" }, config = get_config("bufferline") })
 
     -- Commands
-    use({ "gbprod/cutlass.nvim", config = get_config("cutlass") }) -- Overrides the delete operations to actually just delete
     use({ "Pocco81/AutoSave.nvim", config = get_config("autosave") })
 
     use({ "ur4ltz/surround.nvim", config = get_config("surround") })
