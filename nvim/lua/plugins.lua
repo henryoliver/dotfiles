@@ -84,10 +84,7 @@ require("packer").startup(function(use)
 
     -- Commands
     use({ "Pocco81/AutoSave.nvim", config = get_config("autosave") })
-
     use({ "ur4ltz/surround.nvim", config = get_config("surround") })
-    use({ "gbprod/substitute.nvim", config = get_config("substitute") })
-
     use({ "numToStr/Comment.nvim", config = get_config("comment") })
     use({ "folke/todo-comments.nvim", requires = { "nvim-lua/plenary.nvim" }, config = get_config("todo") })
 

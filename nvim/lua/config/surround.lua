@@ -6,5 +6,5 @@ require("surround").setup({
     quotes = { "'", '"' },
     brackets = { "(", "{", "[" },
     space_on_closing_char = false,
-    prefix = "su",
+    prefix = "s",
 })
