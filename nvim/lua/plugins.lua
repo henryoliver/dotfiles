@@ -19,12 +19,6 @@ require("packer").startup(function(use)
     use({ "folke/trouble.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
     use({ "rmagatti/goto-preview", config = get_config("goto-preview") }) -- Previewing native LSP's goto definition calls
 
-    use({
-        "bennypowers/nvim-regexplainer",
-        requires = { "nvim-treesitter/nvim-treesitter", "MunifTanjim/nui.nvim" },
-        config = get_config("regexplainer"),
-    })
-
     -- Completion
     use({
         "hrsh7th/nvim-cmp",
@@ -60,16 +54,14 @@ require("packer").startup(function(use)
     use({ "norcalli/nvim-colorizer.lua", config = get_config("colorizer") })
     use({ "jose-elias-alvarez/null-ls.nvim", config = get_config("null-ls") })
     use({
-        "anuvyklack/pretty-fold.nvim",
-        requires = "anuvyklack/nvim-keymap-amend", -- only for preview
-        config = get_config("pretty-fold"),
+        "anuvyklack/fold-preview.nvim",
+        requires = "anuvyklack/keymap-amend.nvim",
+        config = get_config("fold-preview"),
     })
 
     -- Integrations
-    use({ "sindrets/diffview.nvim", requires = { "nvim-lua/plenary.nvim" } })
+    use({ "sindrets/diffview.nvim", requires = { "nvim-lua/plenary.nvim" }, config = get_config("diffview") })
     use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" }, config = get_config("gitsigns") })
-
-    use({ "vuki656/package-info.nvim", requires = { "MunifTanjim/nui.nvim" }, config = get_config("package-info") })
 
     -- Interface
     use({ "folke/twilight.nvim", config = get_config("twilight") })
@@ -83,7 +75,9 @@ require("packer").startup(function(use)
     use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" }, config = get_config("bufferline") })
 
     -- Commands
-    use({ "Pocco81/AutoSave.nvim", config = get_config("autosave") })
+    use({ "chentoast/marks.nvim", config = get_config("marks") })
+    use({ "max397574/better-escape.nvim", config = get_config("escape") })
+
     use({ "ur4ltz/surround.nvim", config = get_config("surround") })
     use({ "numToStr/Comment.nvim", config = get_config("comment") })
     use({ "folke/todo-comments.nvim", requires = { "nvim-lua/plenary.nvim" }, config = get_config("todo") })

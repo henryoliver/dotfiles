@@ -7,9 +7,6 @@ local expr_options = { noremap = true, expr = true, silent = true }
 -- Map the leader key
 vim.g.mapleader = " "
 
--- Remap esc
-map("i", "jj", "<Esc>", default_options)
-
 -- Use v to toggle visual mode.
 map("v", "v", "<Esc>", default_options)
 
@@ -77,7 +74,7 @@ whichkey.register({
     ["<Leader>ls"] = { "<Cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature" },
     ["<Leader>la"] = { "<Cmd>lua vim.lsp.buf.code_action()<CR>", "Action" },
     ["<Leader>ln"] = { "<Cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-    ["<Leader>lf"] = { "<Cmd>lua vim.lsp.buf.formatting_sync()<CR>", "Format LSP" },
+    ["<Leader>lf"] = { "<Cmd>lua vim.lsp.buf.format()<CR>", "Format LSP" },
 })
 
 whichkey.register({
@@ -117,7 +114,6 @@ whichkey.register({
     ["<Leader>sm"] = { "<Cmd>Telescope marks<CR>", "Marks" },
     ["<Leader>sr"] = { "<Cmd>Telescope registers<CR>", "Registers" },
     ["<Leader>st"] = { "<Cmd>TodoTelescope<CR>", "Todos" },
-    ["<Leader>sy"] = { "<Cmd>Telescope neoclip<CR>", "Clipboard" },
     ["<Leader>sg"] = { name = "Git" },
     ["<Leader>sgc"] = { "<Cmd>Telescope git_bcommits<CR>", "Commits" },
     ["<Leader>sgC"] = { "<Cmd>Telescope git_commits<CR>", "Project Commits" },
@@ -135,18 +131,8 @@ whichkey.register({
     ["<Leader>gdo"] = { "<Cmd>DiffviewOpen HEAD<CR>", "Diffview" },
 })
 
-map("n", "[h", "<Cmd>Gitsigns next_hunk<CR>", expr_options)
-map("n", "]h", "<Cmd>Gitsigns prev_hunk<CR>", expr_options)
-
--- Package Info
-whichkey.register({
-    ["<Leader>p"] = { name = "Package Info" },
-    ["<Leader>pu"] = { "<Cmd>lua require('package-info').update()<CR>", "Update Package" },
-    ["<Leader>pd"] = { "<Cmd>lua require('package-info').delete()<CR>", "Delete Package" },
-    ["<Leader>pi"] = { "<Cmd>lua require('package-info').install()<CR>", "Install New Package" },
-    ["<Leader>pr"] = { "<Cmd>lua require('package-info').reinstall()<CR>", "Reinstall Dependencies" },
-    ["<Leader>pv"] = { "<Cmd>lua require('package-info').change_version()<CR>", "Install Different Version" },
-})
+map("n", "[h", "<Plug>Gitsigns next_hunk<CR>", expr_options)
+map("n", "]h", "<Plug>Gitsigns prev_hunk<CR>", expr_options)
 
 -- Zen Mode
 whichkey.register({ ["<Leader>z"] = { "<Cmd>ZenMode<CR>", "ZenMode" } })
