@@ -85,11 +85,6 @@ whichkey.register({
 map("n", "[g", "<Cmd>lua vim.diagnostic.goto_prev()<CR>", default_options)
 map("n", "]g", "<Cmd>lua vim.diagnostic.goto_next()<CR>", default_options)
 
--- Highlight-Current-N
-map("n", "n", "<Plug>(highlight-current-n-n)", { noremap = false })
-map("n", "N", "<Plug>(highlight-current-n-N)", { noremap = false })
-map("n", "*", "*N", { noremap = false })
-
 -- Nvim-spectre
 whichkey.register({
     ["<Leader>f"] = { name = "Find & Replace" },

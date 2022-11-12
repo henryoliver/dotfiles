@@ -2,7 +2,7 @@ local actions = require("diffview.actions")
 
 require("diffview").setup({
     diff_binaries = false, -- Show diffs for binaries
-    enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
+    enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
     git_cmd = { "git" }, -- The git executable followed by default args.
     use_icons = true, -- Requires nvim-web-devicons
     icons = { -- Only applies when use_icons is true.
@@ -86,15 +86,15 @@ require("diffview").setup({
             ["gf"] = actions.goto_file, -- Open the file in a new split in the previous tabpage
             ["<C-w><C-f>"] = actions.goto_file_split, -- Open the file in a new split
             ["<C-w>gf"] = actions.goto_file_tab, -- Open the file in a new tabpage
-            ["<leader>e"] = actions.focus_files, -- Bring focus to the file panel
-            ["<leader>b"] = actions.toggle_files, -- Toggle the file panel.
+            ["<Leader>e"] = actions.focus_files, -- Bring focus to the file panel
+            ["<Leader>b"] = actions.toggle_files, -- Toggle the file panel.
             ["g<C-x>"] = actions.cycle_layout, -- Cycle through available layouts.
             ["[x"] = actions.prev_conflict, -- In the merge_tool: jump to the previous conflict
             ["]x"] = actions.next_conflict, -- In the merge_tool: jump to the next conflict
-            ["<leader>co"] = actions.conflict_choose("ours"), -- Choose the OURS version of a conflict
-            ["<leader>ct"] = actions.conflict_choose("theirs"), -- Choose the THEIRS version of a conflict
-            ["<leader>cb"] = actions.conflict_choose("base"), -- Choose the BASE version of a conflict
-            ["<leader>ca"] = actions.conflict_choose("all"), -- Choose all the versions of a conflict
+            ["<Leader>co"] = actions.conflict_choose("ours"), -- Choose the OURS version of a conflict
+            ["<Leader>ct"] = actions.conflict_choose("theirs"), -- Choose the THEIRS version of a conflict
+            ["<Leader>cb"] = actions.conflict_choose("base"), -- Choose the BASE version of a conflict
+            ["<Leader>ca"] = actions.conflict_choose("all"), -- Choose all the versions of a conflict
             ["dx"] = actions.conflict_choose("none"), -- Delete the conflict region
         },
         diff1 = { --[[ Mappings in single window diff layouts ]]
@@ -135,8 +135,8 @@ require("diffview").setup({
             ["<C-w>gf"] = actions.goto_file_tab,
             ["i"] = actions.listing_style, -- Toggle between 'list' and 'tree' views
             ["f"] = actions.toggle_flatten_dirs, -- Flatten empty subdirectories in tree listing style.
-            ["<leader>e"] = actions.focus_files,
-            ["<leader>b"] = actions.toggle_files,
+            ["<Leader>e"] = actions.focus_files,
+            ["<Leader>b"] = actions.toggle_files,
             ["g<C-x>"] = actions.cycle_layout,
             ["[x"] = actions.prev_conflict,
             ["]x"] = actions.next_conflict,
@@ -162,8 +162,8 @@ require("diffview").setup({
             ["gf"] = actions.goto_file,
             ["<C-w><C-f>"] = actions.goto_file_split,
             ["<C-w>gf"] = actions.goto_file_tab,
-            ["<leader>e"] = actions.focus_files,
-            ["<leader>b"] = actions.toggle_files,
+            ["<Leader>e"] = actions.focus_files,
+            ["<Leader>b"] = actions.toggle_files,
             ["g<C-x>"] = actions.cycle_layout,
         },
         option_panel = {

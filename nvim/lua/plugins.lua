@@ -39,7 +39,6 @@ require("packer").startup(function(use)
     use({ "windwp/nvim-autopairs", config = get_config("autopairs") })
 
     -- Search
-    use("rktjmp/highlight-current-n.nvim")
     use({ "windwp/nvim-spectre", requires = { "nvim-lua/plenary.nvim" } })
 
     use({
@@ -75,11 +74,9 @@ require("packer").startup(function(use)
     use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" }, config = get_config("bufferline") })
 
     -- Commands
-    use({ "chentoast/marks.nvim", config = get_config("marks") })
     use({ "max397574/better-escape.nvim", config = get_config("escape") })
 
     use({ "ur4ltz/surround.nvim", config = get_config("surround") })
-    use({ "numToStr/Comment.nvim", config = get_config("comment") })
     use({ "folke/todo-comments.nvim", requires = { "nvim-lua/plenary.nvim" }, config = get_config("todo") })
 
     -- Other

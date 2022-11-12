@@ -1,6 +1,5 @@
 # Dotfiles kickstart
 ln -sv ~/.dotfiles/.zshrc ~
-ln -sv ~/.dotfiles/.tmux.conf ~
 ln -sv ~/.dotfiles/.gitconfig ~
 ln -sv ~/.dotfiles/.gitignore ~
 ln -sv ~/.dotfiles/scripts ~/.scripts

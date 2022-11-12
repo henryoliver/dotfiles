@@ -9,13 +9,14 @@ null_ls.setup({
         diagnostics.stylelint,
 
         -- JavaScript
-        formatting.prettier,
+        formatting.rome,
+
+        -- formatting.prettier,
         -- formatting.prettier.with({ extra_args = { "--config", vim.fn.expand("~/.config/lsp/prettierrc.json") } }),
 
-        diagnostics.eslint,
+        -- diagnostics.eslint,
         -- diagnostics.eslint.with({ extra_args = { "--config", vim.fn.expand("~/.config/lsp/stylelintrc.json") } }),
-
-        code_actions.eslint,
+        -- code_actions.eslint,
 
         -- Lua
         formatting.stylua.with({ extra_args = { "--config-path", vim.fn.expand("~/.config/lsp/stylua.toml") } }),
@@ -28,5 +29,7 @@ null_ls.setup({
         -- Others
         diagnostics.vint,
         -- diagnostics.cspell,
+        code_actions.cspell,
+        code_actions.gitsigns,
     },
 })
