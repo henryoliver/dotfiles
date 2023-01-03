@@ -1,38 +1,13 @@
 local lspconfig = require("lspconfig")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
-local lsp_formatting = function(bufnr)
-    vim.lsp.buf.format({
-        filter = function(client)
-            -- apply whatever logic you want (in this example, we'll only use null-ls)
-            return client.name == "null-ls"
-        end,
-        bufnr = bufnr,
-    })
-end
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-local on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-        vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            group = augroup,
-            buffer = bufnr,
-            callback = function()
-                lsp_formatting(bufnr)
-            end,
-        })
-    end
-end
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-lspconfig.html.setup({ on_attach = on_attach, capabilities = capabilities })
+lspconfig.html.setup({ capabilities = capabilities })
 lspconfig.cssls.setup({
-    on_attach = on_attach,
     capabilities = capabilities,
     settings = {
         css = {
@@ -65,17 +40,16 @@ lspconfig.tailwindcss.setup({
     },
 })
 
-lspconfig.vuels.setup({ on_attach = on_attach })
-lspconfig.svelte.setup({ on_attach = on_attach })
-lspconfig.tsserver.setup({ on_attach = on_attach })
+lspconfig.vuels.setup({})
+lspconfig.svelte.setup({})
+lspconfig.tsserver.setup({})
 
-lspconfig.jsonls.setup({ on_attach = on_attach, capabilities = capabilities })
+lspconfig.jsonls.setup({ capabilities = capabilities })
 
-lspconfig.pylsp.setup({ on_attach = on_attach })
-lspconfig.vimls.setup({ on_attach = on_attach })
-lspconfig.bashls.setup({ on_attach = on_attach })
+lspconfig.pylsp.setup({})
+lspconfig.vimls.setup({})
+lspconfig.bashls.setup({})
 lspconfig.sumneko_lua.setup({
-    on_attach = on_attach,
     settings = {
         Lua = {
             -- Get the language server to recognize the `vim` global

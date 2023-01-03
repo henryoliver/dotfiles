@@ -1,5 +1,5 @@
 require("goto-preview").setup({
-    width = math.floor(vim.fn.winwidth(0) / 1.2), -- Width of the floating window
+    width = math.floor(vim.fn.winwidth(0) / 1.4), -- Width of the floating window
     height = math.floor(vim.fn.winheight(0) / 2.5), -- Height of the floating window
     border = { "↖", "", "", "", "", "", "", "" }, -- Border characters of the floating window
     default_mappings = false, -- Bind default mappings
@@ -8,8 +8,8 @@ require("goto-preview").setup({
     resizing_mappings = false, -- Binds arrow keys to resizing the floating window.
     post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
     -- These two configs can also be passed down to the goto-preview definition and implementation calls for one off "peak" functionality.
-    focus_on_open = true, -- Focus the floating window when opening it.
-    dismiss_on_move = false, -- Dismiss the floating window when moving the cursor.
+    focus_on_open = false, -- Focus the floating window when opening it.
+    dismiss_on_move = true, -- Dismiss the floating window when moving the cursor.
     force_close = true, -- passed into vim.api.nvim_win_close's second argument. See :h nvim_win_close
     bufhidden = "wipe", -- the bufhidden option to set on the floating window. See :h bufhidden
 })

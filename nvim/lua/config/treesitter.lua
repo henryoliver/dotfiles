@@ -5,12 +5,16 @@ require("nvim-treesitter.configs").setup({
         enable = true,
         keymaps = {
             init_selection = "<C-l>",
-            scope_incremental = "<C-l>",
-            node_incremental = "<C-;>",
-            node_decremental = "<C-h>",
+            scope_incremental = false,
+            node_incremental = false,
+            node_decremental = false,
         },
     },
     indent = {
         enable = true,
+    },
+    context_commentstring = {
+        enable = true,
+        enable_autocmd = false,
     },
 })

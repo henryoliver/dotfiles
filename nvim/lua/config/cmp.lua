@@ -6,11 +6,11 @@ local compare = require("cmp.config.compare")
 local tabnine_compare = require("cmp_tabnine.compare")
 
 tabnine:setup({
-    max_lines = 1000,
+    max_lines = 100,
     max_num_results = 10,
     sort = true,
     run_on_every_keystroke = true,
-    snippet_placeholder = "..",
+    snippet_placeholder = " ",
     ignored_file_types = { -- default is not to ignore
         -- uncomment to ignore in lua:
         -- lua = true
@@ -29,31 +29,40 @@ cmp.setup({
         -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-        ["<C-p>"] = cmp.mapping.select_prev_item(),
-        ["<C-n>"] = cmp.mapping.select_next_item(),
+        ["<C-n>"] = cmp.mapping.select_next_item(), -- Select the next item. Set count with large number to select pagedown.
+        ["<C-p>"] = cmp.mapping.select_prev_item(), -- Select the previous item. Set count with large number to select pageup.
 
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        -- Scroll the documentation window if visible.
+        ["<C-j>"] = cmp.mapping.scroll_docs(4),
+        ["<C-k>"] = cmp.mapping.scroll_docs(-4),
 
-        ["<C-e>"] = cmp.mapping.abort(),
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-l>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ["<C-Space>"] = cmp.mapping.complete(), -- Invoke completion.
+
+        ["<C-l>"] = cmp.mapping.confirm({ select = true }), -- Accepts the currently selected completion item.
+        ["<C-h>"] = cmp.mapping.abort(), -- Closes the completion menu and restore the current line to the state before the current completion was started.
     }),
     sources = cmp.config.sources({
         { name = "cmp_tabnine" },
+    }, {
         { name = "nvim_lsp" },
         { name = "vsnip" }, -- For vsnip users.
-    }, {
         { name = "buffer" },
     }),
     formatting = {
         format = lspkind.cmp_format({
-            mode = "symbol", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-            preset = "default",
+            mode = "symbol", -- show only symbol annotations
+            maxwidth = 80, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            ellipsis_char = " ", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+            menu = {
+                cmp_tabnine = "[AI  ]",
+                nvim_lsp = "[LSP]",
+                vsnip = "[VSnip]",
+                buffer = "[Buffer]",
+                cmdline = "[CMD]",
+                path = "[Path]",
+            },
             symbol_map = {
-                Text = " ",
-                -- Text = " ",
+                Text = " ",
                 Method = " ",
                 Function = " ",
                 Constructor = " ",
@@ -82,31 +91,23 @@ cmp.setup({
 
             -- The function below will be called before any actual modifications from lspkind
             -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-            -- after = function(entry, vim_item)
-            --     vim_item.kind = lspkind.presets.default[vim_item.kind]
-            --
-            --     local source_mapping = {
-            --         cmp_tabnine = "[AI]",
-            --         nvim_lsp = "[LSP]",
-            --         vsnip = "[snip]",
-            --         buffer = "[buffer]",
-            --         path = "[path]",
-            --     }
-            --
-            --     local menu = source_mapping[entry.source.name]
-            --
-            --     if entry.source.name == "cmp_tabnine" then
-            --         if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
-            --             menu = entry.completion_item.data.detail .. " " .. menu
-            --         end
-            --
-            --         vim_item.kind = " "
-            --     end
-            --
-            --     vim_item.menu = menu
-            --
-            --     return vim_item
-            -- end,
+            after = function(entry, vim_item)
+                if entry.source.name == "cmp_tabnine" then
+                    local detail = (entry.completion_item.data or {}).detail
+
+                    vim_item.kind = " "
+
+                    if detail and detail:find(".*%%.*") then
+                        vim_item.kind = vim_item.kind .. " " .. detail
+                    end
+
+                    if (entry.completion_item.data or {}).multiline then
+                        vim_item.kind = vim_item.kind .. " " .. "[AI  - ML]"
+                    end
+                end
+
+                return vim_item
+            end,
         }),
     },
     sorting = {
@@ -137,8 +138,9 @@ cmp.setup.cmdline("/", {
 cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        { name = "path" },
-    }, {
         { name = "cmdline" },
+        { name = "buffer" },
+    }, {
+        { name = "path" },
     }),
 })

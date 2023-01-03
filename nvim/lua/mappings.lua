@@ -66,20 +66,31 @@ whichkey.register({
 -- Nvim LspConfig
 whichkey.register({
     ["<Leader>l"] = { name = "LSP Client" },
-    ["<Leader>ld"] = { "<Cmd>lua require('goto-preview').goto_preview_definition()<CR>", "Definition" },
-    ["<Leader>lr"] = { "<Cmd>lua require('goto-preview').goto_preview_references()<CR>", "References" },
-    ["<Leader>li"] = { "<Cmd>lua require('goto-preview').goto_preview_implementation()<CR>", "Implementation" },
+
+    ["<Leader>ld"] = { "<Cmd>lua require('goto-preview').goto_preview_definition()<CR>", "Definition Preview" },
+    ["<Leader>lt"] = {
+        "<Cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
+        "Type Definition Preview",
+    },
+    ["<Leader>lr"] = { "<Cmd>lua require('goto-preview').goto_preview_references()<CR>", "References Preview" },
+    ["<Leader>li"] = { "<Cmd>lua require('goto-preview').goto_preview_implementation()<CR>", "Implementation Preview" },
     ["<Leader>lx"] = { "<Cmd>lua require('goto-preview').close_all_win()<CR>", "Close Windows" },
+
     ["<Leader>lh"] = { "<Cmd>lua vim.lsp.buf.hover()<CR>", "Hover" },
+    ["<Leader>lR"] = { "<Cmd>lua vim.lsp.buf.references()<CR>", "References" },
+    ["<Leader>lD"] = { "<Cmd>lua vim.lsp.buf.declaration()<CR>", "Declaration" },
     ["<Leader>ls"] = { "<Cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature" },
+    ["<Leader>lT"] = { "<Cmd>lua vim.lsp.buf.type_definition()<CR>", "Type Definition" },
+
     ["<Leader>la"] = { "<Cmd>lua vim.lsp.buf.code_action()<CR>", "Action" },
+
     ["<Leader>ln"] = { "<Cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-    ["<Leader>lf"] = { "<Cmd>lua vim.lsp.buf.format()<CR>", "Format LSP" },
+    ["<Leader>lf"] = { "<Cmd>lua vim.lsp.buf.format({ async = true })<CR>", "Format LSP" },
 })
 
 whichkey.register({
     ["<Leader>l"] = { name = "LSP Client" },
-    ["<Leader>lf"] = { "<Cmd>lua vim.lsp.buf.range_formatting()<CR>", "Format Range" },
+    ["<Leader>lf"] = { "<Cmd>lua vim.lsp.buf.formatexpr()<CR>", "Format Range" },
 }, { mode = "v" })
 
 map("n", "[g", "<Cmd>lua vim.diagnostic.goto_prev()<CR>", default_options)
@@ -101,18 +112,18 @@ whichkey.register({
 -- Telescope
 whichkey.register({
     ["<Leader>s"] = { name = "Search" },
-    ["<Leader>sf"] = { "<Cmd>Telescope git_files<CR>", "Project Files" },
+    -- Words
     ["<Leader>sw"] = { "<Cmd>Telescope live_grep<CR>", "Project Words" },
     ["<Leader>sW"] = { "<Cmd>Telescope grep_string<CR>", "Project Current Word" },
-    ["<Leader>sb"] = { "<Cmd>Telescope buffers<CR>", "Buffers" },
-    ["<Leader>sc"] = { "<Cmd>Telescope commands<CR>", "Commands" },
+    ["<Leader>sx"] = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Current Buffer Words" },
+
+    -- Files
+    ["<Leader>sf"] = { "<Cmd>Telescope git_files<CR>", "Git Files" },
+    ["<Leader>sF"] = { "<Cmd>Telescope find_files<CR>", "Project Files" },
+
     ["<Leader>sm"] = { "<Cmd>Telescope marks<CR>", "Marks" },
+    ["<Leader>sb"] = { "<Cmd>Telescope buffers<CR>", "Buffers" },
     ["<Leader>sr"] = { "<Cmd>Telescope registers<CR>", "Registers" },
-    ["<Leader>st"] = { "<Cmd>TodoTelescope<CR>", "Todos" },
-    ["<Leader>sg"] = { name = "Git" },
-    ["<Leader>sgc"] = { "<Cmd>Telescope git_bcommits<CR>", "Commits" },
-    ["<Leader>sgC"] = { "<Cmd>Telescope git_commits<CR>", "Project Commits" },
-    ["<Leader>sgb"] = { "<Cmd>Telescope git_branches<CR>", "Branches" },
 })
 
 -- Gitsigns and Diffview
@@ -143,3 +154,11 @@ map("n", "[b", "<Cmd>BufferLineCyclePrev<CR>", default_options)
 map("n", "]b", "<Cmd>BufferLineCycleNext<CR>", default_options)
 map("n", "[t", "<Cmd>BufferLineMovePrev<CR>", default_options)
 map("n", "]t", "<Cmd>BufferLineMoveNext<CR>", default_options)
+
+-- Workbench
+whichkey.register({
+    ["<Leader>n"] = { name = "Workbench Notes" },
+    ["<Leader>nn"] = { "<Plug>ToggleProjectWorkbench<CR>", "Project" },
+    ["<Leader>nb"] = { "<Plug>ToggleBranchWorkbench<CR>", "Branch" },
+    ["<Leader>nc"] = { "<Plug>WorkbenchToggleCheckbox<CR>", "Checkbox" },
+})

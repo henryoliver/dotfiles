@@ -83,7 +83,8 @@ vim.opt.linebreak = true
 vim.opt.scrolloff = 5
 
 vim.opt.foldlevel = 1
-vim.opt.foldmethod = "indent"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 vim.opt.joinspaces = false
 

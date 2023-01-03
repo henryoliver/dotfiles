@@ -9,12 +9,12 @@ null_ls.setup({
         diagnostics.stylelint,
 
         -- JavaScript
-        formatting.rome,
+        -- formatting.rome,
 
-        -- formatting.prettier,
+        formatting.prettier,
         -- formatting.prettier.with({ extra_args = { "--config", vim.fn.expand("~/.config/lsp/prettierrc.json") } }),
 
-        -- diagnostics.eslint,
+        diagnostics.eslint,
         -- diagnostics.eslint.with({ extra_args = { "--config", vim.fn.expand("~/.config/lsp/stylelintrc.json") } }),
         -- code_actions.eslint,
 

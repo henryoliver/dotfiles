@@ -1,5 +1,6 @@
 # General
 export EDITOR="nvim"
+export OPENAI_API_KEY="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"
 
 # Paths
 case `uname` in
@@ -29,7 +30,6 @@ source ~/.zplug/init.zsh
 
 # Make sure to use double quotes to prevent shell expansion
 zplug "supercrabtree/k"
-zplug "jeffreytse/zsh-vi-mode"
 zplug "b4b4r07/enhancd", use:init.sh
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting"
@@ -49,18 +49,12 @@ zplug load
 # Key Bindings
 
 # zsh-vi-mode
-# bindkey -M viins "jj" vi-cmd-mode
-ZVM_VI_ESCAPE_BINDKEY="jj"
+bindkey -v
+bindkey -M viins "jj" vi-cmd-mode
 
 # zsh-autosuggestions
+bindkey "^l" autosuggest-accept
 bindkey "^ " autosuggest-execute
-#autosuggest-accept: Accepts the current suggestion.
-#autosuggest-execute: Accepts and executes the current suggestion.
-#autosuggest-clear: Clears the current suggestion.
-#autosuggest-fetch: Fetches a suggestion (works even when suggestions are disabled).
-#autosuggest-disable: Disables suggestions.
-#autosuggest-enable: Re-enables suggestions.
-#autosuggest-toggle: Toggles between enabled/disabled suggestions.
 
 # Aliases
 alias code="nvim"
