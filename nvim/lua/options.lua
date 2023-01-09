@@ -82,7 +82,7 @@ vim.opt.linespace = 1
 vim.opt.linebreak = true
 vim.opt.scrolloff = 5
 
-vim.opt.foldlevel = 1
+vim.opt.foldlevel = 2
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
@@ -91,6 +91,8 @@ vim.opt.joinspaces = false
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.equalalways = true
+
+vim.opt.fillchars:append({ diff = "╱" })
 
 -- Interface options
 vim.opt.termguicolors = true

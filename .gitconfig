@@ -22,14 +22,14 @@
     ignorecase = false
     excludesfile = ~/.gitignore
 
+[diff]
+  tool = vimdiff
+  
 [merge]
-    tool = vimdiff
-
-[mergetool]
-    keepBackup = false
-
+  tool = vimdiff
+  
 [mergetool "vimdiff"]
-    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+  path = nvim
 
 [credential]
     helper = osxkeychain

@@ -1,7 +1,11 @@
 local telescope = require("telescope")
+local icons = require("nvim-nonicons")
 
 telescope.setup({
     defaults = {
+        prompt_prefix = "  " .. icons.get("telescope") .. "  ",
+        selection_caret = " ❯ ",
+        entry_prefix = "   ",
         layout_config = { prompt_position = "top" },
         sorting_strategy = "ascending",
         file_ignore_patterns = { "^cypress/", "package-lock.json" },

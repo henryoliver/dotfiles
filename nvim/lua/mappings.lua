@@ -36,37 +36,26 @@ map("n", "]l", "<Cmd>lnext<CR>", default_options)
 map("n", "Q", "@q", { noremap = true })
 map("v", "Q", "<Cmd>norm @q<CR>", { noremap = true })
 
--- Buffers
-map("n", "<Leader>x", "<Cmd>Bwipeout<CR>", default_options)
-map("n", "<Leader>X", "<Cmd>bufdo! <Cmd>Bwipeout<CR>", default_options)
-
 -- Quickly edit/reload the vimrc file
 whichkey.register({
-    ["<Leader>v"] = { name = "Vim" },
-    ["<Leader>ve"] = { "<Cmd>e $MYVIMRC<CR>", "Edit" },
-    ["<Leader>vs"] = { "<Cmd>so $MYVIMRC<CR>", "Source" },
+    ["<Leader>v"] = { name = "Config" },
+    ["<Leader>ve"] = { "<Cmd>edit $MYVIMRC<CR>", "Edit Vim" },
+    ["<Leader>vs"] = { "<Cmd>source $MYVIMRC<CR>", "Source Vim" },
 })
 
--- Write (Save)
-map("n", "<Leader>w", "<Cmd>update<CR>", default_options)
-map("n", "<Leader>W", "<Cmd>wall<CR>", default_options)
+-- Close Buffers
+whichkey.register({ ["<Leader>x"] = { "<Cmd>Bwipeout<CR>", "Close Buffer" } })
+whichkey.register({ ["<Leader>X"] = { "<Cmd>bufdo! Bwipeout<CR>", "Close All Buffers" } })
+
+-- Write (Save) Buffers
+whichkey.register({ ["<Leader>w"] = { "<Cmd>update<CR>", "Save Buffer" } })
+whichkey.register({ ["<Leader>W"] = { "<Cmd>wall<CR>", "Save All Buffers" } })
 
 -- Plugins
-
--- Trouble
-whichkey.register({
-    ["<Leader>t"] = { name = "Trouble" },
-    ["<Leader>tt"] = { "<Cmd>TroubleToggle<CR>", "Toggle" },
-    ["<Leader>tT"] = { "<Cmd>TodoTrouble<CR>", "Todos" },
-    ["<Leader>tr"] = { "<Cmd>TroubleToggle lsp_references<CR>", "References LSP" },
-    ["<Leader>td"] = { "<Cmd>TroubleToggle document_diagnostics<CR>", "Document LSP" },
-    ["<Leader>tw"] = { "<Cmd>TroubleToggle workspace_diagnostics<CR>", "Workspace LSP" },
-})
 
 -- Nvim LspConfig
 whichkey.register({
     ["<Leader>l"] = { name = "LSP Client" },
-
     ["<Leader>ld"] = { "<Cmd>lua require('goto-preview').goto_preview_definition()<CR>", "Definition Preview" },
     ["<Leader>lt"] = {
         "<Cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
@@ -96,6 +85,24 @@ whichkey.register({
 map("n", "[g", "<Cmd>lua vim.diagnostic.goto_prev()<CR>", default_options)
 map("n", "]g", "<Cmd>lua vim.diagnostic.goto_next()<CR>", default_options)
 
+-- Trouble
+whichkey.register({
+    ["<Leader>t"] = { name = "Trouble" },
+    ["<Leader>tt"] = { "<Cmd>TroubleToggle<CR>", "Toggle" },
+    ["<Leader>tT"] = { "<Cmd>TodoTrouble<CR>", "Todos" },
+    ["<Leader>tr"] = { "<Cmd>TroubleToggle lsp_references<CR>", "References LSP" },
+    ["<Leader>td"] = { "<Cmd>TroubleToggle document_diagnostics<CR>", "Document LSP" },
+    ["<Leader>tw"] = { "<Cmd>TroubleToggle workspace_diagnostics<CR>", "Workspace LSP" },
+})
+
+-- Nvim Magic
+whichkey.register({
+    ["<Leader>m"] = { name = "Nvim Magic" },
+    ["<Leader>mc"] = { "<Plug>nvim-magic-append-completion<CR>", "Fetch and append completion" },
+    ["<Leader>ma"] = { "<Plug>nvim-magic-suggest-alteration<CR>", "Ask for an alteration" },
+    ["<Leader>md"] = { "<Plug>nvim-magic-suggest-docstring<CR>", "Generate a docstring" },
+}, { mode = "v" })
+
 -- Nvim-spectre
 whichkey.register({
     ["<Leader>f"] = { name = "Find & Replace" },
@@ -121,24 +128,52 @@ whichkey.register({
     ["<Leader>sf"] = { "<Cmd>Telescope git_files<CR>", "Git Files" },
     ["<Leader>sF"] = { "<Cmd>Telescope find_files<CR>", "Project Files" },
 
+    -- Others
     ["<Leader>sm"] = { "<Cmd>Telescope marks<CR>", "Marks" },
     ["<Leader>sb"] = { "<Cmd>Telescope buffers<CR>", "Buffers" },
     ["<Leader>sr"] = { "<Cmd>Telescope registers<CR>", "Registers" },
 })
 
--- Gitsigns and Diffview
+-- Git
 whichkey.register({
     ["<Leader>g"] = { name = "Git" },
+    ["<Leader>go"] = { "<Cmd>Neogit<CR>", "Neogit" },
     ["<Leader>gb"] = { "<Cmd>Gitsigns toggle_current_line_blame<CR>", "Blame Toggle" },
+
     ["<Leader>gh"] = { name = "Hunk" },
     ["<Leader>ghp"] = { "<Cmd>Gitsigns preview_hunk<CR>", "Hunk Preview" },
     ["<Leader>ghd"] = { "<Cmd>Gitsigns diffthis<CR>", "Hunk Diff" },
-    ["<Leader>gd"] = { name = "Diff" },
-    ["<Leader>gdo"] = { "<Cmd>DiffviewOpen HEAD<CR>", "Diffview" },
+    ["<Leader>ghr"] = { "<Cmd>Gitsigns reset_hunk<CR>", "Reset Hunk" },
+    ["<Leader>ght"] = { "<Cmd>Gitsigns setqflist<CR>", "Open Trouble List" },
+
+    ["<Leader>gd"] = { name = "Diffview" },
+    ["<Leader>gdo"] = { "<Cmd>DiffviewOpen<CR>", "Merge Tool" },
+    ["<Leader>gdh"] = { "<Cmd>DiffviewFileHistory<CR>", "File History Branch" },
+    ["<Leader>gdf"] = { "<Cmd>DiffviewFileHistory %<CR>", "File History File" },
+    ["<Leader>gdx"] = { "<Cmd>DiffviewClose<CR>", "Close the current diffview" },
+
+    ["<Leader>gl"] = { name = "Link" },
+    ["<Leader>glh"] = {
+        "<Cmd>lua require('gitlinker').get_repo_url({ action_callback = require('gitlinker.actions').open_in_browser })<CR>",
+        "Home URL",
+    },
+    ["<Leader>gll"] = {
+        "<Cmd>lua require('gitlinker').get_buf_range_url('n', { action_callback = require('gitlinker.actions').open_in_browser })<CR>",
+        "Buffer Line URL",
+    },
 })
 
-map("n", "[h", "<Plug>Gitsigns next_hunk<CR>", expr_options)
-map("n", "]h", "<Plug>Gitsigns prev_hunk<CR>", expr_options)
+whichkey.register({
+    ["<Leader>g"] = { name = "Git" },
+    ["<Leader>gl"] = { name = "Link" },
+    ["<Leader>gll"] = {
+        "<Cmd>lua require('gitlinker').get_buf_range_url('n', { action_callback = require('gitlinker.actions').open_in_browser })<CR>",
+        "Buffer Line URL",
+    },
+}, { mode = "v" })
+
+map("n", "[h", "<Cmd>Gitsigns next_hunk<CR>", expr_options)
+map("n", "]h", "<Cmd>Gitsigns prev_hunk<CR>", expr_options)
 
 -- Zen Mode
 whichkey.register({ ["<Leader>z"] = { "<Cmd>ZenMode<CR>", "ZenMode" } })
@@ -154,11 +189,3 @@ map("n", "[b", "<Cmd>BufferLineCyclePrev<CR>", default_options)
 map("n", "]b", "<Cmd>BufferLineCycleNext<CR>", default_options)
 map("n", "[t", "<Cmd>BufferLineMovePrev<CR>", default_options)
 map("n", "]t", "<Cmd>BufferLineMoveNext<CR>", default_options)
-
--- Workbench
-whichkey.register({
-    ["<Leader>n"] = { name = "Workbench Notes" },
-    ["<Leader>nn"] = { "<Plug>ToggleProjectWorkbench<CR>", "Project" },
-    ["<Leader>nb"] = { "<Plug>ToggleBranchWorkbench<CR>", "Branch" },
-    ["<Leader>nc"] = { "<Plug>WorkbenchToggleCheckbox<CR>", "Checkbox" },
-})

@@ -1,6 +1,6 @@
 # General
 export EDITOR="nvim"
-export OPENAI_API_KEY="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"
+export OPENAI_API_KEY="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"
 
 # Paths
 case `uname` in
