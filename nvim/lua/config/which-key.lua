@@ -16,7 +16,7 @@ require("which-key").setup({
     icons = {
         breadcrumb = "", -- symbol used in the command line area that shows your active key combo
         separator = "", -- symbol used between a key and it's label
-        group = "", -- symbol prepended to a group
+        group = " ", -- symbol prepended to a group
     },
     window = {
         border = "none", -- none, single, double, shadow
@@ -28,10 +28,10 @@ require("which-key").setup({
     layout = {
         height = { min = 4, max = 25 }, -- min and max height of the columns
         width = { min = 20, max = 50 }, -- min and max width of the columns
-        spacing = 4, -- spacing between columns
+        spacing = 8, -- spacing between columns
         align = "left", -- align columns left, center or right
     },
-    ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
+    ignore_missing = true, -- enable this to hide mappings for which you didn't specify a label
     hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
     show_help = false, -- show help message on the command line when the popup is visible
     triggers = "auto", -- automatically setup triggers

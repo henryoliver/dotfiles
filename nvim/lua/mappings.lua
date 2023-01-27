@@ -1,14 +1,17 @@
 local map = vim.api.nvim_set_keymap
-local whichkey = require("which-key")
-
 local default_options = { noremap = true, silent = true }
-local expr_options = { noremap = true, expr = true, silent = true }
+
+local whichkey = require("which-key")
 
 -- Map the leader key
 vim.g.mapleader = " "
 
 -- Use v to toggle visual mode.
 map("v", "v", "<Esc>", default_options)
+
+-- Search scrolling to the middle
+map("n", "n", "nzz", default_options)
+map("n", "N", "Nzz", default_options)
 
 -- Move to beginning/end of line
 map("n", "B", "^", default_options)
@@ -44,12 +47,12 @@ whichkey.register({
 })
 
 -- Close Buffers
-whichkey.register({ ["<Leader>x"] = { "<Cmd>Bwipeout<CR>", "Close Buffer" } })
-whichkey.register({ ["<Leader>X"] = { "<Cmd>bufdo! Bwipeout<CR>", "Close All Buffers" } })
+map("n", "<Leader>x", "<Cmd>Bwipeout<CR>", default_options)
+map("n", "<Leader>X", "<Cmd>bufdo! Bwipeout<CR>", default_options)
 
 -- Write (Save) Buffers
-whichkey.register({ ["<Leader>w"] = { "<Cmd>update<CR>", "Save Buffer" } })
-whichkey.register({ ["<Leader>W"] = { "<Cmd>wall<CR>", "Save All Buffers" } })
+map("n", "<Leader>w", "<Cmd>update<CR>", { noremap = true })
+map("n", "<Leader>W", "<Cmd>wall<CR>", { noremap = true })
 
 -- Plugins
 
@@ -94,14 +97,6 @@ whichkey.register({
     ["<Leader>td"] = { "<Cmd>TroubleToggle document_diagnostics<CR>", "Document LSP" },
     ["<Leader>tw"] = { "<Cmd>TroubleToggle workspace_diagnostics<CR>", "Workspace LSP" },
 })
-
--- Nvim Magic
-whichkey.register({
-    ["<Leader>m"] = { name = "Nvim Magic" },
-    ["<Leader>mc"] = { "<Plug>nvim-magic-append-completion<CR>", "Fetch and append completion" },
-    ["<Leader>ma"] = { "<Plug>nvim-magic-suggest-alteration<CR>", "Ask for an alteration" },
-    ["<Leader>md"] = { "<Plug>nvim-magic-suggest-docstring<CR>", "Generate a docstring" },
-}, { mode = "v" })
 
 -- Nvim-spectre
 whichkey.register({
@@ -172,8 +167,8 @@ whichkey.register({
     },
 }, { mode = "v" })
 
-map("n", "[h", "<Cmd>Gitsigns next_hunk<CR>", expr_options)
-map("n", "]h", "<Cmd>Gitsigns prev_hunk<CR>", expr_options)
+map("n", "[h", "<Cmd>Gitsigns next_hunk<CR>", default_options)
+map("n", "]h", "<Cmd>Gitsigns prev_hunk<CR>", default_options)
 
 -- Zen Mode
 whichkey.register({ ["<Leader>z"] = { "<Cmd>ZenMode<CR>", "ZenMode" } })
@@ -189,3 +184,8 @@ map("n", "[b", "<Cmd>BufferLineCyclePrev<CR>", default_options)
 map("n", "]b", "<Cmd>BufferLineCycleNext<CR>", default_options)
 map("n", "[t", "<Cmd>BufferLineMovePrev<CR>", default_options)
 map("n", "]t", "<Cmd>BufferLineMoveNext<CR>", default_options)
+
+-- Toggle Term
+map("t", "<Esc><Esc>", "<C-\\><C-n>", default_options)
+map("t", "<C-w>k", "<C-\\><C-n><C-w>k", default_options)
+whichkey.register({ ["<Leader>T"] = { "<Cmd>ToggleTerm<CR>", "Terminal" } })

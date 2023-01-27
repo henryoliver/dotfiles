@@ -1,18 +1,20 @@
 local cmp = require("cmp")
 local lspkind = require("lspkind")
 local tabnine = require("cmp_tabnine.config")
-
 local compare = require("cmp.config.compare")
 local tabnine_compare = require("cmp_tabnine.compare")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
 tabnine:setup({
-    max_lines = 1000,
-    max_num_results = 20,
     sort = true,
-    run_on_every_keystroke = true,
+    max_lines = 1000,
+    max_num_results = 10,
     snippet_placeholder = " ",
-    show_prediction_strength = true,
+    run_on_every_keystroke = true,
+    show_prediction_strength = false,
 })
+
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
 
 cmp.setup({
     snippet = {
@@ -21,8 +23,8 @@ cmp.setup({
         end,
     },
     mapping = cmp.mapping.preset.insert({
-        ["<C-n>"] = cmp.mapping.select_next_item(), -- Select the next item. Set count with large number to select pagedown.
-        ["<C-p>"] = cmp.mapping.select_prev_item(), -- Select the previous item. Set count with large number to select pageup.
+        ["<C-n>"] = cmp.mapping.select_next_item(),
+        ["<C-p>"] = cmp.mapping.select_prev_item(),
 
         -- Scroll the documentation window if visible.
         ["<C-j>"] = cmp.mapping.scroll_docs(4),
@@ -30,21 +32,22 @@ cmp.setup({
 
         ["<C-Space>"] = cmp.mapping.complete(), -- Invoke completion.
 
-        ["<C-l>"] = cmp.mapping.confirm({ select = true }), -- Accepts the currently selected completion item.
-        ["<C-h>"] = cmp.mapping.abort(), -- Closes the completion menu and restore the current line to the state before the current completion was started.
+        ["<C-l>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-h>"] = cmp.mapping.abort(),
     }),
     sources = cmp.config.sources({
         { name = "cmp_tabnine" },
     }, {
         { name = "nvim_lsp" },
         { name = "vsnip" }, -- For vsnip users.
-        { name = "buffer" },
+    }, {
+        { name = "buffer", keyword_length = 3 },
     }),
     formatting = {
+        fields = { "kind", "abbr", "menu" },
         format = lspkind.cmp_format({
-            mode = "text_symbol",
             maxwidth = 80,
-            ellipsis_char = " ",
+            mode = "text",
             before = function(entry, vim_item)
                 -- Set symbols
                 vim_item.kind = ({
@@ -76,8 +79,8 @@ cmp.setup({
                 })[vim_item.kind]
 
                 -- Set source name
-                local menu = ({
-                    cmp_tabnine = "[AI  ]",
+                vim_item.menu = ({
+                    cmp_tabnine = "[AI]",
                     nvim_lsp = "[LSP]",
                     vsnip = "[VSnip]",
                     buffer = "[Buffer]",
@@ -85,41 +88,50 @@ cmp.setup({
                     path = "[Path]",
                 })[entry.source.name]
 
+                -- Tabnine custom symbol and type
                 if entry.source.name == "cmp_tabnine" then
-                    local detail = (entry.completion_item.data or {}).detail
-
                     vim_item.kind = " "
 
-                    if detail and detail:find(".*%%.*") then
-                        vim_item.kind = vim_item.kind .. " " .. detail
-                    end
-
                     if (entry.completion_item.data or {}).multiline then
-                        vim_item.kind = vim_item.kind .. " " .. "[AI  - ML]"
+                        vim_item.menu = "[AI - ML]"
                     end
-                end
 
-                vim_item.menu = menu
+                    print(vim.inspect(entry.completion_item))
+                end
 
                 return vim_item
             end,
         }),
     },
+    window = {
+        completion = {
+            border = "rounded",
+            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+        },
+        documentation = {
+            border = "rounded",
+            scrollbar = true,
+            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+        },
+    },
     sorting = {
         priority_weight = 2,
         comparators = {
             tabnine_compare,
-            compare.offset,
             compare.exact,
-            compare.score,
             compare.recently_used,
+            compare.offset,
+            compare.score,
             compare.kind,
             compare.sort_text,
             compare.length,
             compare.order,
         },
     },
-    experimental = { native_menu = false, ghost_text = true },
+    experimental = {
+        ghost_text = true,
+        native_menu = false,
+    },
 })
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline("/", {

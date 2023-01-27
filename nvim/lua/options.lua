@@ -12,8 +12,8 @@ vim.opt.directory = home .. "/tmp/dir_swap/," .. vim.o.directory
 vim.opt.undodir = home .. "/tmp/dir_undo/"
 
 vim.opt.lazyredraw = true
-vim.opt.updatetime = 300
-vim.opt.timeoutlen = 400
+vim.opt.updatetime = 100
+vim.opt.timeoutlen = 1000
 vim.opt.ttimeoutlen = 0
 
 vim.opt.path = ".,,**"
@@ -26,6 +26,7 @@ vim.opt.smartcase = true
 vim.opt.ignorecase = true
 vim.opt.grepprg = "rg --hidden --vimgrep --smart-case --" -- use rg instead of grep
 
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.inccommand = "split"
 
@@ -57,34 +58,38 @@ vim.opt.list = true
 vim.opt.listchars = [[tab:··,trail:·]]
 
 -- Presentation
+vim.opt.title = true -- set the title of window to the value of the titlestring
 vim.opt.hidden = true
 vim.opt.pumheight = 10
 
 vim.opt.number = true
-vim.opt.signcolumn = "yes:2"
+vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
 vim.opt.relativenumber = true
 
+vim.opt.ruler = false
 vim.opt.cursorline = true
 
-vim.opt.ruler = false
-
+vim.opt.more = false -- don't pause listing when screen is filled
 vim.opt.cmdheight = 1
 vim.opt.cmdwinheight = 1
 
-vim.opt.laststatus = 2
+vim.opt.laststatus = 3
 vim.opt.showtabline = 2
 
 vim.opt.showcmd = false
 vim.opt.showmode = false
 
+vim.opt.wrap = false -- display lines as one long line
 vim.opt.colorcolumn = "80"
 vim.opt.linespace = 1
 vim.opt.linebreak = true
-vim.opt.scrolloff = 5
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
 
-vim.opt.foldlevel = 2
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldmethod = "indent"
+vim.opt.foldlevel = 1
+vim.opt.foldcolumn = "0" -- No column signs next to line numbers
+vim.opt.foldlevelstart = 1
 
 vim.opt.joinspaces = false
 
@@ -96,8 +101,12 @@ vim.opt.fillchars:append({ diff = "╱" })
 
 -- Interface options
 vim.opt.termguicolors = true
-vim.opt.completeopt = "menu,menuone,noselect,noinsert"
-vim.opt.shortmess = vim.o.shortmess .. "c"
+vim.opt.completeopt = { "menuone", "noselect" }
+
+vim.opt.mouse = "a" -- allow the mouse to be used in neovim
+vim.opt.shortmess:append("c") -- don't show redundant messages from ins-completion-menu
+vim.opt.shortmess:append("I") -- don't show the default intro message
+vim.opt.whichwrap:append("<,>,[,],h,l")
 
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax on")
@@ -106,3 +115,4 @@ vim.cmd("syntax on")
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
+vim.g.python3_host_prog = "/usr/local/bin/python3"

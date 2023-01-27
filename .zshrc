@@ -1,6 +1,8 @@
 # General
 export EDITOR="nvim"
-export OPENAI_API_KEY="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"
+
+# Manually export others ENVs variables
+source ~/.config/.envs
 
 # Paths
 case `uname` in
@@ -131,3 +133,5 @@ case `uname` in
             sudo apt-get check"
     ;;
 esac
+
+export PATH="$PATH:/Users/henryoliver/.bin"

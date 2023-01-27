@@ -6,7 +6,6 @@ end
 
 require("packer").startup(function(use)
     -- Packer can manage itself
-    -- https://github.com/wbthomason/packer.nvim#specifying-plugins
     use("wbthomason/packer.nvim")
 
     -- Themes
@@ -14,10 +13,17 @@ require("packer").startup(function(use)
 
     -- Language
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = get_config("treesitter") })
-    use({ "neovim/nvim-lspconfig", config = get_config("lsp") })
+    use({ "williamboman/mason.nvim", requires = { "williamboman/mason-lspconfig.nvim" }, config = get_config("mason") })
+    use({ "neovim/nvim-lspconfig", event = "BufReadPre", config = get_config("lsp") })
 
-    use({ "folke/trouble.nvim", requires = "kyazdani42/nvim-web-devicons", config = get_config("trouble") })
-    use({ "rmagatti/goto-preview", config = get_config("goto-preview") }) -- Previewing native LSP's goto definition calls
+    use({ "rmagatti/goto-preview", config = get_config("goto-preview") })
+    use({ "jose-elias-alvarez/null-ls.nvim", config = get_config("null-ls") })
+    use({
+        "mxsdev/nvim-dap-vscode-js",
+        requires = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" },
+        config = get_config("dap"),
+    })
+    use({ "folke/trouble.nvim", requires = "nvim-tree/nvim-web-devicons", config = get_config("trouble") })
 
     -- Completion
     use({
@@ -33,32 +39,51 @@ require("packer").startup(function(use)
         },
         config = get_config("cmp"),
     })
-    use({
-        "jameshiew/nvim-magic",
-        requires = {
-            "nvim-lua/plenary.nvim",
-            "MunifTanjim/nui.nvim",
-        },
-        config = get_config("magic"),
-    })
 
     use({ "windwp/nvim-ts-autotag", config = get_config("autotag") })
     use({ "windwp/nvim-autopairs", config = get_config("autopairs") })
 
     -- Search
     use({ "windwp/nvim-spectre", requires = "nvim-lua/plenary.nvim" })
-
     use({
         "nvim-telescope/telescope.nvim",
-        requires = { "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim" },
+        requires = { "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzy-native.nvim" },
         config = get_config("telescope"),
     })
-    use({ "nvim-telescope/telescope-fzy-native.nvim" })
 
     -- Code display
     use("gpanders/editorconfig.nvim")
+    use({ "lukas-reineke/indent-blankline.nvim", config = get_config("indent-blankline") })
     use({ "norcalli/nvim-colorizer.lua", config = get_config("colorizer") })
-    use({ "jose-elias-alvarez/null-ls.nvim", config = get_config("null-ls") })
+
+    -- Interface
+    use("onsails/lspkind-nvim") -- Pictograms to neovim built-in lsp
+    use({ "yamatsum/nvim-nonicons", requires = "nvim-tree/nvim-web-devicons" })
+
+    use({ "folke/twilight.nvim", config = get_config("twilight") })
+    use({ "folke/zen-mode.nvim", config = get_config("zen-mode") })
+
+    use({ "kevinhwang91/rnvimr", config = get_config("rnvimr") })
+    use({ "kyazdani42/nvim-tree.lua", requires = "nvim-tree/nvim-web-devicons", config = get_config("nvim-tree") })
+
+    use({ "nvim-lualine/lualine.nvim", requires = "nvim-tree/nvim-web-devicons", config = get_config("lualine") })
+    use({
+        "akinsho/bufferline.nvim",
+        tag = "v3.*",
+        requires = "nvim-tree/nvim-web-devicons",
+        config = get_config("bufferline"),
+    })
+
+    -- Commands
+    use({ "max397574/better-escape.nvim", config = get_config("escape") })
+    use({
+        "numToStr/Comment.nvim",
+        requires = "JoosepAlviste/nvim-ts-context-commentstring",
+        config = get_config("comment"),
+    })
+
+    use({ "ur4ltz/surround.nvim", config = get_config("surround") })
+    use({ "folke/todo-comments.nvim", requires = "nvim-lua/plenary.nvim", config = get_config("todo") })
 
     -- Integrations
     use({ "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim", config = get_config("neogit") })
@@ -66,30 +91,20 @@ require("packer").startup(function(use)
     use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim", config = get_config("diffview") })
     use({ "lewis6991/gitsigns.nvim", requires = "nvim-lua/plenary.nvim", config = get_config("gitsigns") })
 
-    -- Interface
-    use("onsails/lspkind-nvim") -- Pictograms to neovim built-in lsp
-    use({ "yamatsum/nvim-nonicons", requires = "kyazdani42/nvim-web-devicons" })
+    use({ "akinsho/toggleterm.nvim", tag = "*", config = get_config("toggleterm") })
+    use({
+        "jackMort/ChatGPT.nvim",
+        requires = {
+            "MunifTanjim/nui.nvim",
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+        },
+        config = get_config("chatgpt"),
+    })
 
-    use({ "folke/twilight.nvim", config = get_config("twilight") })
-    use({ "folke/zen-mode.nvim", config = get_config("zen-mode") })
-
-    use({ "kevinhwang91/rnvimr", config = get_config("rnvimr") })
-    use({ "kyazdani42/nvim-tree.lua", requires = "kyazdani42/nvim-web-devicons", config = get_config("nvim-tree") })
-
-    use({ "tamton-aquib/staline.nvim", config = get_config("staline") })
-    use({ "akinsho/bufferline.nvim", requires = "kyazdani42/nvim-web-devicons", config = get_config("bufferline") })
-
-    -- Commands
-    use({ "max397574/better-escape.nvim", config = get_config("escape") })
-
-    use("JoosepAlviste/nvim-ts-context-commentstring")
-    use({ "numToStr/Comment.nvim", config = get_config("comment") })
-
-    use({ "ur4ltz/surround.nvim", config = get_config("surround") })
-    use({ "folke/todo-comments.nvim", requires = "nvim-lua/plenary.nvim", config = get_config("todo") })
-
-    -- Other
+    -- Others
     use("famiu/bufdelete.nvim")
+    use("LunarVim/bigfile.nvim") -- Disables certain features if the opened file is big
     use({ "folke/which-key.nvim", config = get_config("which-key") })
 end)
 
