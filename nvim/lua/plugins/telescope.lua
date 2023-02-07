@@ -29,7 +29,6 @@ return {
                         override_file_sorter = true,
                     },
                     file_browser = {
-                        theme = "nord",
                         hijack_netrw = true,
                     },
                 },

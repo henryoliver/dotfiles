@@ -18,7 +18,7 @@ vim.g.mapleader = " "
 -- Plugin manager
 require("lazy").setup("plugins", {
     defaults = {
-        lazy = false, -- should plugins be lazy-loaded?
+        lazy = true, -- should plugins be lazy-loaded?
         version = "*", -- enable this to try installing the latest stable versions of plugins
     },
     install = { colorscheme = { "nord" } },
