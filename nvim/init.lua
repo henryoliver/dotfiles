@@ -5,14 +5,15 @@
 --   /_/ /_/_____/_/ |_/_/ |_| /_/
 --
 
--- Plugin management via Packer
-require("plugins")
+-- Plugin management via Lazy.nvim
+require("config/plugins")
 
--- Vim mappings, see lua/config/which.lua for more mappings
-require("mappings")
+-- NVim mappings
+require("config/mappings")
 
--- All non plugin related (vim) options
-require("options")
+-- All non plugin related (nvim) options
+require("config/options")
 
--- Vim autocommands/autogroups
-require("autocmd")
+-- NVim autocommands/autogroups
+require("config/autocmd")
+
