@@ -21,7 +21,7 @@ return {
         init = function()
             require("which-key").register({
                 ["<Leader>g"] = { name = "Git" },
-                ["<Leader>go"] = { "<Cmd>Neogit<CR>", "Neogit" },
+                ["<Leader>gn"] = { "<Cmd>Neogit<CR>", "Neogit" },
             })
         end,
     },

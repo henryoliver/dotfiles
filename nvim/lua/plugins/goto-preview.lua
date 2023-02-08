@@ -7,24 +7,24 @@ return {
         -- Mapping
         init = function()
             require("which-key").register({
-                ["<Leader>p"] = { name = "Preview LSP" },
-                ["<Leader>pd"] = {
+                ["<Leader>lp"] = { name = "Preview LSP" },
+                ["<Leader>lpd"] = {
                     "<Cmd>lua require('goto-preview').goto_preview_definition()<CR>",
                     "Definition Preview",
                 },
-                ["<Leader>pt"] = {
+                ["<Leader>lpt"] = {
                     "<Cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
                     "Type Definition Preview",
                 },
-                ["<Leader>pr"] = {
+                ["<Leader>lpr"] = {
                     "<Cmd>lua require('goto-preview').goto_preview_references()<CR>",
                     "References Preview",
                 },
-                ["<Leader>pi"] = {
+                ["<Leader>lpi"] = {
                     "<Cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
                     "Implementation Preview",
                 },
-                ["<Leader>px"] = { "<Cmd>lua require('goto-preview').close_all_win()<CR>", "Close Windows" },
+                ["<Leader>lpx"] = { "<Cmd>lua require('goto-preview').close_all_win()<CR>", "Close Windows" },
             })
         end,
     },

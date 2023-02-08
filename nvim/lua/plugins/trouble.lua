@@ -18,12 +18,12 @@ return {
         -- Mapping
         init = function()
             require("which-key").register({
-                ["<Leader>o"] = { name = "Trouble" },
-                ["<Leader>ot"] = { "<Cmd>TroubleToggle<CR>", "Toggle" },
-                ["<Leader>oT"] = { "<Cmd>TodoTrouble<CR>", "Todos" },
-                ["<Leader>or"] = { "<Cmd>TroubleToggle lsp_references<CR>", "References LSP" },
-                ["<Leader>od"] = { "<Cmd>TroubleToggle document_diagnostics<CR>", "Document LSP" },
-                ["<Leader>ow"] = { "<Cmd>TroubleToggle workspace_diagnostics<CR>", "Workspace LSP" },
+                ["<Leader>lt"] = { name = "Trouble" },
+                ["<Leader>ltt"] = { "<Cmd>TroubleToggle<CR>", "Toggle" },
+                ["<Leader>ltT"] = { "<Cmd>TodoTrouble<CR>", "Todos" },
+                ["<Leader>ltr"] = { "<Cmd>TroubleToggle lsp_references<CR>", "References LSP" },
+                ["<Leader>ltd"] = { "<Cmd>TroubleToggle document_diagnostics<CR>", "Document LSP" },
+                ["<Leader>ltw"] = { "<Cmd>TroubleToggle workspace_diagnostics<CR>", "Workspace LSP" },
             })
         end,
     },

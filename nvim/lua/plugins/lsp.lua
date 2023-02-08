@@ -98,7 +98,7 @@ return {
                 ["<Leader>ld"] = { "<Cmd>lua vim.lsp.buf.declaration()<CR>", "Declaration" },
                 ["<Leader>ls"] = { "<Cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature" },
                 ["<Leader>lf"] = { "<Cmd>lua vim.lsp.buf.format({ async = true })<CR>", "Format" },
-                ["<Leader>lt"] = { "<Cmd>lua vim.lsp.buf.type_definition()<CR>", "Type Definition" },
+                ["<Leader>ly"] = { "<Cmd>lua vim.lsp.buf.type_definition()<CR>", "Type Definition" },
             })
 
             map("n", "[g", "<Cmd>lua vim.diagnostic.goto_prev()<CR>", default_options)

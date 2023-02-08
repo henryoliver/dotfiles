@@ -22,14 +22,14 @@ return {
         -- Mappings
         init = function()
             require("which-key").register({
-                ["<Leader>c"] = { name = "Comment" },
-                ["<Leader>cr"] = { "<Plug>(comment_toggle_linewise)", "Toggle Region" },
-                ["<Leader>cc"] = { "<Plug>(comment_toggle_linewise_current)", "Toggle Linewise/Blockwise" },
+                ["c"] = { name = "Comment" },
+                ["ca"] = { "<Plug>(comment_toggle_linewise)", "Add Region" },
+                ["cc"] = { "<Plug>(comment_toggle_linewise_current)", "Toggle Linewise/Blockwise" },
             })
 
             require("which-key").register({
-                ["<Leader>c"] = { name = "Comment" },
-                ["<Leader>cc"] = { "<Plug>(comment_toggle_linewise_visual)", "Toggle Linewise/Blockwise" },
+                ["c"] = { name = "Comment" },
+                ["cc"] = { "<Plug>(comment_toggle_linewise_visual)", "Toggle Linewise/Blockwise" },
             }, { mode = "v" })
         end,
     },

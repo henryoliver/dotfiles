@@ -8,9 +8,5 @@ return {
             "jayp0521/mason-null-ls.nvim",
         },
         config = true,
-        -- Mapping
-        init = function()
-            require("which-key").register({ ["<Leader>m"] = { "<Cmd>Mason<CR>", "Mason" } })
-        end,
     },
 }

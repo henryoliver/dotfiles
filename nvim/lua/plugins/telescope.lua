@@ -41,19 +41,21 @@ return {
         -- Mappings
         init = function()
             require("which-key").register({
-                ["<Leader>f"] = { name = "Find" },
+                -- Explore Browser
+                ["<Leader>e"] = { "<Cmd>Telescope file_browser<CR>", "Explore" },
+                --
+                ["<Leader>s"] = { name = "Search" },
                 -- Words
-                ["<Leader>fw"] = { "<Cmd>Telescope live_grep<CR>", "Project Words" },
-                ["<Leader>fW"] = { "<Cmd>Telescope grep_string<CR>", "Project Current Word" },
-                ["<Leader>fu"] = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Current Buffer Words" },
+                ["<Leader>sw"] = { "<Cmd>Telescope live_grep<CR>", "Project Words" },
+                ["<Leader>sW"] = { "<Cmd>Telescope grep_string<CR>", "Project Current Word" },
+                ["<Leader>su"] = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Current Buffer Words" },
                 -- Files
-                ["<Leader>fe"] = { "<Cmd>Telescope file_browser<CR>", "Explore" },
-                ["<Leader>ff"] = { "<Cmd>Telescope git_files<CR>", "Git Files" },
-                ["<Leader>fF"] = { "<Cmd>Telescope find_files<CR>", "Project Files" },
+                ["<Leader>sf"] = { "<Cmd>Telescope git_files<CR>", "Git Files" },
+                ["<Leader>sF"] = { "<Cmd>Telescope find_files<CR>", "Project Files" },
                 -- Others
-                ["<Leader>fm"] = { "<Cmd>Telescope marks<CR>", "Marks" },
-                ["<Leader>fb"] = { "<Cmd>Telescope buffers<CR>", "Buffers" },
-                ["<Leader>fg"] = { "<Cmd>Telescope registers<CR>", "Registers" },
+                ["<Leader>sm"] = { "<Cmd>Telescope marks<CR>", "Marks" },
+                ["<Leader>sb"] = { "<Cmd>Telescope buffers<CR>", "Buffers" },
+                ["<Leader>sg"] = { "<Cmd>Telescope registers<CR>", "Registers" },
             })
         end,
     },
