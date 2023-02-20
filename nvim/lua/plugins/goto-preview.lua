@@ -4,27 +4,30 @@ return {
         "rmagatti/goto-preview",
         event = "BufReadPost",
         dependencies = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig" },
+        opts = {
+            default_mappings = false,
+        },
         -- Mapping
         init = function()
             require("which-key").register({
-                ["<Leader>lp"] = { name = "Preview LSP" },
-                ["<Leader>lpd"] = {
+                ["<Leader>p"] = { name = "LSP Preview" },
+                ["<Leader>pd"] = {
                     "<Cmd>lua require('goto-preview').goto_preview_definition()<CR>",
                     "Definition Preview",
                 },
-                ["<Leader>lpt"] = {
+                ["<Leader>pt"] = {
                     "<Cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
                     "Type Definition Preview",
                 },
-                ["<Leader>lpr"] = {
+                ["<Leader>pr"] = {
                     "<Cmd>lua require('goto-preview').goto_preview_references()<CR>",
                     "References Preview",
                 },
-                ["<Leader>lpi"] = {
+                ["<Leader>pi"] = {
                     "<Cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
                     "Implementation Preview",
                 },
-                ["<Leader>lpx"] = { "<Cmd>lua require('goto-preview').close_all_win()<CR>", "Close Windows" },
+                ["<Leader>px"] = { "<Cmd>lua require('goto-preview').close_all_win()<CR>", "Close Windows" },
             })
         end,
     },

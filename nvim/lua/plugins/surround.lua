@@ -3,6 +3,7 @@ return {
     {
         "ur4ltz/surround.nvim",
         event = "BufReadPost",
+        dependencies = "tpope/vim-repeat",
         opts = {
             load_keymaps = false,
             map_insert_mode = false,

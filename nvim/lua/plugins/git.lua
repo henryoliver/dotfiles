@@ -34,7 +34,6 @@ return {
         init = function()
             require("which-key").register({
                 ["<Leader>gb"] = { "<Cmd>Gitsigns toggle_current_line_blame<CR>", "Blame Toggle" },
-
                 ["<Leader>gh"] = { name = "Hunk" },
                 ["<Leader>ghp"] = { "<Cmd>Gitsigns preview_hunk<CR>", "Hunk Preview" },
                 ["<Leader>ghd"] = { "<Cmd>Gitsigns diffthis<CR>", "Hunk Diff" },
@@ -72,7 +71,7 @@ return {
     },
     {
         "ruifm/gitlinker.nvim",
-        keys = { "<Leader>gl" },
+        keys = { "<Leader>gl", { "<Leader>gl", mode = "v" } },
         dependencies = "nvim-lua/plenary.nvim",
         opts = {
             mappings = nil,

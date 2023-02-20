@@ -23,13 +23,16 @@ return {
         init = function()
             require("which-key").register({
                 ["c"] = { name = "Comment" },
-                ["ca"] = { "<Plug>(comment_toggle_linewise)", "Add Region" },
-                ["cc"] = { "<Plug>(comment_toggle_linewise_current)", "Toggle Linewise/Blockwise" },
+                ["cC"] = { "<Plug>(comment_toggle_linewise)", "Region Linewise" },
+                ["cB"] = { "<Plug>(comment_toggle_blockwise)", "Region Blockwise" },
+                ["cc"] = { "<Plug>(comment_toggle_linewise_current)", "Toggle Linewise" },
+                ["cb"] = { "<Plug>(comment_toggle_blockwise_current)", "Toggle Blockwise" },
             })
 
             require("which-key").register({
                 ["c"] = { name = "Comment" },
-                ["cc"] = { "<Plug>(comment_toggle_linewise_visual)", "Toggle Linewise/Blockwise" },
+                ["cc"] = { "<Plug>(comment_toggle_linewise_visual)", "Linewise" },
+                ["cb"] = { "<Plug>(comment_toggle_blockwise_visual)", "Blockwise" },
             }, { mode = "v" })
         end,
     },

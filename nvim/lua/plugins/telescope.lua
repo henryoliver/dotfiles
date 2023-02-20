@@ -2,7 +2,6 @@ return {
     -- Telescope
     {
         "nvim-telescope/telescope.nvim",
-        -- event = "UIEnter",
         lazy = false,
         dependencies = {
             "nvim-lua/popup.nvim",
@@ -29,7 +28,10 @@ return {
                         override_file_sorter = true,
                     },
                     file_browser = {
+                        hidden = true,
+                        grouped = true,
                         hijack_netrw = true,
+                        respect_gitignore = false,
                     },
                 },
             })
@@ -42,7 +44,7 @@ return {
         init = function()
             require("which-key").register({
                 -- Explore Browser
-                ["<Leader>e"] = { "<Cmd>Telescope file_browser<CR>", "Explore" },
+                ["<Leader>e"] = { "<Cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>", "Explore" },
                 --
                 ["<Leader>s"] = { name = "Search" },
                 -- Words

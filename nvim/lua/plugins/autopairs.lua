@@ -3,7 +3,7 @@ return {
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
-        dependencies = "hrsh7th/nvim-cmp",
+        dependencies = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig", "hrsh7th/nvim-cmp" },
         opts = {
             check_ts = true,
             disable_filetype = { "TelescopePrompt", "vim" },

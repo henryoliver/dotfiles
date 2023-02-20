@@ -16,4 +16,3 @@ require("config/options")
 
 -- NVim autocommands/autogroups
 require("config/autocmd")
-

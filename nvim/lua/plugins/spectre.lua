@@ -2,7 +2,7 @@ return {
     -- Spectre
     {
         "windwp/nvim-spectre",
-        cmd = "Spectre",
+        keys = { "<Leader>f", { "<Leader>f", mode = "v" } },
         dependencies = "nvim-lua/plenary.nvim",
         -- Mappings
         init = function()

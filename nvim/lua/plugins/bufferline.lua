@@ -7,7 +7,12 @@ return {
         "akinsho/bufferline.nvim",
         event = "UIEnter",
         dependencies = "nvim-tree/nvim-web-devicons",
-        config = true,
+        opts = {
+            options = {
+                diagnostics = "nvim_lsp",
+                sort_by = "directory",
+            },
+        },
         -- Mappings
         init = function()
             map("n", "[b", "<Cmd>BufferLineCyclePrev<CR>", default_options)

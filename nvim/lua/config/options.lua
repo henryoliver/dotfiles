@@ -86,9 +86,7 @@ vim.opt.linebreak = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
+vim.opt.foldmethod = "indent"
 vim.opt.foldlevel = 1
 vim.opt.foldcolumn = "0" -- No column signs next to line numbers
 vim.opt.foldlevelstart = 1
@@ -117,4 +115,3 @@ vim.cmd("syntax on")
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
-vim.g.python3_host_prog = "/usr/local/bin/python3"
