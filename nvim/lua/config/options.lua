@@ -79,7 +79,7 @@ vim.opt.showtabline = 2
 vim.opt.showcmd = false
 vim.opt.showmode = false
 
-vim.opt.wrap = false -- display lines as one long line
+vim.opt.wrap = true -- display lines as one long line
 vim.opt.colorcolumn = "80"
 vim.opt.linespace = 1
 vim.opt.linebreak = true

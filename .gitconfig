@@ -23,13 +23,14 @@
     excludesfile = ~/.gitignore
 
 [diff]
-  tool = vimdiff
+    tool = vimdiff
   
 [merge]
-  tool = vimdiff
+    tool = vimdiff
   
 [mergetool "vimdiff"]
-  path = nvim
+    path = nvim
+    keepBackup = false
 
 [credential]
     helper = osxkeychain
@@ -50,8 +51,8 @@
     up = !git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
     prune-branches = !ls "$(git rev-parse --show-toplevel)/.git/refs/heads/" | grep -v master | xargs git branch -d amend = commit --amend
 
-    bam     = "!source ~/.scripts/git.sh && delete_local_merged_branches"
-    bamr    = "!source ~/.scripts/git.sh && delete_remote_merged_branches"
+    bam = "!source ~/.scripts/git.sh && delete_local_merged_branches"
+    bamr = "!source ~/.scripts/git.sh && delete_remote_merged_branches"
     summary = "!source ~/.scripts/git.sh && weekly_summary"
 
     graph = log --graph --abbrev-commit --decorate --date=short --pretty=format:"%C(yellow)%h' '%C(blue)%ad' '|%C(red)%d' '%C(reset)%s' '%C(green)[%cn]" --all

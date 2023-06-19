@@ -2,7 +2,7 @@ return {
     -- ChatGPT
     {
         "jackMort/ChatGPT.nvim",
-        keys = { "<Leader>i", { "<Leader>i", mode = "v" } },
+        event = "BufReadPost",
         dependencies = {
             "MunifTanjim/nui.nvim",
             "nvim-lua/plenary.nvim",

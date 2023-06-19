@@ -4,7 +4,7 @@ return {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
         dependencies = {
-            { "tzachar/cmp-tabnine", build = "./install.sh" },
+            { "tzachar/cmp-tabnine",    build = "./install.sh" },
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-vsnip",
             "hrsh7th/vim-vsnip",
@@ -45,7 +45,7 @@ return {
 
                     -- Scroll the documentation window if visible.
                     ["<C-j>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-k>"] = cmp.mapping.scroll_docs(-4),
+                    ["<C-k>"] = cmp.mapping.scroll_docs( -4),
 
                     ["<C-Space>"] = cmp.mapping.complete(), -- Invoke completion.
 
@@ -67,42 +67,42 @@ return {
                         before = function(entry, vim_item)
                             -- Set symbols
                             vim_item.kind = ({
-                                Text = " ",
-                                Method = " ",
-                                Function = " ",
-                                Constructor = " ",
-                                Field = " ",
-                                Variable = " ",
-                                Class = " ",
-                                Interface = " ",
-                                Module = " ",
-                                Property = " ",
-                                Unit = " ",
-                                Value = " ",
-                                Enum = " ",
-                                Keyword = " ",
-                                Snippet = " ",
-                                Color = " ",
-                                File = " ",
-                                Reference = " ",
-                                Folder = " ",
-                                EnumMember = " ",
-                                Constant = " ",
-                                Struct = " ",
-                                Event = " ",
-                                Operator = " ",
-                                TypeParameter = " ",
-                            })[vim_item.kind]
+                                    Text = " ",
+                                    Method = " ",
+                                    Function = " ",
+                                    Constructor = " ",
+                                    Field = " ",
+                                    Variable = " ",
+                                    Class = " ",
+                                    Interface = " ",
+                                    Module = " ",
+                                    Property = " ",
+                                    Unit = " ",
+                                    Value = " ",
+                                    Enum = " ",
+                                    Keyword = " ",
+                                    Snippet = " ",
+                                    Color = " ",
+                                    File = " ",
+                                    Reference = " ",
+                                    Folder = " ",
+                                    EnumMember = " ",
+                                    Constant = " ",
+                                    Struct = " ",
+                                    Event = " ",
+                                    Operator = " ",
+                                    TypeParameter = " ",
+                                })[vim_item.kind]
 
                             -- Set source name
                             vim_item.menu = ({
-                                cmp_tabnine = "[AI]",
-                                nvim_lsp = "[LSP]",
-                                vsnip = "[VSnip]",
-                                buffer = "[Buffer]",
-                                cmdline = "[CMD]",
-                                path = "[Path]",
-                            })[entry.source.name]
+                                    cmp_tabnine = "[AI]",
+                                    nvim_lsp = "[LSP]",
+                                    vsnip = "[VSnip]",
+                                    buffer = "[Buffer]",
+                                    cmdline = "[CMD]",
+                                    path = "[Path]",
+                                })[entry.source.name]
 
                             -- Tabnine custom symbol and type
                             if entry.source.name == "cmp_tabnine" then
