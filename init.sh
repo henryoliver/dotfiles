@@ -7,9 +7,8 @@ ln -sv ~/.dotfiles/scripts ~/.scripts
 mkdir ~/.config
 mkdir ~/.config/nvim
 
-ln -sv ~/.dotfiles/bat ~/.config/bat
 ln -sv ~/.dotfiles/lsp ~/.config/lsp
 ln -sv ~/.dotfiles/kitty ~/.config/kitty
-ln -sv ~/.dotfiles/ranger ~/.config/ranger
-ln -sv ~/.dotfiles/nvim/init.lua ~/.config/nvim
 
+ln -sv ~/.dotfiles/nvim/init.lua ~/.config/nvim
+ln -sv ~/.dotfiles/nvim/lua ~/.config/nvim
