@@ -6,6 +6,7 @@ return {
         dependencies = {
             "nvim-lua/popup.nvim",
             "nvim-lua/plenary.nvim",
+            "debugloop/telescope-undo.nvim",
             "nvim-telescope/telescope-fzy-native.nvim",
             "nvim-telescope/telescope-file-browser.nvim",
         },
@@ -23,6 +24,9 @@ return {
                     file_ignore_patterns = { "^cypress/", "package-lock.json" },
                 },
                 extensions = {
+                    undo = {
+                        -- telescope-undo.nvim config, see below
+                    },
                     fzy_native = {
                         override_generic_sorter = true,
                         override_file_sorter = true,
@@ -37,6 +41,7 @@ return {
             })
 
             -- Plugins
+            telescope.load_extension("undo")
             telescope.load_extension("fzy_native")
             telescope.load_extension("file_browser")
         end,
@@ -55,6 +60,7 @@ return {
                 ["<Leader>sf"] = { "<Cmd>Telescope git_files<CR>", "Git Files" },
                 ["<Leader>sF"] = { "<Cmd>Telescope find_files<CR>", "Project Files" },
                 -- Others
+                ["<Leader>su"] = { "<Cmd>Telescope undo<CR>", "Undo" },
                 ["<Leader>sm"] = { "<Cmd>Telescope marks<CR>", "Marks" },
                 ["<Leader>sb"] = { "<Cmd>Telescope buffers<CR>", "Buffers" },
                 ["<Leader>sg"] = { "<Cmd>Telescope registers<CR>", "Registers" },

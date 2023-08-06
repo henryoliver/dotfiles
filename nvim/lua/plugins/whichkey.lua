@@ -23,22 +23,22 @@ return {
                 group = " ", -- symbol prepended to a group
             },
             window = {
-                border = "none", -- none, single, double, shadow
-                position = "bottom", -- bottom, top
-                margin = { 0, 0, 0, 0 }, -- extra window margin [top, right, bottom, left]
+                border = "none",          -- none, single, double, shadow
+                position = "bottom",      -- bottom, top
+                margin = { 0, 0, 0, 0 },  -- extra window margin [top, right, bottom, left]
                 padding = { 1, 1, 1, 1 }, -- extra window padding [top, right, bottom, left]
                 winblend = 0,
             },
             layout = {
-                height = { min = 4, max = 20 }, -- min and max height of the columns
-                width = { min = 20, max = 60 }, -- min and max width of the columns
-                spacing = 8, -- spacing between columns
-                align = "left", -- align columns left, center or right
+                height = { min = 4, max = 20 },                                           -- min and max height of the columns
+                width = { min = 20, max = 60 },                                           -- min and max width of the columns
+                spacing = 8,                                                              -- spacing between columns
+                align = "left",                                                           -- align columns left, center or right
             },
-            ignore_missing = true, -- enable this to hide mappings for which you didn't specify a label
+            ignore_missing = true,                                                        -- enable this to hide mappings for which you didn't specify a label
             hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
-            show_help = false, -- show help message on the command line when the popup is visible
-            triggers = "auto", -- automatically setup triggers
+            show_help = false,                                                            -- show help message on the command line when the popup is visible
+            triggers = "auto",                                                            -- automatically setup triggers
         },
     },
 }

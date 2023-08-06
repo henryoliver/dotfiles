@@ -6,6 +6,7 @@ local home = vim.fn.stdpath("config")
 vim.opt.backup = true
 vim.opt.writebackup = true
 vim.opt.undofile = true
+vim.opt.swapfile = false
 
 vim.opt.backupdir = home .. "/tmp/dir_backup/"
 vim.opt.directory = home .. "/tmp/dir_swap/," .. vim.o.directory
@@ -103,7 +104,7 @@ vim.opt.fillchars:append({ diff = "╱" })
 vim.opt.termguicolors = true
 vim.opt.completeopt = { "menuone", "noselect" }
 
-vim.opt.mouse = "a" -- allow the mouse to be used in neovim
+vim.opt.mouse = "a"           -- allow the mouse to be used in neovim
 vim.opt.shortmess:append("c") -- don't show redundant messages from ins-completion-menu
 vim.opt.shortmess:append("I") -- don't show the default intro message
 vim.opt.whichwrap:append("<,>,[,],h,l")

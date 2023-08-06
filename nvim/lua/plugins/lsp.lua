@@ -1,3 +1,4 @@
+local icons = require("util/icons")
 local map = vim.api.nvim_set_keymap
 local default_options = { noremap = true, silent = true }
 
@@ -74,18 +75,28 @@ return {
 
             -- Diagnostics
             vim.diagnostic.config({
-                signs = true,
-                underline = false,
+                signs = {
+                    active = true,
+                    values = {
+                        { name = "DiagnosticSignError", text = icons.error },
+                        { name = "DiagnosticSignWarn",  text = icons.warning },
+                        { name = "DiagnosticSignHint",  text = icons.hint },
+                        { name = "DiagnosticSignInfo",  text = icons.information },
+                    },
+                },
                 virtual_text = false,
                 update_in_insert = false,
+                underline = false,
+                severity_sort = true,
+                float = {
+                    focusable = true,
+                    style = "minimal",
+                    border = "rounded",
+                    source = "always",
+                    header = "",
+                    prefix = "",
+                },
             })
-
-            local signs = { Error = "", Warn = "", Hint = "", Info = "" }
-
-            for type, icon in pairs(signs) do
-                local hl = "DiagnosticSign" .. type
-                vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = nil })
-            end
         end,
         -- Mappings
         init = function()

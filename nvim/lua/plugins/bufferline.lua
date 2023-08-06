@@ -10,7 +10,9 @@ return {
         opts = {
             options = {
                 diagnostics = "nvim_lsp",
-                sort_by = "directory",
+                sort_by = "insert_after_current",
+                show_close_icon = false,
+                show_buffer_close_icons = false,
             },
         },
         -- Mappings
