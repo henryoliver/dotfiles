@@ -5,9 +5,6 @@ return {
     -- Bigfile
     { "LunarVim/bigfile.nvim", event = "BufReadPre" },
 
-    -- Editor Config
-    { "gpanders/editorconfig.nvim", event = "BufReadPost" },
-
     -- Colorizer
     { "norcalli/nvim-colorizer.lua", ft = { "css" }, opts = { "css" } },
 
