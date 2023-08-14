@@ -10,7 +10,7 @@ return {
         -- Mapping
         init = function()
             require("which-key").register({
-                ["<Leader>p"] = { name = "LSP Preview" },
+                ["<Leader>p"] = { name = "Preview" },
                 ["<Leader>pd"] = {
                     "<Cmd>lua require('goto-preview').goto_preview_definition()<CR>",
                     "Definition Preview",

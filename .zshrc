@@ -1,8 +1,12 @@
 # General
+export EDITOR="nvim"
+
+# Manually export others ENVs variables
+source ~/.config/.envs
 
 # Paths
 eval $(/opt/homebrew/bin/brew shellenv)
-fpath+=$HOME/.zsh/pure
+fpath+=($HOME/.zsh/pure)
 
 # Pure ZSH prompt
 autoload -U promptinit; promptinit

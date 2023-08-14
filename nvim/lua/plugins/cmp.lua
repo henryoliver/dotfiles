@@ -4,7 +4,7 @@ return {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
         dependencies = {
-            { "tzachar/cmp-tabnine",    build = "./install.sh" },
+            { "tzachar/cmp-tabnine", build = "./install.sh" },
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-vsnip",
             "hrsh7th/vim-vsnip",

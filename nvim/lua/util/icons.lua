@@ -3,5 +3,8 @@ return {
     warning = "",
     hint = "",
     information = "",
-    other = "﫠",
+    beaker = "",
+    constant = "",
+    paste = "",
+    dot_fill = ""
 }

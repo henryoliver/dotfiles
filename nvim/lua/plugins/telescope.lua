@@ -19,7 +19,7 @@ return {
                     prompt_prefix = "  " .. icons.get("telescope") .. "  ",
                     selection_caret = " ❯ ",
                     entry_prefix = "   ",
-                    layout_config = { prompt_position = "top" },
+                    layout_config = { prompt_position = "top", preview_width = 0.6 },
                     sorting_strategy = "ascending",
                     file_ignore_patterns = { "^cypress/", "package-lock.json" },
                 },
@@ -41,6 +41,7 @@ return {
             })
 
             -- Plugins
+            -- https://github.com/nvim-telescope/telescope.nvim/wiki/Extensions#different-plugins-with-telescope-integration
             telescope.load_extension("undo")
             telescope.load_extension("fzy_native")
             telescope.load_extension("file_browser")
@@ -54,8 +55,7 @@ return {
                 ["<Leader>s"] = { name = "Search" },
                 -- Words
                 ["<Leader>sw"] = { "<Cmd>Telescope live_grep<CR>", "Project Words" },
-                ["<Leader>sW"] = { "<Cmd>Telescope grep_string<CR>", "Project Current Word" },
-                ["<Leader>su"] = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Current Buffer Words" },
+                ["<Leader>sW"] = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Current Buffer Words" },
                 -- Files
                 ["<Leader>sf"] = { "<Cmd>Telescope git_files<CR>", "Git Files" },
                 ["<Leader>sF"] = { "<Cmd>Telescope find_files<CR>", "Project Files" },
@@ -63,8 +63,20 @@ return {
                 ["<Leader>su"] = { "<Cmd>Telescope undo<CR>", "Undo" },
                 ["<Leader>sm"] = { "<Cmd>Telescope marks<CR>", "Marks" },
                 ["<Leader>sb"] = { "<Cmd>Telescope buffers<CR>", "Buffers" },
-                ["<Leader>sg"] = { "<Cmd>Telescope registers<CR>", "Registers" },
+                ["<Leader>sr"] = { "<Cmd>Telescope registers<CR>", "Registers" },
+
+                -- LSP
+                ["<Leader>sd"] = { "<Cmd>Telescope diagnostics<CR>", "LSP Diagnostics" },
+
+                -- Git
+                ["<Leader>sg"] = { "<Cmd>Telescope git_bcommits<CR>", "Git Buffer Commits" },
             })
+
+            require("which-key").register({
+                -- Git
+                ["<Leader>s"] = { name = "Find" },
+                ["<Leader>sg"] = { "<Cmd>Telescope git_bcommits_range<CR>", "Git Commits by Range" },
+            }, { mode = "v" })
         end,
     },
 }

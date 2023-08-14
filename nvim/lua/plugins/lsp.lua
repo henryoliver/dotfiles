@@ -21,19 +21,16 @@ return {
             capabilities.textDocument.completion.completionItem.snippetSupport = true
 
             -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-            lspconfig.html.setup({ capabilities = capabilities })
+            lspconfig.html.setup({
+                capabilities = capabilities,
+                init_options = { provideFormatter = false },
+            })
             lspconfig.cssls.setup({
                 capabilities = capabilities,
                 settings = {
-                    css = {
-                        validate = false,
-                    },
-                    less = {
-                        validate = false,
-                    },
-                    scss = {
-                        validate = false,
-                    },
+                    css = { validate = false },
+                    less = { validate = false },
+                    scss = { validate = false },
                 },
             })
             lspconfig.tailwindcss.setup({
@@ -55,35 +52,18 @@ return {
                 },
             })
 
-            lspconfig.vuels.setup({})
-            lspconfig.svelte.setup({})
             lspconfig.tsserver.setup({})
-
-            lspconfig.jsonls.setup({ capabilities = capabilities })
+            lspconfig.jsonls.setup({
+                capabilities = capabilities,
+                init_options = { provideFormatter = false },
+            })
 
             lspconfig.pylsp.setup({})
-            lspconfig.vimls.setup({})
             lspconfig.bashls.setup({})
-            lspconfig.sumneko_lua.setup({
-                settings = {
-                    Lua = {
-                        -- Get the language server to recognize the `vim` global
-                        diagnostics = { globals = { "vim", "string", "require", "pairs" } },
-                    },
-                },
-            })
+            lspconfig.lua_ls.setup({})
 
             -- Diagnostics
             vim.diagnostic.config({
-                signs = {
-                    active = true,
-                    values = {
-                        { name = "DiagnosticSignError", text = icons.error },
-                        { name = "DiagnosticSignWarn",  text = icons.warning },
-                        { name = "DiagnosticSignHint",  text = icons.hint },
-                        { name = "DiagnosticSignInfo",  text = icons.information },
-                    },
-                },
                 virtual_text = false,
                 update_in_insert = false,
                 underline = false,
@@ -91,12 +71,20 @@ return {
                 float = {
                     focusable = true,
                     style = "minimal",
-                    border = "rounded",
+                    border = "rounded", -- none, single, double, rounded, solid
                     source = "always",
-                    header = "",
-                    prefix = "",
+                    header = nil,
+                    prefix = " ",
+                    suffix = " ",
                 },
             })
+
+            local signs = { Error = icons.error, Warn = icons.warning, Hint = icons.hint, Info = icons.information }
+
+            for type, icon in pairs(signs) do
+                local hl = "DiagnosticSign" .. type
+                vim.fn.sign_define(hl, { text = icon, texthl = hl, linehl = nil, numhl = nil, culhl = nil })
+            end
         end,
         -- Mappings
         init = function()

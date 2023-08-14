@@ -1,7 +1,8 @@
 local map = vim.api.nvim_set_keymap
 local default_options = { noremap = true, silent = true }
 
-local whichkey = require("which-key")
+-- Escape insert mode quickly
+map("i", "jj", "<Esc>", default_options)
 
 -- Use v to toggle visual mode.
 map("v", "v", "<Esc>", default_options)
@@ -36,16 +37,9 @@ map("n", "]l", "<Cmd>lnext<CR>", default_options)
 map("n", "Q", "@q", { noremap = true })
 map("v", "Q", "<Cmd>norm @q<CR>", { noremap = true })
 
--- Quickly edit/reload the vimrc file
-whichkey.register({
-    ["<Leader>v"] = { name = "Config" },
-    ["<Leader>ve"] = { "<Cmd>edit $MYVIMRC<CR>", "Edit Vim" },
-    ["<Leader>vs"] = { "<Cmd>source $MYVIMRC<CR>", "Source Vim" },
-})
-
 -- Close Buffers
-map("n", "<Leader>x", "<Cmd>bdelete<CR>", default_options)
-map("n", "<Leader>X", "<Cmd>bufdo! bdelete<CR>", default_options)
+map("n", "<Leader>x", "<Cmd>Bdelete<CR>", default_options)
+map("n", "<Leader>X", "<Cmd>bufdo! Bdelete<CR>", default_options)
 
 -- Write (Save) Buffers
 map("n", "<Leader>w", "<Cmd>update<CR>", { noremap = true })
