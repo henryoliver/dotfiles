@@ -87,10 +87,11 @@ vim.opt.linebreak = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 
-vim.opt.foldmethod = "indent"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevel = 1
+vim.opt.foldlevelstart = 99 -- Always start editing with all folds open
 vim.opt.foldcolumn = "0" -- No column signs next to line numbers
-vim.opt.foldlevelstart = 1
 
 vim.opt.joinspaces = false
 
@@ -104,7 +105,7 @@ vim.opt.fillchars:append({ diff = "╱" })
 vim.opt.termguicolors = true
 vim.opt.completeopt = { "menuone", "noselect" }
 
-vim.opt.mouse = "a"           -- allow the mouse to be used in neovim
+vim.opt.mouse = "a" -- allow the mouse to be used in neovim
 vim.opt.shortmess:append("c") -- don't show redundant messages from ins-completion-menu
 vim.opt.shortmess:append("I") -- don't show the default intro message
 vim.opt.whichwrap:append("<,>,[,],h,l")

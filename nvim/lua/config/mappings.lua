@@ -7,10 +7,6 @@ map("i", "jj", "<Esc>", default_options)
 -- Use v to toggle visual mode.
 map("v", "v", "<Esc>", default_options)
 
--- Search scrolling to the middle
-map("n", "n", "nzz", default_options)
-map("n", "N", "Nzz", default_options)
-
 -- Move to beginning/end of line
 map("n", "B", "^", default_options)
 map("n", "E", "$", default_options)
@@ -38,8 +34,8 @@ map("n", "Q", "@q", { noremap = true })
 map("v", "Q", "<Cmd>norm @q<CR>", { noremap = true })
 
 -- Close Buffers
-map("n", "<Leader>x", "<Cmd>Bdelete<CR>", default_options)
-map("n", "<Leader>X", "<Cmd>bufdo! Bdelete<CR>", default_options)
+map("n", "<Leader>x", "<Cmd>bdelete<CR>", default_options)
+map("n", "<Leader>X", "<Cmd>bufdo! bdelete<CR>", default_options)
 
 -- Write (Save) Buffers
 map("n", "<Leader>w", "<Cmd>update<CR>", { noremap = true })

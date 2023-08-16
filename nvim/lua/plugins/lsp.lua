@@ -7,60 +7,35 @@ return {
     {
         "neovim/nvim-lspconfig",
         event = "BufReadPre",
-        dependencies = {
-            -- Helpers to install LSPs and maintain them
-            "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
-        },
         config = function()
             local lspconfig = require("lspconfig")
             local cmp_nvim_lsp = require("cmp_nvim_lsp")
             local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+            -- Enable autoclompletion via nvim-cmp
             capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-            capabilities.textDocument.completion.completionItem.snippetSupport = true
 
             -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-            lspconfig.html.setup({
-                capabilities = capabilities,
-                init_options = { provideFormatter = false },
-            })
-            lspconfig.cssls.setup({
-                capabilities = capabilities,
-                settings = {
-                    css = { validate = false },
-                    less = { validate = false },
-                    scss = { validate = false },
-                },
-            })
-            lspconfig.tailwindcss.setup({
-                filetypes = { "css", "typescriptreact" },
-                settings = {
-                    tailwindCSS = {
-                        lint = {
-                            invalidScreen = "error",
-                            invalidVariant = "error",
-                            invalidTailwindDirective = "error",
-                            invalidApply = "error",
+            lspconfig.bashls.setup({})
 
-                            invalidConfigPath = "error",
-                            cssConflict = "warning",
-                            recommendedVariantOrder = "warning",
+            lspconfig.cssls.setup({ capabilities = capabilities })
+            lspconfig.html.setup({ capabilities = capabilities })
+            lspconfig.jsonls.setup({ capabilities = capabilities })
+
+            lspconfig.lua_ls.setup({
+                settings = {
+                    Lua = {
+                        diagnostics = {
+                            -- Get the language server to recognize the `vim` global
+                            globals = { "vim" },
                         },
-                        validate = true,
                     },
                 },
             })
-
-            lspconfig.tsserver.setup({})
-            lspconfig.jsonls.setup({
-                capabilities = capabilities,
-                init_options = { provideFormatter = false },
-            })
-
             lspconfig.pylsp.setup({})
-            lspconfig.bashls.setup({})
-            lspconfig.lua_ls.setup({})
+
+            lspconfig.tailwindcss.setup({})
+            lspconfig.tsserver.setup({})
 
             -- Diagnostics
             vim.diagnostic.config({
