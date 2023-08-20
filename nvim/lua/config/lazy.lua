@@ -1,3 +1,5 @@
+local icons = require("config.icons")
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -12,11 +14,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Map the leader key
-vim.g.mapleader = " "
-
 -- Plugin manager
 require("lazy").setup("plugins", {
+    concurrency = 4,
     defaults = {
         lazy = true,   -- should plugins be lazy-loaded?
         version = "*", -- enable this to try installing the latest stable versions of plugins
@@ -53,6 +53,32 @@ require("lazy").setup("plugins", {
                 "netrwSettings",
                 "netrwFileHandlers",
             },
+        },
+    },
+    ui = {
+        border = "rounded",
+        icons = {
+          lazy = icons.widget.lazy .. "  ",
+          not_loaded = icons.widget.inactive,
+          loaded = icons.widget.active,
+          task = icons.widget.task,
+          source = icons.widget.source,
+          start = icons.widget.start,
+          plugin = icons.widget.plugin,
+          event = icons.widget.event,
+          keys = icons.widget.keymap,
+          cmd = icons.widget.command,
+          ft = icons.widget.filetype,
+          init = icons.widget.config,
+          runtime = icons.widget.runtime,
+          import = icons.widget.import,
+          config = icons.widget.config,
+          list = {
+            icons.layout.list,
+            icons.layout.list,
+            icons.layout.list,
+            icons.layout.list,
+          },
         },
     },
 })

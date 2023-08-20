@@ -5,14 +5,12 @@
 --   /_/ /_/_____/_/ |_/_/ |_| /_/
 --
 
--- Plugin management via Lazy.nvim
-require("config/plugins")
+local modules = {
+  "config.opts",
+  "config.lazy",
+  "config.keys",
+}
 
--- NVim mappings
-require("config/mappings")
-
--- All non plugin related (nvim) options
-require("config/options")
-
--- NVim autocommands/autogroups
-require("config/autocmd")
+for _, module in ipairs(modules) do
+  require(module)
+end
