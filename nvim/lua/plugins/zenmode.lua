@@ -1,17 +1,9 @@
-local spec = {
+return {
+    -- ZenMode
     "folke/zen-mode.nvim",
+    lazy = true,
     cmd = "ZenMode",
-}
-
-function spec:init()
-    -- Mappings
-    vim.keymap.set("n", "<leader>z", ":ZenMode<cr>", { desc = "ZenMode" })
-end
-
-function spec:config()
-	local zen = require("zenmode")
-
-	zen.setup({
+    opts = {
         window = {
             backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
             -- height and width can be:
@@ -53,7 +45,9 @@ function spec:config()
                 font = "+6", -- font size increment
             },
         },
-	})
-end
-
-return spec
+    },
+    init = function()
+        -- Mappings
+        vim.keymap.set("n", "<leader>z", ":ZenMode<cr>", { desc = "ZenMode" })
+    end
+}

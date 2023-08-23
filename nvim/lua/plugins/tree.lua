@@ -1,108 +1,95 @@
-local spec = {
-	"nvim-tree/nvim-tree.lua",
-    lazy = false,
-}
+local nonicons_extention = require("nvim-nonicons.extentions.nvim-tree")
 
-function spec:config()
-	local nvimtree = require("nvim-tree")
-    local nvimtree_api = require("nvim-tree.api")
-    local colors = require("nord.colors")
-    local nonicons_extention = require("nvim-nonicons.extentions.nvim-tree")
+return {
+    "nvim-tree/nvim-tree.lua",
+    config = function()
+        local nvim_tree = require("nvim-tree")
 
-	nvimtree.setup({
-		filters = {
-			dotfiles = false,
-			custom = { "^\\.git$" },
-		},
-		disable_netrw = true,
-		hijack_netrw = true,
-		prefer_startup_root = true,
-		hijack_cursor = true,
-		hijack_unnamed_buffer_when_opening = false,
-		sync_root_with_cwd = false,
-		hijack_directories = {
-			enable = true,
-			auto_open = false,
-		},
-		update_focused_file = {
-			enable = true,
-			update_cwd = false,
-		},
-		view = {
-			adaptive_size = false,
-			side = "left",
-			width = 30,
-			hide_root_folder = false,
-		},
-		git = {
-			enable = true,
-			ignore = false,
-		},
-		filesystem_watchers = {
-			enable = true,
-		},
-		actions = {
-			open_file = {
-				resize_window = true,
-			},
-			change_dir = {
-				enable = false,
-				global = false,
-				restrict_above_cwd = true,
-			},
-		},
-		renderer = {
-			highlight_git = false,
-			highlight_opened_files = "none",
+        local colors = require("nord.colors")
 
-			root_folder_label = function(path)
-				local project = vim.fn.fnamemodify(path, ":t")
-				return string.upper(project)
-			end,
+        nvim_tree.setup({
+            filters = {
+                dotfiles = true,
+                custom = { "^\\.git$" },
+            },
+            disable_netrw = true,
+            hijack_netrw = true,
+            prefer_startup_root = true,
+            hijack_cursor = true,
+            hijack_unnamed_buffer_when_opening = false,
+            sync_root_with_cwd = false,
+            hijack_directories = {
+                enable = true,
+                auto_open = false,
+            },
+            update_focused_file = {
+                enable = true,
+                update_cwd = false,
+            },
+            view = {
+                adaptive_size = false,
+                side = "left",
+                width = 30,
+                hide_root_folder = false,
+            },
+            git = {
+                enable = true,
+                ignore = false,
+            },
+            filesystem_watchers = {
+                enable = true,
+            },
+            actions = {
+                open_file = {
+                    resize_window = true,
+                },
+                change_dir = {
+                    enable = false,
+                    global = false,
+                    restrict_above_cwd = true,
+                },
+            },
+            renderer = {
+                highlight_git = true,
+                highlight_opened_files = "none",
 
-			indent_markers = {
-				enable = true,
-			},
+                root_folder_label = function(path)
+                    local project = vim.fn.fnamemodify(path, ":t")
+                    return string.upper(project)
+                end,
 
-			icons = {
-				webdev_colors = true,
-				show = {
-					file = true,
-					folder = true,
-					folder_arrow = true,
-					git = true,
-				},
-                glyphs = nonicons_extention.glyphs,
-			},
-		},
-	})
+                indent_markers = {
+                    enable = true,
+                },
 
-    -- Opening nvim-tree At Neovim Startup
-    local function open_nvim_tree(data)
-      -- buffer is a directory
-      local directory = vim.fn.isdirectory(data.file) == 1
+                icons = {
+                    webdev_colors = true,
+                    show = {
+                        file = true,
+                        folder = true,
+                        folder_arrow = true,
+                        git = false,
+                    },
+                    glyphs = nonicons_extention.glyphs,
+                },
+            },
+        })
 
-      if not directory then
-        return
-      end
+        -- Highlights
+        vim.api.nvim_set_hl(0, "NvimTreeGitNew", { fg = colors.nord9_gui })
+        vim.api.nvim_set_hl(0, "NvimTreeGitDirty", { fg = colors.nord7_gui })
 
-      -- create a new, empty buffer
-      vim.cmd.enew()
+        vim.api.nvim_set_hl(0, "NvimTreeGitStaged", { fg = colors.nord10_gui })
+        vim.api.nvim_set_hl(0, "NvimTreeGitMerge", { fg = colors.nord11_gui })
+        vim.api.nvim_set_hl(0, "NvimTreeGitRenamed", { fg = colors.nord12_gui })
+        vim.api.nvim_set_hl(0, "NvimTreeGitDeleted", { fg = colors.nord14_gui })
+        vim.api.nvim_set_hl(0, "NvimTreeGitIgnored", { fg = colors.nord15_gui })
 
-      -- wipe the directory buffer
-      vim.cmd.bw(data.buf)
-
-      -- change to the directory
-      vim.cmd.cd(data.file)
-
-      -- open the tree
-      nvimtree_api.tree.open()
+        vim.api.nvim_set_hl(0, "NvimTreeModifiedFile", { fg = colors.none })
+        vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { fg = colors.none })
+    end,
+    init = function()
+        -- Mappings
+        vim.keymap.set("n", "<leader>r", ":NvimTreeToggle<cr>", { desc = "NvimTree", silent = true })
     end
-
-    vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-
-    -- Mappings
-    vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<cr>", { desc = "NvimTree", silent = true })
-end
-
-return spec
+}

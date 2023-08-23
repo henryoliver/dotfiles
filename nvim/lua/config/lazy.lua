@@ -17,10 +17,6 @@ vim.opt.rtp:prepend(lazypath)
 -- Plugin manager
 require("lazy").setup("plugins", {
     concurrency = 4,
-    defaults = {
-        lazy = true,   -- should plugins be lazy-loaded?
-        version = "*", -- enable this to try installing the latest stable versions of plugins
-    },
     install = { colorscheme = { "nord" } },
     checker = { enabled = true },
     change_detection = {
@@ -58,27 +54,27 @@ require("lazy").setup("plugins", {
     ui = {
         border = "rounded",
         icons = {
-          lazy = icons.widget.lazy .. "  ",
-          not_loaded = icons.widget.inactive,
-          loaded = icons.widget.active,
-          task = icons.widget.task,
-          source = icons.widget.source,
-          start = icons.widget.start,
-          plugin = icons.widget.plugin,
-          event = icons.widget.event,
-          keys = icons.widget.keymap,
-          cmd = icons.widget.command,
-          ft = icons.widget.filetype,
-          init = icons.widget.config,
-          runtime = icons.widget.runtime,
-          import = icons.widget.import,
-          config = icons.widget.config,
-          list = {
-            icons.layout.list,
-            icons.layout.list,
-            icons.layout.list,
-            icons.layout.list,
-          },
+            lazy = icons.widget.lazy .. "  ",
+            not_loaded = icons.widget.inactive,
+            loaded = icons.widget.active,
+            task = icons.widget.task,
+            source = icons.widget.source,
+            start = icons.widget.start,
+            plugin = icons.widget.plugin,
+            event = icons.widget.event,
+            keys = icons.widget.keymap,
+            cmd = icons.widget.command,
+            ft = icons.widget.filetype,
+            init = icons.widget.config,
+            runtime = icons.widget.runtime,
+            import = icons.widget.import,
+            config = icons.widget.config,
+            list = {
+                icons.layout.list,
+                icons.layout.list,
+                icons.layout.list,
+                icons.layout.list,
+            },
         },
     },
 })

@@ -1,17 +1,7 @@
-local spec = {
-	"nvim-treesitter/nvim-treesitter",
-	build = ":TSUpdateSync",
-	cmd = "TSUpdateSync",
-	event = {
-		"BufReadPre",
-		"BufNewFile",
-	},
-}
-
-function spec:config()
-	local treesitter = require("nvim-treesitter.configs")
-
-	treesitter.setup({
+return {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdateSync",
+    opts = {
         ensure_installed = {
             "bash",
             "css",
@@ -37,12 +27,12 @@ function spec:config()
             "vim",
         },
         auto_install = true,
-		highlight = {
-			enable = true,
-		},
-		indent = {
-			enable = true,
-		},
+        highlight = {
+            enable = true,
+        },
+        indent = {
+            enable = true,
+        },
         incremental_selection = {
             enable = true,
             keymaps = {
@@ -56,7 +46,5 @@ function spec:config()
             enable = true,
             enable_autocmd = false,
         },
-	})
-end
-
-return spec
+    }
+}

@@ -1,0 +1,17 @@
+return {
+    -- Autopairs
+    {
+        "windwp/nvim-autopairs",
+        lazy = true,
+        event = "InsertEnter",
+        dependencies = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig", "hrsh7th/nvim-cmp" },
+        opts = {
+            check_ts = true,
+            disable_filetype = { "TelescopePrompt", "vim" },
+            ts_config = {
+                javascript = { "template_string" },
+            },
+            enable_check_bracket_line = false,
+        },
+    },
+}

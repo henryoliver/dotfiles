@@ -1,97 +1,111 @@
-local spec = {
-	"neovim/nvim-lspconfig",
-	event = {
-		"BufReadPre",
-		"BufNewFile",
-	},
-}
+return {
+    -- LSP
+    "neovim/nvim-lspconfig",
+    dependencies = {
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+    },
+    config = function()
+        local icons = require("config.icons")
+        local lspconfig = require("lspconfig")
 
-function spec:init()
-    local icons = require("config.icons")
+        -- :lua =vim.lsp.get_active_clients()[1].server_capabilities
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+        -- local on_attach = function(client, bufnr)
+        --     client.server_capabilities.semanticTokensProvider = nil
+        -- end
 
-	vim.diagnostic.config({
-		severity_sort = true,
-		virtual_text = {
-			spacing = 2,
-			prefix = " " .. icons.layout.list,
-			suffix = " ",
-		},
-		float = {
-			source = true,
-			border = "rounded",
-			header = "",
-			prefix = " " .. icons.layout.list .. " ",
-			suffix = " ",
-		},
-	})
+        -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+        local servers = {
+            "html",
+            "cssls",
+            "tailwindcss",
+            "tsserver",
+            "jsonls",
+            "pylsp",
+            "vimls",
+            "bashls",
+            "lua_ls",
+        }
+        for _, lsp in ipairs(servers) do
+            lspconfig[lsp].setup {
+                -- on_attach = on_attach,
+                capabilities = capabilities,
+            }
+        end
 
-    local signs = { 
-        Error = icons.log.error, 
-        Warn = icons.log.warning, 
-        Hint = icons.log.hint, 
-        Info = icons.log.information
-    }
+        -- Custom settings
+        lspconfig.tailwindcss.setup({
+            capabilities = capabilities,
+            filetypes = { "css", "typescriptreact" },
+            settings = {
+                tailwindCSS = {
+                    lint = {
+                        invalidScreen = "error",
+                        invalidVariant = "error",
+                        invalidTailwindDirective = "error",
+                        invalidApply = "error",
 
-    for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, linehl = hl, numhl = nil, culhl = nil })
-    end
-end
-
-function spec:config()
-	local cmp = require("cmp_nvim_lsp")
-	local lspconfig = require("lspconfig")
-	local windows = require("lspconfig.ui.windows")
-
-	windows.default_options.border = "rounded"
-	lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup, function(config)
-		config.capabilities = vim.tbl_deep_extend("force", config.capabilities, cmp.default_capabilities())
-		config.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-		config.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
-	end)
-
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-    lspconfig.bashls.setup({ capabilities = capabilities })
-
-    lspconfig.cssls.setup({ capabilities = capabilities })
-    lspconfig.html.setup({ capabilities = capabilities })
-    lspconfig.jsonls.setup({ capabilities = capabilities })
-
-    lspconfig.lua_ls.setup({})
-    lspconfig.pylsp.setup({ capabilities = capabilities  })
-
-    lspconfig.tailwindcss.setup({
-        capabilities = capabilities,
-        filetypes = { "css", "typescriptreact" },
-        settings = {
-            tailwindCSS = {
-                lint = {
-                    invalidScreen = "error",
-                    invalidVariant = "error",
-                    invalidTailwindDirective = "error",
-                    invalidApply = "error",
-
-                    invalidConfigPath = "error",
-                    cssConflict = "warning",
-                    recommendedVariantOrder = "warning",
+                        invalidConfigPath = "error",
+                        cssConflict = "warning",
+                        recommendedVariantOrder = "warning",
+                    },
+                    validate = true,
                 },
-                validate = true,
             },
-        },
-    })
-    lspconfig.tsserver.setup({ capabilities = capabilities })
+        })
+        lspconfig.lua_ls.setup({
+            capabilities = capabilities,
+            settings = {
+                Lua = {
+                    -- Get the language server to recognize the `vim` global
+                    diagnostics = { globals = { "vim", "string", "require", "pairs" } },
+                },
+            },
+        })
 
-    -- Mappings
-    vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, { desc = "Hover" })
-    vim.keymap.set("n", "<leader>ln", vim.lsp.buf.rename, { desc = "Rename" })
-    vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Action" })
-    vim.keymap.set("n", "<leader>lr", vim.lsp.buf.references, { desc = "References" })
-    vim.keymap.set("n", "<leader>ld", function() vim.lsp.buf.definition({ reuse_win = true }) end, { desc = "Definition"})
-    vim.keymap.set("n", "<leader>lD", vim.diagnostic.open_float, { desc = "Diagnostic" })
-    vim.keymap.set("n", "<leader>lc", vim.lsp.buf.declaration, { desc = "Declaration" })
-    vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, { desc = "Signature" })
-    vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, { desc = "Format" })
-    vim.keymap.set("n", "<leader>ly", vim.lsp.buf.type_definition, { desc = "Type Definition" })
-end
+        -- Diagnostics
+        vim.diagnostic.config({
+            signs = true,
+            underline = false,
+            virtual_text = false,
+            severity_sort = false,
+            update_in_insert = false,
+            float = {
+                focusable = true,
+                style = "minimal",
+                border = "rounded", -- none, single, double, rounded, solid
+                source = "always",
+                header = " Diagnostics",
+                prefix = " ",
+                suffix = " ",
+            },
+        })
 
-return spec
+        local signs = {
+            Error = icons.log.error,
+            Warn = icons.log.warning,
+            Hint = icons.log.hint,
+            Info = icons.log.information
+        }
+
+        for type, icon in pairs(signs) do
+            local hl = "DiagnosticSign" .. type
+            vim.fn.sign_define(hl, { text = icon, texthl = hl, linehl = nil, numhl = nil, culhl = nil })
+        end
+    end,
+    init = function()
+        -- Mappings
+        vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, { desc = "Hover" })
+        vim.keymap.set("n", "<leader>ln", vim.lsp.buf.rename, { desc = "Rename" })
+        vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Action" })
+        vim.keymap.set("n", "<leader>lr", vim.lsp.buf.references, { desc = "References" })
+        vim.keymap.set("n", "<leader>ld", function() vim.lsp.buf.definition({ reuse_win = true }) end,
+            { desc = "Definition" })
+        vim.keymap.set("n", "<leader>lD", vim.diagnostic.open_float, { desc = "Diagnostic" })
+        vim.keymap.set("n", "<leader>lc", vim.lsp.buf.declaration, { desc = "Declaration" })
+        vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, { desc = "Signature" })
+        vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, { desc = "Format" })
+        vim.keymap.set("n", "<leader>ly", vim.lsp.buf.type_definition, { desc = "Type Definition" })
+    end
+}
