@@ -2,23 +2,22 @@ return {
     -- Staline
     "tamton-aquib/staline.nvim",
     config = function()
-        local staline  = require('staline')
-        local stabline = require('stabline')
+        local staline  = require("staline")
+        local stabline = require("stabline")
 
         local colors   = require("nord.colors")
         local icons    = require("config.icons")
-        local nonicons = require("nvim-nonicons.mapping")
 
         staline.setup({
             sections = {
-                left = { '  ', 'mode', ' ', 'branch', ' ', 'lsp' },
+                left = { "  ", "mode", " ", "branch", " ", "lsp" },
                 mid = {},
-                right = { 'file_name', 'line_column' }
+                right = { "file_name", "line_column" }
             },
             mode_colors = {
                 i = colors.nord3_gui_bright,
-                n = colors.nord3_gui,
-                c = colors.nord3_gui,
+                n = colors.nord3_gui_bright,
+                c = colors.nord3_gui_bright,
                 v = colors.nord3_gui_bright
             },
             defaults = {
@@ -33,27 +32,27 @@ return {
                 Hint = icons.log.hint
             },
             file_icons = {
-                typescript = ' ',
-                css = ' ',
-                scss = ' ',
-                javascript = ' ',
-                javascriptreact = ' ',
-                html = ' ',
-                python = ' ',
-                java = ' ',
-                markdown = ' ',
-                sh = ' ',
-                zsh = ' ',
-                vim = ' ',
-                lua = ' ',
-                haskell = ' ',
-                conf = ' ',
-                ruby = ' ',
-                txt = ' ',
-                rust = ' ',
-                cpp = ' ',
-                c = ' ',
-                go = ' ',
+                typescript = " ",
+                css = " ",
+                scss = " ",
+                javascript = " ",
+                javascriptreact = " ",
+                html = " ",
+                python = " ",
+                java = " ",
+                markdown = " ",
+                sh = " ",
+                zsh = " ",
+                vim = " ",
+                lua = " ",
+                haskell = " ",
+                conf = " ",
+                ruby = " ",
+                txt = " ",
+                rust = " ",
+                cpp = " ",
+                c = " ",
+                go = " ",
             }
         })
         stabline.setup({
@@ -68,7 +67,7 @@ return {
             -- stab_bg  = Default is darker version of bg.,
 
             font_active = "bold",
-            exclude_fts = { 'NvimTree', 'dashboard', 'lir', 'terminal' },
+            exclude_fts = { "NvimTree", "dashboard", "lir", "terminal", "Preview" },
             stab_start  = "", -- The starting of stabline
             stab_end    = "",
             numbers     = nil,

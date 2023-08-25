@@ -1,9 +1,4 @@
 # General
-export EDITOR="nvim"
-
-
-# Manually export others ENVs variables
-source ~/.config/.env
 
 # Paths
 eval $(/opt/homebrew/bin/brew shellenv)

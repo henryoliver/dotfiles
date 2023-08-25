@@ -7,6 +7,9 @@ return {
         local nord = require("nord")
         local colors = require("nord.colors")
 
+        -- Load the colorscheme
+        nord.set()
+
         vim.g.nord_bold = true
         vim.g.nord_italic = true
 
@@ -21,17 +24,19 @@ return {
 
         -- https://github.com/shaunsingh/nord.nvim/blob/master/lua/nord/colors.lua
         -- Search highlights
-        vim.api.nvim_set_hl(0, "Search", { fg = colors.nord6_gui, bg = colors.nord2_gui })
-        vim.api.nvim_set_hl(0, "IncSearch", { fg = colors.nord6_gui, bg = colors.nord3_gui_bright })
-        vim.api.nvim_set_hl(0, "Substitute", { fg = colors.nord6_gui, bg = colors.nord1_gui, bold = true })
+        vim.api.nvim_set_hl(0, "Search", { bg = colors.nord3_gui })
+        vim.api.nvim_set_hl(0, "IncSearch", { bg = colors.nord3_gui })
+        vim.api.nvim_set_hl(0, "CurSearch", { bg = colors.nord3_gui })
+        vim.api.nvim_set_hl(0, "Substitute", { bg = colors.nord3_gui_bright, bold = true })
+
+        vim.api.nvim_set_hl(0, "MsgArea", { fg = colors.nord9_gui, bold = true })
+        -- vim.api.nvim_set_hl(0, "Folded", { fg = colors.nord1_gui, bg = colors.nord1_gui, italic = true })
+        -- vim.api.nvim_set_hl(0, "StatusLine", { fg = colors.nord1_gui, bg = colors.nord1_gui, italic = true })
 
         -- Diff view
-        vim.api.nvim_set_hl(0, "DiffAdd", { fg = colors.nord14_gui, bg = colors.nord1_gui, bold = true })
-        vim.api.nvim_set_hl(0, "DiffChange", { fg = colors.nord13_gui, bg = colors.nord1_gui, bold = true })
-        vim.api.nvim_set_hl(0, "DiffDelete", { fg = colors.nord11_gui, bg = colors.nord1_gui, bold = true })
-        vim.api.nvim_set_hl(0, "DiffText", { fg = colors.nord15_gui, bg = colors.nord1_gui, bold = true })
-
-        -- Load the colorscheme
-        nord.set()
+        vim.api.nvim_set_hl(0, "DiffAdd", { fg = colors.nord14_gui, bg = colors.none, bold = true })
+        vim.api.nvim_set_hl(0, "DiffChange", { fg = colors.nord13_gui, bg = colors.none, bold = true })
+        vim.api.nvim_set_hl(0, "DiffDelete", { fg = colors.nord11_gui, bg = colors.none, bold = true })
+        vim.api.nvim_set_hl(0, "DiffText", { fg = colors.nord15_gui, bg = colors.none, bold = true })
     end
 }
