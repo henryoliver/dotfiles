@@ -3,7 +3,7 @@ return {
     {
         "TimUntersberger/neogit",
         lazy = true,
-        cmd = "Neogit",
+        keys = "<leader>g",
         dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
         opts = {
             signs = {
@@ -17,7 +17,15 @@ return {
         },
         init = function()
             -- Mappings
-            vim.keymap.set("n", "<leader>gn", ":Neogit<cr>", { desc = "Neogit" })
+            local wk = require("which-key")
+
+            wk.register({
+                g = {
+                    name = "Git",
+                    n = { ":Neogit<CR>", "Neogit" },
+                },
+                { prefix = "<leader>", mode = "n" }
+            })
         end,
     },
     {
@@ -27,16 +35,22 @@ return {
         dependencies = "nvim-lua/plenary.nvim",
         config = true,
         init = function()
+            -- Mappings
+            local wk = require("which-key")
             local gitsigns = require("gitsigns")
 
-            -- Mappings
-            -- vim.keymap.set("n", "<leader>gb", gitsigns.toggle_current_line_blame, { desc = "Blame Toggle" })
-            vim.keymap.set("n", "<leader>gb", function() gitsigns.blame_line { full = true } end,
-                { desc = "Blame Toggle" })
-
-            vim.keymap.set("n", "<leader>ghp", gitsigns.preview_hunk, { desc = "Hunk Preview" })
-            vim.keymap.set("n", "<leader>ghd", gitsigns.diffthis, { desc = "Hunk Diff" })
-            vim.keymap.set("n", "<leader>ghr", gitsigns.reset_hunk, { desc = "Reset Hunk" })
+            wk.register({
+                g = {
+                    b = { gitsigns.toggle_current_line_blame, "Blame Toggle" },
+                    h = {
+                        name = "Hunk",
+                        p = { gitsigns.preview_hunk, "Hunk Preview" },
+                        d = { gitsigns.diffthis, "Hunk Diff" },
+                        r = { gitsigns.reset_hunk, "Reset Hunk" },
+                    }
+                },
+                { prefix = "<leader>", mode = "n" }
+            })
 
             vim.keymap.set("n", "[h", gitsigns.next_hunk)
             vim.keymap.set("n", "]h", gitsigns.prev_hunk)
@@ -45,11 +59,7 @@ return {
     {
         "sindrets/diffview.nvim",
         lazy = true,
-        cmd = {
-            "DiffviewOpen",
-            "DiffviewClose",
-            "DiffviewFileHistory",
-        },
+        keys = "<leader>g",
         dependencies = "nvim-lua/plenary.nvim",
         opts = {
             diff_binaries = false,
@@ -58,34 +68,52 @@ return {
         },
         init = function()
             -- Mappings
-            vim.keymap.set("n", "<leader>gdo", ":DiffviewOpen<cr>", { desc = "Merge Tool" })
-            vim.keymap.set("n", "<leader>gdh", ":DiffviewFileHistory<cr>", { desc = "File History Branch" })
-            vim.keymap.set("n", "<leader>gdf", ":DiffviewFileHistory %<cr>", { desc = "File History File" })
-            vim.keymap.set("n", "<leader>gdx", ":DiffviewClose<cr>", { desc = "Close the current diffview" })
+            local wk = require("which-key")
+
+            wk.register({
+                g = {
+                    d = {
+                        name = "Diff",
+                        o = { ":DiffviewOpen<cr>", "Merge Tool" },
+                        h = { ":DiffviewFileHistory<cr>", "File History Branch" },
+                        f = { ":DiffviewFileHistory %<cr>", "File History" },
+                        c = { ":DiffviewClose<cr>", "Close" },
+                    }
+                },
+                { prefix = "<leader>", mode = "n" }
+            })
         end,
     },
     {
         "ruifm/gitlinker.nvim",
         lazy = true,
-        keys = { "<leader>gl", { "<leader>gl", mode = "v" } },
+        keys = "<leader>g",
         dependencies = "nvim-lua/plenary.nvim",
         opts = {
             mappings = nil,
         },
         init = function()
+            -- Mappings
+            local wk = require("which-key")
             local gitlinker = require('gitlinker')
 
-            -- Mappings
-            vim.keymap.set("n", "<leader>glh",
-                function() gitlinker.get_repo_url({ action_callback = require('gitlinker.actions').open_in_browser }) end,
-                { desc = "Home URL" })
-            vim.keymap.set("n", "<leader>gll",
-                function()
-                    gitlinker.get_buf_range_url('n',
-                        { action_callback = require('gitlinker.actions').open_in_browser })
-                end,
-                { desc = "Buffer Line URL" })
+            wk.register({
+                g = {
+                    l = {
+                        name = "Linker",
+                        h = {
+                            function()
+                                gitlinker.get_repo_url({
+                                    action_callback = require('gitlinker.actions').open_in_browser })
+                            end, "Home URL" },
+                        l = { function()
+                            gitlinker.get_buf_range_url('n',
+                                { action_callback = require('gitlinker.actions').open_in_browser })
+                        end, "Buffer Line URL" },
+                    }
+                },
+                { prefix = "<leader>", mode = "n" }
+            })
         end,
     },
 }
-

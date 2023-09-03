@@ -2,8 +2,7 @@ return {
     -- Autopairs
     {
         "windwp/nvim-autopairs",
-        lazy = true,
-        event = "InsertEnter",
+        event = "VeryLazy",
         dependencies = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig", "hrsh7th/nvim-cmp" },
         opts = {
             check_ts = true,

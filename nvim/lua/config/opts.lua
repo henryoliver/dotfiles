@@ -14,6 +14,7 @@ vim.opt.undodir = home .. "/tmp/dir_undo/"
 
 vim.opt.lazyredraw = true
 vim.opt.updatetime = 100
+vim.opt.timeout = true
 vim.opt.timeoutlen = 300
 vim.opt.ttimeoutlen = 0
 
@@ -76,7 +77,7 @@ vim.opt.cmdheight = 1
 vim.opt.cmdwinheight = 1
 
 vim.opt.laststatus = 2
-vim.opt.showtabline = 2
+vim.opt.showtabline = 0
 
 vim.opt.showcmd = false
 vim.opt.showmode = false

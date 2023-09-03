@@ -82,7 +82,7 @@ return {
                     if entry.source.name == "cmp_tabnine" then
                         local detail = (entry.completion_item.labelDetails or {}).detail
 
-                        vim_item.kind = " "
+                        vim_item.kind = ""
 
                         if detail and detail:find('.*%%.*') then
                             vim_item.kind = vim_item.kind .. ' ' .. detail

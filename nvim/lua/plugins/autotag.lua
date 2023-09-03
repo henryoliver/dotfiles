@@ -3,7 +3,6 @@ return {
     {
         "windwp/nvim-ts-autotag",
         lazy = true,
-        dependencies = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig" },
         ft = {
             "html",
             "javascript",
@@ -15,6 +14,7 @@ return {
             "tsx",
             "jsx",
         },
+        dependencies = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig" },
         opts = {
             filetypes = {
                 "html",

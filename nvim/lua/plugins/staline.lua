@@ -2,11 +2,9 @@ return {
     -- Staline
     "tamton-aquib/staline.nvim",
     config = function()
-        local staline  = require("staline")
-        local stabline = require("stabline")
-
-        local colors   = require("nord.colors")
-        local icons    = require("config.icons")
+        local staline = require("staline")
+        local colors  = require("nord.colors")
+        local icons   = require("config.icons")
 
         staline.setup({
             sections = {
@@ -31,46 +29,7 @@ return {
                 Warn = icons.log.warning,
                 Hint = icons.log.hint
             },
-            file_icons = {
-                typescript = " ",
-                css = " ",
-                scss = " ",
-                javascript = " ",
-                javascriptreact = " ",
-                html = " ",
-                python = " ",
-                java = " ",
-                markdown = " ",
-                sh = " ",
-                zsh = " ",
-                vim = " ",
-                lua = " ",
-                haskell = " ",
-                conf = " ",
-                ruby = " ",
-                txt = " ",
-                rust = " ",
-                cpp = " ",
-                c = " ",
-                go = " ",
-            }
-        })
-        stabline.setup({
-            style       = "bar", -- others: arrow, slant, bubble
-            stab_left   = "┃",
-            stab_right  = " ",
-
-            fg          = colors.nord4_gui,
-            -- bg       = Default is bg of "Normal".
-            inactive_bg = colors.nord0_gui,
-            inactive_fg = colors.nord2_gui,
-            -- stab_bg  = Default is darker version of bg.,
-
-            font_active = "bold",
-            exclude_fts = { "NvimTree", "dashboard", "lir", "terminal", "Preview" },
-            stab_start  = "", -- The starting of stabline
-            stab_end    = "",
-            numbers     = nil,
+            file_icons = icons.file
         })
     end
 }

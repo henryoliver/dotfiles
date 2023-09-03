@@ -96,16 +96,27 @@ return {
     end,
     init = function()
         -- Mappings
-        vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, { desc = "Hover" })
-        vim.keymap.set("n", "<leader>ln", vim.lsp.buf.rename, { desc = "Rename" })
-        vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Action" })
-        vim.keymap.set("n", "<leader>lr", vim.lsp.buf.references, { desc = "References" })
-        vim.keymap.set("n", "<leader>ld", function() vim.lsp.buf.definition({ reuse_win = true }) end,
-            { desc = "Definition" })
-        vim.keymap.set("n", "<leader>lD", vim.diagnostic.open_float, { desc = "Diagnostic" })
-        vim.keymap.set("n", "<leader>lc", vim.lsp.buf.declaration, { desc = "Declaration" })
-        vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, { desc = "Signature" })
-        vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, { desc = "Format" })
-        vim.keymap.set("n", "<leader>ly", vim.lsp.buf.type_definition, { desc = "Type Definition" })
+        local wk = require("which-key")
+
+        wk.register({
+            l = {
+                name = "LSP",
+                h = { vim.lsp.buf.hover, "Hover" },
+                n = { vim.lsp.buf.rename, "Rename" },
+                a = { vim.lsp.buf.code_action, "Action" },
+                r = { vim.lsp.buf.references, "References" },
+                d = { function() vim.lsp.buf.definition({ reuse_win = true }) end,
+                    "Definition" },
+                D = { vim.diagnostic.open_float, "Diagnostic" },
+                c = { vim.lsp.buf.declaration, "Declaration" },
+                s = { vim.lsp.buf.signature_help, "Signature" },
+                f = { function() vim.lsp.buf.format({ async = true }) end, "Format" },
+                y = { vim.lsp.buf.type_definition, "Type Definition" },
+            },
+            { prefix = "<leader>", mode = "n" }
+        })
+
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
     end
 }

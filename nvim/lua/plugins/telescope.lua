@@ -1,9 +1,11 @@
 return {
     -- Telescope
     "nvim-telescope/telescope.nvim",
+    event = "VeryLazy",
     dependencies = {
         "nvim-lua/popup.nvim",
         "nvim-lua/plenary.nvim",
+        "yamatsum/nvim-nonicons",
         "debugloop/telescope-undo.nvim",
         "nvim-telescope/telescope-fzy-native.nvim",
         "nvim-telescope/telescope-file-browser.nvim",
@@ -59,24 +61,30 @@ return {
     end,
     init = function()
         -- Mappings
-        -- Explore Browser
-        vim.keymap.set("n", "<leader>e", ":Telescope file_browser path=%:p:h select_buffer=true<cr>",
-            { desc = "Explore" })
-        -- Words
-        vim.keymap.set("n", "<leader>sw", ":Telescope live_grep<cr>", { desc = "Project Words" })
-        vim.keymap.set("n", "<leader>sW", ":Telescope current_buffer_fuzzy_find<cr>", { desc = "Current Buffer Words" })
-        -- Files
-        vim.keymap.set("n", "<leader>sf", ":Telescope git_files<cr>", { desc = "Git Files" })
-        vim.keymap.set("n", "<leader>sF", ":Telescope find_files<cr>", { desc = "Project Files" })
-        -- Others
-        vim.keymap.set("n", "<leader>su", ":Telescope undo<cr>", { desc = "Undo" })
-        vim.keymap.set("n", "<leader>sm", ":Telescope marks<cr>", { desc = "Marks" })
-        vim.keymap.set("n", "<leader>sb", ":Telescope buffers<cr>", { desc = "Buffers" })
-        vim.keymap.set("n", "<leader>sr", ":Telescope registers<cr>", { desc = "Registers" })
-        -- LSP
-        vim.keymap.set("n", "<leader>sd", ":Telescope diagnostics<cr>", { desc = "LSP Diagnostics" })
-        -- Git
-        vim.keymap.set("n", "<leader>sg", ":Telescope git_bcommits<cr>", { desc = "Git Buffer Commits" })
-        vim.keymap.set("v", "<leader>sg", ":Telescope git_bcommits_range<cr>", { desc = "Git Commits by Range" })
+        local wk = require("which-key")
+
+        wk.register({
+            -- Explore Browser
+            e = { ":Telescope file_browser path=%:p:h select_buffer=true<cr>", "Explore" },
+            s = {
+                name = "Search",
+                -- Words
+                w = { ":Telescope live_grep<cr>", "Project Words" },
+                W = { ":Telescope current_buffer_fuzzy_find<cr>", "Current Buffer Words" },
+                -- Files
+                f = { ":Telescope git_files<cr>", "Git Files" },
+                F = { ":Telescope find_files<cr>", "Project Files" },
+                -- Others
+                u = { ":Telescope undo<cr>", "Undo" },
+                m = { ":Telescope marks<cr>", "Marks" },
+                b = { ":Telescope buffers<cr>", "Buffers" },
+                r = { ":Telescope registers<cr>", "Registers" },
+                -- LSP
+                d = { ":Telescope diagnostics<cr>", "LSP Diagnostics" },
+                -- Git
+                g = { ":Telescope git_bcommits<cr>", "Git Buffer Commits" },
+            },
+            { prefix = "<leader>", mode = "n" }
+        })
     end
 }

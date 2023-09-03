@@ -48,6 +48,12 @@ return {
     },
     init = function()
         -- Mappings
-        vim.keymap.set("n", "<leader>z", ":ZenMode<cr>", { desc = "ZenMode" })
+        local wk = require("which-key")
+
+        wk.register({
+            -- Explore Browser
+            z = { ":ZenMode<cr>", "ZenMode" },
+            { prefix = "<leader>", mode = "n" }
+        })
     end
 }

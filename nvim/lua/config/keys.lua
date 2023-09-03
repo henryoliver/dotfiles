@@ -10,13 +10,6 @@ vim.keymap.set("v", "v", "<Esc>", default_options)
 vim.keymap.set("n", "B", "^", default_options)
 vim.keymap.set("n", "E", "$", default_options)
 
--- Search scrolling to the middle
-vim.keymap.set("n", "n", "nzz", default_options)
-vim.keymap.set("n", "N", "Nzz", default_options)
-
--- Preserve original clipboard when pasting selected words.
-vim.keymap.set("x", "p", '"_dP', default_options)
-
 -- Apply Macros with Q
 -- Hit qq to record, q to stop recording, and Q to apply.
 vim.keymap.set("n", "Q", "@q", { noremap = true })

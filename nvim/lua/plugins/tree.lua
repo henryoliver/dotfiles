@@ -1,11 +1,12 @@
-local nonicons_extention = require("nvim-nonicons.extentions.nvim-tree")
-
 return {
     "nvim-tree/nvim-tree.lua",
+    event = "VeryLazy",
+    dependencies = "yamatsum/nvim-nonicons",
     config = function()
         local nvim_tree = require("nvim-tree")
 
         local colors = require("nord.colors")
+        local nonicons_extention = require("nvim-nonicons.extentions.nvim-tree")
 
         nvim_tree.setup({
             filters = {
@@ -90,6 +91,12 @@ return {
     end,
     init = function()
         -- Mappings
-        vim.keymap.set("n", "<leader>r", ":NvimTreeToggle<cr>", { desc = "NvimTree", silent = true })
+        local wk = require("which-key")
+
+        wk.register({
+            -- Explore Browser
+            r = { ":NvimTreeToggle<cr>", "NvimTree" },
+            { prefix = "<leader>", mode = "n" }
+        })
     end
 }

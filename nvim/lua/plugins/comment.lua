@@ -2,8 +2,7 @@ return {
     -- Comment
     {
         "numToStr/Comment.nvim",
-        lazy = true,
-        event = "BufReadPost",
+        event = "VeryLazy",
         dependencies = "JoosepAlviste/nvim-ts-context-commentstring",
         config = function()
             local comment = require("Comment")

@@ -5,12 +5,18 @@ return {
     keys = "<leader>f",
     dependencies = "nvim-lua/plenary.nvim",
     init = function()
+        -- Mappings
+        local wk = require("which-key")
         local spectre = require("spectre")
 
-        -- Mappings
-        vim.keymap.set("n", "<leader>fp", spectre.open, { desc = "Project-Wide" })
-        vim.keymap.set("n", "<leader>fb", spectre.open_file_search, { desc = "Buffer" })
-        vim.keymap.set("n", "<leader>fw", function() spectre.open_visual({ select_word = true }) end,
-            { desc = "Current Word" })
+        wk.register({
+            p = {
+                name = "Preview",
+                p = { spectre.open, "Project-Wide" },
+                b = { spectre.open_file_search, "Buffer" },
+                w = { function() spectre.open_visual({ select_word = true }) end, "Current Word" }
+            },
+            { prefix = "<leader>", mode = "n" }
+        })
     end
 }
