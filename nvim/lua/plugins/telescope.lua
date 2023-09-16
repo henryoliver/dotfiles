@@ -1,7 +1,6 @@
 return {
     -- Telescope
     "nvim-telescope/telescope.nvim",
-    event = "VeryLazy",
     dependencies = {
         "nvim-lua/popup.nvim",
         "nvim-lua/plenary.nvim",
@@ -13,7 +12,7 @@ return {
     config = function()
         local telescope = require("telescope")
 
-        local colors = require("nord.colors")
+        -- local colors = require("nord.colors")
         local icons = require("nvim-nonicons")
 
         telescope.setup({
@@ -51,13 +50,13 @@ return {
         telescope.load_extension("file_browser")
 
         -- Highlights
-        vim.api.nvim_set_hl(0, "TelescopeSelection", { fg = colors.none, bg = colors.nord1_gui })
-        vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = colors.nord9_gui })
-
-        vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = colors.nord3_gui_bright })
-        vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = colors.nord3_gui_bright })
-        vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = colors.nord3_gui_bright })
-        vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = colors.nord3_gui_bright })
+        -- vim.api.nvim_set_hl(0, "TelescopeSelection", { fg = colors.none, bg = colors.nord1_gui })
+        -- vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = colors.nord9_gui })
+        --
+        -- vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = colors.nord3_gui_bright })
+        -- vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = colors.nord3_gui_bright })
+        -- vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = colors.nord3_gui_bright })
+        -- vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = colors.nord3_gui_bright })
     end,
     init = function()
         -- Mappings
@@ -66,6 +65,8 @@ return {
         wk.register({
             -- Explore Browser
             e = { ":Telescope file_browser path=%:p:h select_buffer=true<cr>", "Explore" },
+            -- Buffers
+            b = { ":Telescope buffers sort_mru=true<cr>", "Buffers" },
             s = {
                 name = "Search",
                 -- Words
@@ -77,14 +78,12 @@ return {
                 -- Others
                 u = { ":Telescope undo<cr>", "Undo" },
                 m = { ":Telescope marks<cr>", "Marks" },
-                b = { ":Telescope buffers<cr>", "Buffers" },
                 r = { ":Telescope registers<cr>", "Registers" },
                 -- LSP
                 d = { ":Telescope diagnostics<cr>", "LSP Diagnostics" },
                 -- Git
                 g = { ":Telescope git_bcommits<cr>", "Git Buffer Commits" },
             },
-            { prefix = "<leader>", mode = "n" }
-        })
+        }, { prefix = "<leader>", mode = "n" })
     end
 }

@@ -23,7 +23,7 @@ return {
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
         local icons = require("config.icons")
-        local colors = require("nord.colors")
+        -- local colors = require("nord.colors")
 
         tabnine:setup({
             sort = true,
@@ -150,6 +150,6 @@ return {
         })
 
         -- Highlights
-        vim.api.nvim_set_hl(0, "CmpItemKindTabNine", { fg = colors.nord9_gui })
+        -- vim.api.nvim_set_hl(0, "CmpItemKindTabNine", { fg = colors.nord9_gui })
     end
 }

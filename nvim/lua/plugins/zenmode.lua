@@ -45,15 +45,21 @@ return {
                 font = "+6", -- font size increment
             },
         },
+        -- callback where you can add custom code when the Zen window opens
+        on_open = function()
+            require("barbecue.ui").toggle()
+        end,
+        -- callback where you can add custom code when the Zen window closes
+        on_close = function()
+            require("barbecue.ui").toggle()
+        end,
     },
     init = function()
         -- Mappings
         local wk = require("which-key")
 
         wk.register({
-            -- Explore Browser
-            z = { ":ZenMode<cr>", "ZenMode" },
-            { prefix = "<leader>", mode = "n" }
-        })
+            z = { ":ZenMode<cr>", "ZenMode" }
+        }, { prefix = "<leader>", mode = "n" })
     end
 }

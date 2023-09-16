@@ -113,10 +113,9 @@ return {
                 f = { function() vim.lsp.buf.format({ async = true }) end, "Format" },
                 y = { vim.lsp.buf.type_definition, "Type Definition" },
             },
-            { prefix = "<leader>", mode = "n" }
-        })
+        }, { prefix = "<leader>", mode = "n" })
 
-        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-        vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+        vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
     end
 }

@@ -3,8 +3,8 @@ return {
     "folke/which-key.nvim",
     opts = {
         plugins = {
-            marks = true,
-            registers = true,
+            marks = false,
+            registers = false,
             spelling = { enabled = false },
             presets = {
                 motions = true,

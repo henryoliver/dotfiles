@@ -19,9 +19,7 @@ require("lazy").setup("plugins", {
     concurrency = 4,
     install = { colorscheme = { "nord" } },
     checker = { enabled = true },
-    change_detection = {
-        notify = false,
-    },
+    change_detection = { notify = false },
     performance = {
         rtp = {
             disabled_plugins = {

@@ -3,7 +3,7 @@ return {
     "tamton-aquib/staline.nvim",
     config = function()
         local staline = require("staline")
-        local colors  = require("nord.colors")
+        -- local colors  = require("nord.colors")
         local icons   = require("config.icons")
 
         staline.setup({
@@ -12,12 +12,12 @@ return {
                 mid = {},
                 right = { "file_name", "line_column" }
             },
-            mode_colors = {
-                i = colors.nord3_gui_bright,
-                n = colors.nord3_gui_bright,
-                c = colors.nord3_gui_bright,
-                v = colors.nord3_gui_bright
-            },
+            -- mode_colors = {
+            --     i = colors.nord3_gui_bright,
+            --     n = colors.nord3_gui_bright,
+            --     c = colors.nord3_gui_bright,
+            --     v = colors.nord3_gui_bright
+            -- },
             defaults = {
                 true_colors = true,
                 line_column = " [%l/%L] :%c  ",

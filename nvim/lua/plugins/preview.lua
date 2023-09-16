@@ -20,7 +20,6 @@ return {
                 i = { preview.goto_preview_implementation, "Implementation Preview" },
                 x = { preview.close_all_win, "Close Windows" }
             },
-            { prefix = "<leader>", mode = "n" }
-        })
+        }, { prefix = "<leader>", mode = "n" })
     end
 }

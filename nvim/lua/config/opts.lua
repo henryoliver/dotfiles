@@ -89,10 +89,10 @@ vim.opt.linebreak = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 
-vim.opt.foldmethod = "indent"
-vim.opt.foldlevel = 1
-vim.opt.foldcolumn = "0" -- No column signs next to line numbers
-vim.opt.foldlevelstart = 1
+vim.opt.foldcolumn = "0" -- '0' is not bad
+vim.opt.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
 
 vim.opt.joinspaces = false
 

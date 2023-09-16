@@ -23,9 +23,8 @@ return {
                 g = {
                     name = "Git",
                     n = { ":Neogit<CR>", "Neogit" },
-                },
-                { prefix = "<leader>", mode = "n" }
-            })
+                }
+            }, { prefix = "<leader>", mode = "n" })
         end,
     },
     {
@@ -48,9 +47,8 @@ return {
                         d = { gitsigns.diffthis, "Hunk Diff" },
                         r = { gitsigns.reset_hunk, "Reset Hunk" },
                     }
-                },
-                { prefix = "<leader>", mode = "n" }
-            })
+                }
+            }, { prefix = "<leader>", mode = "n" })
 
             vim.keymap.set("n", "[h", gitsigns.next_hunk)
             vim.keymap.set("n", "]h", gitsigns.prev_hunk)
@@ -80,8 +78,7 @@ return {
                         c = { ":DiffviewClose<cr>", "Close" },
                     }
                 },
-                { prefix = "<leader>", mode = "n" }
-            })
+            }, { prefix = "<leader>", mode = "n" })
         end,
     },
     {
@@ -111,9 +108,8 @@ return {
                                 { action_callback = require('gitlinker.actions').open_in_browser })
                         end, "Buffer Line URL" },
                     }
-                },
-                { prefix = "<leader>", mode = "n" }
-            })
+                }
+            }, { prefix = "<leader>", mode = "n" })
         end,
     },
 }
