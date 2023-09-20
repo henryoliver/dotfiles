@@ -4,8 +4,6 @@ return {
     dependencies = "yamatsum/nvim-nonicons",
     config = function()
         local nvim_tree = require("nvim-tree")
-
-        -- local colors = require("nord.colors")
         local nonicons_extention = require("nvim-nonicons.extentions.nvim-tree")
 
         nvim_tree.setup({
@@ -75,19 +73,6 @@ return {
                 },
             },
         })
-
-        -- Highlights
-        -- vim.api.nvim_set_hl(0, "NvimTreeGitNew", { fg = colors.nord9_gui })
-        -- vim.api.nvim_set_hl(0, "NvimTreeGitDirty", { fg = colors.nord7_gui })
-        --
-        -- vim.api.nvim_set_hl(0, "NvimTreeGitStaged", { fg = colors.nord10_gui })
-        -- vim.api.nvim_set_hl(0, "NvimTreeGitMerge", { fg = colors.nord11_gui })
-        -- vim.api.nvim_set_hl(0, "NvimTreeGitRenamed", { fg = colors.nord12_gui })
-        -- vim.api.nvim_set_hl(0, "NvimTreeGitDeleted", { fg = colors.nord14_gui })
-        -- vim.api.nvim_set_hl(0, "NvimTreeGitIgnored", { fg = colors.nord15_gui })
-        --
-        -- vim.api.nvim_set_hl(0, "NvimTreeModifiedFile", { fg = colors.none })
-        -- vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { fg = colors.none })
     end,
     init = function()
         -- Mappings
@@ -95,7 +80,7 @@ return {
 
         wk.register({
             -- Explore Browser
-            r = { ":NvimTreeToggle<cr>", "NvimTree" },
+            E = { ":NvimTreeToggle<cr>", "NvimTr[E]e" },
         }, { prefix = "<leader>", mode = "n" })
     end
 }

@@ -11,8 +11,6 @@ return {
     },
     config = function()
         local telescope = require("telescope")
-
-        -- local colors = require("nord.colors")
         local icons = require("nvim-nonicons")
 
         telescope.setup({
@@ -48,15 +46,6 @@ return {
         telescope.load_extension("undo")
         telescope.load_extension("fzy_native")
         telescope.load_extension("file_browser")
-
-        -- Highlights
-        -- vim.api.nvim_set_hl(0, "TelescopeSelection", { fg = colors.none, bg = colors.nord1_gui })
-        -- vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = colors.nord9_gui })
-        --
-        -- vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = colors.nord3_gui_bright })
-        -- vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = colors.nord3_gui_bright })
-        -- vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = colors.nord3_gui_bright })
-        -- vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = colors.nord3_gui_bright })
     end,
     init = function()
         -- Mappings

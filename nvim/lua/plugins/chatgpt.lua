@@ -26,7 +26,7 @@ return {
 
             wk.register({
                 i = {
-                    name = "ChatGPT",
+                    name = "ChatGPT A[I]",
                     c = { chatgpt.openChat, "ChatGPT" },
                     l = { chatgpt.complete_code, "Complete code" },
                     e = { chatgpt.edit_with_instructions, "Edit with instruction" },

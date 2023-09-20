@@ -5,6 +5,7 @@ local icons = {}
 icons.layout = {
     list = "•",
     tab = "→",
+    trail = "·",
     wrap = "↪",
     installed = "✓",
     pending = "➜",

@@ -1,18 +1,19 @@
+local icons = require("config.icons")
+
 vim.g.mapleader = " "
 
 -- Backup, undo, swap options
-local home = vim.fn.stdpath("config")
-
 vim.opt.backup = true
 vim.opt.writebackup = true
 vim.opt.undofile = true
 vim.opt.swapfile = false
 
+local home = vim.fn.stdpath("config")
 vim.opt.backupdir = home .. "/tmp/dir_backup/"
 vim.opt.directory = home .. "/tmp/dir_swap/," .. vim.o.directory
 vim.opt.undodir = home .. "/tmp/dir_undo/"
 
-vim.opt.lazyredraw = true
+vim.opt.lazyredraw = false
 vim.opt.updatetime = 100
 vim.opt.timeout = true
 vim.opt.timeoutlen = 300
@@ -57,26 +58,27 @@ vim.opt.smartindent = true
 vim.opt.breakindent = true
 
 vim.opt.list = true
-vim.opt.listchars = [[tab:··,trail:·]]
+vim.opt.listchars = { tab = icons.layout.tab .. " " }
 
 -- Presentation
-vim.opt.title = true -- set the title of window to the value of the titlestring
 vim.opt.hidden = true
-vim.opt.pumheight = 10
+vim.opt.pumheight = 20
 vim.opt.complete = {}
 
 vim.opt.number = true
 vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
 vim.opt.relativenumber = true
+vim.opt.cursorlineopt:append("number", "screenline")
 
-vim.opt.ruler = false
+vim.opt.ruler = true
 vim.opt.cursorline = true
 
 vim.opt.more = false -- don't pause listing when screen is filled
 vim.opt.cmdheight = 1
 vim.opt.cmdwinheight = 1
 
-vim.opt.laststatus = 2
+vim.opt.laststatus = 0
+vim.opt.statusline = "%#Normal#" .. "⊱ ──────────── {⋆⌘⋆} ──────────── ⊰" .. "%="
 vim.opt.showtabline = 0
 
 vim.opt.showcmd = false
@@ -86,6 +88,8 @@ vim.opt.wrap = true -- display lines as one long line
 vim.opt.colorcolumn = "80"
 vim.opt.linespace = 1
 vim.opt.linebreak = true
+vim.opt.showbreak = icons.layout.wrap .. " "
+
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 
@@ -98,17 +102,17 @@ vim.opt.joinspaces = false
 
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.equalalways = true
+vim.opt.equalalways = false
 
 vim.opt.fillchars:append({ eob = " ", fold = " ", foldopen = " ", foldsep = " ", foldclose = " ", diff = "╱" })
 
 -- Interface options
+vim.opt.wildmenu = true
+vim.opt.confirm = false
 vim.opt.termguicolors = true
 vim.opt.completeopt = { "menuone", "noselect" }
 
-vim.opt.mouse = "a"           -- allow the mouse to be used in neovim
-vim.opt.shortmess:append("c") -- don't show redundant messages from ins-completion-menu
-vim.opt.shortmess:append("I") -- don't show the default intro message
+vim.opt.shortmess:append("aIF")
 vim.opt.whichwrap:append("<,>,[,],h,l")
 
 -- Providers

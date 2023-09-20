@@ -7,7 +7,7 @@ return {
         terminals = {
             type_opts = {
                 float = { border = "rounded" },
-                horizontal = { location = "rightbelow", split_ratio = .3, },
+                horizontal = { location = "rightbelow", split_ratio = .2, },
                 vertical = { location = "rightbelow", split_ratio = .5 },
             }
         }
@@ -31,6 +31,6 @@ return {
         vim.keymap.set("t", "<c-w>j", [[<c-\><c-n><c-w>j]])
         vim.keymap.set("t", "<c-w>k", [[<c-\><c-n><c-w>k]])
         vim.keymap.set("t", "<c-w>l", [[<c-\><c-n><c-w>l]])
-        vim.keymap.set("t", "<c-w>w", [[<c-\><c-n><c-w>w]])
+        vim.keymap.set("t", "<c-w>w", [[<c-\><c-n><c-w>p]])
     end
 }

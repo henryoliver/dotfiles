@@ -69,15 +69,14 @@ return {
             signs = true,
             underline = false,
             virtual_text = false,
-            severity_sort = false,
+            severity_sort = true,
             update_in_insert = false,
             float = {
-                focusable = true,
-                style = "minimal",
+                source = true,
+                focusable = false,
                 border = "rounded", -- none, single, double, rounded, solid
-                source = "always",
                 header = " Diagnostics",
-                prefix = " ",
+                prefix = " " .. icons.layout.list .. " ",
                 suffix = " ",
             },
         })

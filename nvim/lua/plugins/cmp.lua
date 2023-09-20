@@ -23,7 +23,6 @@ return {
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
         local icons = require("config.icons")
-        -- local colors = require("nord.colors")
 
         tabnine:setup({
             sort = true,
@@ -102,11 +101,11 @@ return {
             window = {
                 completion = {
                     border = "rounded",
+                    scrolloff = vim.go.scrolloff,
                     winhighlight = "Normal:None,FloatBorder:None,Search:None",
                 },
                 documentation = {
                     border = "rounded",
-                    scrollbar = true,
                     winhighlight = "Normal:None,FloatBorder:None,Search:None",
                 },
             },
@@ -126,7 +125,6 @@ return {
             },
             experimental = {
                 ghost_text = true,
-                native_menu = false,
             },
         })
 
@@ -148,8 +146,5 @@ return {
                 { name = "path" },
             }),
         })
-
-        -- Highlights
-        -- vim.api.nvim_set_hl(0, "CmpItemKindTabNine", { fg = colors.nord9_gui })
     end
 }

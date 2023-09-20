@@ -15,7 +15,7 @@ return {
                 sticky = true,
                 mappings = {
                     basic = true,
-                    extra = true,
+                    extra = false,
                 },
                 pre_hook = ts_context_commentstring.create_pre_hook(),
             })
