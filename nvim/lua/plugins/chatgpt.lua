@@ -10,10 +10,10 @@ return {
         },
         opts = {
             openai_params = {
-                -- model = "gpt-4",
+                model = "gpt-4",
             },
             openai_edit_params = {
-                -- model = "gpt-4",
+                model = "gpt-4",
             },
             popup_layout = {
                 default = "right",

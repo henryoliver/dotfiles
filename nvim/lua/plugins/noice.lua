@@ -23,7 +23,7 @@ return {
                     event = "msg_show",
                     kind = "",
                 },
-                opts = { skip = true },
+                opts = { skip = false },
             },
         },
     }

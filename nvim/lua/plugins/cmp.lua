@@ -23,6 +23,7 @@ return {
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
         local icons = require("config.icons")
+        local colors = require("nord.colors").palette
 
         tabnine:setup({
             sort = true,
@@ -146,5 +147,8 @@ return {
                 { name = "path" },
             }),
         })
+
+        -- Highlights
+        vim.api.nvim_set_hl(0, "CmpItemKindTabNine", { fg = colors.frost.artic_water })
     end
 }

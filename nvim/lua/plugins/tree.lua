@@ -4,6 +4,8 @@ return {
     dependencies = "yamatsum/nvim-nonicons",
     config = function()
         local nvim_tree = require("nvim-tree")
+
+        local colors = require("nord.colors").palette
         local nonicons_extention = require("nvim-nonicons.extentions.nvim-tree")
 
         nvim_tree.setup({
@@ -73,6 +75,17 @@ return {
                 },
             },
         })
+
+        -- Highlights
+        vim.api.nvim_set_hl(0, "NvimTreeGitNew", { fg = colors.frost.artic_water })
+        vim.api.nvim_set_hl(0, "NvimTreeGitDirty", { fg = colors.frost.polar_water })
+        vim.api.nvim_set_hl(0, "NvimTreeGitStaged", { fg = colors.frost.artic_ocean })
+        vim.api.nvim_set_hl(0, "NvimTreeGitMerge", { fg = colors.aurora.red })
+        vim.api.nvim_set_hl(0, "NvimTreeGitRenamed", { fg = colors.aurora.orange })
+        vim.api.nvim_set_hl(0, "NvimTreeGitDeleted", { fg = colors.aurora.green })
+        vim.api.nvim_set_hl(0, "NvimTreeGitIgnored", { fg = colors.aurora.purple })
+        vim.api.nvim_set_hl(0, "NvimTreeModifiedFile", { fg = colors.none })
+        vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { fg = colors.none })
     end,
     init = function()
         -- Mappings

@@ -64,6 +64,18 @@ return {
             enhanced_diff_hl = true,
             use_icons = true,
         },
+        config = function()
+            local colors = require("nord.colors").palette
+
+            -- Highlights
+            vim.api.nvim_set_hl(0, "DiffAdd", { foreground = colors.aurora.green, background = colors.none, bold = true })
+            vim.api.nvim_set_hl(0, "DiffChange",
+                { foreground = colors.aurora.yellow, background = colors.none, bold = true })
+            vim.api.nvim_set_hl(0, "DiffDelete",
+                { foreground = colors.aurora.red, background = colors.none, bold = true })
+            vim.api.nvim_set_hl(0, "DiffText",
+                { foreground = colors.aurora.purple, background = colors.none, bold = true })
+        end,
         init = function()
             -- Mappings
             local wk = require("which-key")

@@ -78,7 +78,8 @@ vim.opt.cmdheight = 1
 vim.opt.cmdwinheight = 1
 
 vim.opt.laststatus = 0
-vim.opt.statusline = "%#Normal#" .. "⊱ ──────────── {⋆⌘⋆} ──────────── ⊰" .. "%="
+vim.opt.statusline = "%#Normal#" .. "⊱ ──────────── {⋆⌘⋆} ──────────── ⊰" ..
+"%="
 vim.opt.showtabline = 0
 
 vim.opt.showcmd = false

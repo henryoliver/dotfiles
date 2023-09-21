@@ -20,12 +20,12 @@ return {
 
         wk.register({
             t = {
-                name = "Terminal",
+                name = "[T]erminal",
                 f = { function() terminal.toggle("float") end, "Float" },
                 h = { function() terminal.toggle("horizontal") end, "Horizontal" },
                 v = { function() terminal.toggle("vertical") end, "Vertical" },
             },
-        }, { prefix = "<leader>", mode = { "n", "t" } })
+        }, { prefix = "<leader>", mode = "n" })
 
         vim.keymap.set("t", "<c-w>h", [[<c-\><c-n><c-w>h]])
         vim.keymap.set("t", "<c-w>j", [[<c-\><c-n><c-w>j]])
