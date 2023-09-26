@@ -50,7 +50,7 @@ return {
                 ["<c-j>"] = cmp.mapping.scroll_docs(4),
                 ["<c-k>"] = cmp.mapping.scroll_docs(-4),
 
-                ["<c-Space>"] = cmp.mapping.complete(), -- Invoke completion.
+                ["<c-space>"] = cmp.mapping.complete(), -- Invoke completion.
 
                 ["<c-l>"] = cmp.mapping.confirm({ select = true }),
                 ["<c-h>"] = cmp.mapping.abort(),
@@ -129,8 +129,8 @@ return {
             },
         })
 
-        -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-        cmp.setup.cmdline("/", {
+        -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+        cmp.setup.cmdline({ '/', '?' }, {
             mapping = cmp.mapping.preset.cmdline(),
             sources = {
                 { name = "buffer" },

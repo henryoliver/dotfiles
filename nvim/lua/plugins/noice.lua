@@ -26,5 +26,5 @@ return {
                 opts = { skip = false },
             },
         },
-    }
+    },
 }

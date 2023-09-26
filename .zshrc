@@ -4,6 +4,11 @@
 eval $(/opt/homebrew/bin/brew shellenv)
 fpath+=($HOME/.zsh/pure)
 
+if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
+  export PATH=/opt/homebrew/opt/ruby/bin:$PATH 
+  export PATH=`gem environment gemdir`/bin:$PATH
+fi
+
 # Pure ZSH prompt
 autoload -U promptinit; promptinit
 prompt pure

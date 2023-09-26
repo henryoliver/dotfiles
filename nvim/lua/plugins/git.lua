@@ -1,10 +1,14 @@
 return {
     -- Git
     {
-        "TimUntersberger/neogit",
+        "NeogitOrg/neogit",
         lazy = true,
-        keys = "<leader>g",
-        dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
+        cmd = "Neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+            "sindrets/diffview.nvim"
+        },
         opts = {
             signs = {
                 section = { "", "" },
@@ -29,8 +33,7 @@ return {
     },
     {
         "lewis6991/gitsigns.nvim",
-        lazy = true,
-        event = "BufRead",
+        event = "VeryLazy",
         dependencies = "nvim-lua/plenary.nvim",
         config = true,
         init = function()
@@ -57,7 +60,14 @@ return {
     {
         "sindrets/diffview.nvim",
         lazy = true,
-        keys = "<leader>g",
+        cmd = {
+            "DiffviewOpen",
+            "DiffviewClose",
+            "DiffviewToggleFiles",
+            "DiffviewFocusFiles",
+            "DiffviewRefresh",
+            "DiffviewFileHistory",
+        },
         dependencies = "nvim-lua/plenary.nvim",
         opts = {
             diff_binaries = false,
@@ -95,8 +105,7 @@ return {
     },
     {
         "ruifm/gitlinker.nvim",
-        lazy = true,
-        keys = "<leader>g",
+        event = "VeryLazy",
         dependencies = "nvim-lua/plenary.nvim",
         opts = {
             mappings = nil,
