@@ -6,12 +6,12 @@
 --
 
 local modules = {
-  "config.opts",
-  "config.lazy",
-  "config.keys",
-  "config.auto",
+    "config.opts",
+    "config.lazy",
+    "config.keys",
+    "config.auto",
 }
 
 for _, module in ipairs(modules) do
-  require(module)
+    require(module)
 end

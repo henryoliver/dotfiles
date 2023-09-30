@@ -40,7 +40,7 @@ icons.log = {
     beaker = "",
     constant = "",
     paste = "",
-    dot_fill = ""
+    dot_fill = "",
 }
 
 icons.kind = {

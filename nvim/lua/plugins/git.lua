@@ -7,7 +7,7 @@ return {
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope.nvim",
-            "sindrets/diffview.nvim"
+            "sindrets/diffview.nvim",
         },
         opts = {
             signs = {
@@ -26,8 +26,8 @@ return {
             wk.register({
                 g = {
                     name = "Git",
-                    n = { ":Neogit<CR>", "Neogit" },
-                }
+                    n = { ":Neogit<cr>", "Neogit" },
+                },
             }, { prefix = "<leader>", mode = "n" })
         end,
     },
@@ -49,8 +49,8 @@ return {
                         p = { gitsigns.preview_hunk, "Hunk Preview" },
                         d = { gitsigns.diffthis, "Hunk Diff" },
                         r = { gitsigns.reset_hunk, "Reset Hunk" },
-                    }
-                }
+                    },
+                },
             }, { prefix = "<leader>", mode = "n" })
 
             vim.keymap.set("n", "[h", gitsigns.next_hunk)
@@ -74,18 +74,6 @@ return {
             enhanced_diff_hl = true,
             use_icons = true,
         },
-        config = function()
-            local colors = require("nord.colors").palette
-
-            -- Highlights
-            vim.api.nvim_set_hl(0, "DiffAdd", { foreground = colors.aurora.green, background = colors.none, bold = true })
-            vim.api.nvim_set_hl(0, "DiffChange",
-                { foreground = colors.aurora.yellow, background = colors.none, bold = true })
-            vim.api.nvim_set_hl(0, "DiffDelete",
-                { foreground = colors.aurora.red, background = colors.none, bold = true })
-            vim.api.nvim_set_hl(0, "DiffText",
-                { foreground = colors.aurora.purple, background = colors.none, bold = true })
-        end,
         init = function()
             -- Mappings
             local wk = require("which-key")
@@ -98,7 +86,7 @@ return {
                         h = { ":DiffviewFileHistory<cr>", "File History Branch" },
                         f = { ":DiffviewFileHistory %<cr>", "File History" },
                         c = { ":DiffviewClose<cr>", "Close" },
-                    }
+                    },
                 },
             }, { prefix = "<leader>", mode = "n" })
         end,
@@ -113,7 +101,7 @@ return {
         init = function()
             -- Mappings
             local wk = require("which-key")
-            local gitlinker = require('gitlinker')
+            local gitlinker = require("gitlinker")
 
             wk.register({
                 g = {
@@ -122,14 +110,22 @@ return {
                         h = {
                             function()
                                 gitlinker.get_repo_url({
-                                    action_callback = require('gitlinker.actions').open_in_browser })
-                            end, "Home URL" },
-                        l = { function()
-                            gitlinker.get_buf_range_url('n',
-                                { action_callback = require('gitlinker.actions').open_in_browser })
-                        end, "Buffer Line URL" },
-                    }
-                }
+                                    action_callback = require("gitlinker.actions").open_in_browser,
+                                })
+                            end,
+                            "Home URL",
+                        },
+                        l = {
+                            function()
+                                gitlinker.get_buf_range_url(
+                                    "n",
+                                    { action_callback = require("gitlinker.actions").open_in_browser }
+                                )
+                            end,
+                            "Buffer Line URL",
+                        },
+                    },
+                },
             }, { prefix = "<leader>", mode = "n" })
         end,
     },

@@ -10,4 +10,3 @@ vim.api.nvim_exec(
 )
 
 -- Plugins
-

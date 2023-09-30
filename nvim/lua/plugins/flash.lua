@@ -3,6 +3,6 @@ return {
     {
         "folke/flash.nvim",
         event = "VeryLazy",
-        config = true
-    }
+        config = true,
+    },
 }

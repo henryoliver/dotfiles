@@ -30,7 +30,7 @@ return {
             view = {
                 adaptive_size = false,
                 side = "left",
-                width = 40,
+                width = 30,
             },
             git = {
                 enable = true,
@@ -92,7 +92,7 @@ return {
 
         wk.register({
             -- Explore Browser
-            E = { ":NvimTreeToggle<cr>", "NvimTr[E]e" },
+            E = { ":NvimTreeToggle<cr>", "NvimTree" },
         }, { prefix = "<leader>", mode = "n" })
-    end
+    end,
 }

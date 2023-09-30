@@ -6,11 +6,12 @@ return {
         dependencies = {
             "MunifTanjim/nui.nvim",
             "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim"
+            "nvim-telescope/telescope.nvim",
         },
         opts = {
             openai_params = {
                 model = "gpt-4",
+                max_tokens = 1000,
             },
             openai_edit_params = {
                 model = "gpt-4",
@@ -18,6 +19,14 @@ return {
             popup_layout = {
                 default = "right",
             },
+            popup_window = {
+                border = {
+                    text = {
+                        top = "",
+                    },
+                },
+            },
+            actions_paths = { "~/.config/others/gpt-actions.json" },
         },
         init = function()
             -- Mappings
@@ -26,21 +35,12 @@ return {
 
             wk.register({
                 i = {
-                    name = "ChatGPT A[I]",
+                    name = "ChatGPT",
                     c = { chatgpt.openChat, "ChatGPT" },
                     l = { chatgpt.complete_code, "Complete code" },
                     e = { chatgpt.edit_with_instructions, "Edit with instruction" },
                     -- Actions
-                    a = {
-                        name = "Actions",
-                        c = { function() chatgpt.run_action("complete_code") end, "Complete code" },
-                        g = { function() chatgpt.run_action("grammar_correction") end, "Grammar correction" },
-                        d = { function() chatgpt.run_action("docstring") end, "Docstring" },
-                        t = { function() chatgpt.run_action("add_tests") end, "Add test" },
-                        o = { function() chatgpt.run_action("optimize_code") end, "Optimize code" },
-                        f = { function() chatgpt.run_action("fix_bugs") end, "Fix bugs" },
-                        a = { function() chatgpt.run_action("code_readability_analysis") end, "Code readability analysis" }
-                    }
+                    r = { ":ChatGPTRun refactor_code<cr>", "Code refactoring" },
                 },
             }, { prefix = "<leader>", mode = { "n", "v" } })
         end,

@@ -17,6 +17,7 @@ prompt pure
 source ~/.zplug/init.zsh
 
 # Make sure to use double quotes to prevent shell expansion
+zplug "Licheam/zsh-ask"
 zplug "supercrabtree/k"
 zplug "b4b4r07/enhancd", use:init.sh
 zplug "zsh-users/zsh-autosuggestions"
@@ -46,6 +47,7 @@ bindkey "^ " autosuggest-execute
 
 # Aliases
 alias code="nvim"
+alias session-code="kitty --session ~/.config/kitty/startup-code.conf"
 alias session-photoday="kitty --session ~/.config/kitty/startup-photoday.conf"
 
 # Copy

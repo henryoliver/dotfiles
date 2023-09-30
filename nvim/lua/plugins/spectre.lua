@@ -14,8 +14,13 @@ return {
                 name = "Find & Replace",
                 p = { spectre.open, "Project-Wide" },
                 b = { spectre.open_file_search, "Buffer" },
-                w = { function() spectre.open_visual({ select_word = true }) end, "Current Word" }
+                w = {
+                    function()
+                        spectre.open_visual({ select_word = true })
+                    end,
+                    "Current Word",
+                },
             },
         }, { prefix = "<leader>", mode = "n" })
-    end
+    end,
 }

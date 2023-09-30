@@ -6,11 +6,11 @@ return {
     opts = {
         terminals = {
             type_opts = {
-                float = { border = "rounded" },
-                horizontal = { location = "rightbelow", split_ratio = .2, },
-                vertical = { location = "rightbelow", split_ratio = .5 },
-            }
-        }
+                float = { border = "rounded", width = 0.5, height = 0.5 },
+                horizontal = { location = "rightbelow", split_ratio = 0.2 },
+                vertical = { location = "rightbelow", split_ratio = 0.5 },
+            },
+        },
     },
     config = true,
     init = function()
@@ -20,10 +20,25 @@ return {
 
         wk.register({
             t = {
-                name = "[T]erminal",
-                f = { function() terminal.toggle("float") end, "Float" },
-                h = { function() terminal.toggle("horizontal") end, "Horizontal" },
-                v = { function() terminal.toggle("vertical") end, "Vertical" },
+                name = "Terminal",
+                f = {
+                    function()
+                        terminal.toggle("float")
+                    end,
+                    "Float",
+                },
+                h = {
+                    function()
+                        terminal.toggle("horizontal")
+                    end,
+                    "Horizontal",
+                },
+                v = {
+                    function()
+                        terminal.toggle("vertical")
+                    end,
+                    "Vertical",
+                },
             },
         }, { prefix = "<leader>", mode = "n" })
 
@@ -32,5 +47,5 @@ return {
         vim.keymap.set("t", "<c-w>k", [[<c-\><c-n><c-w>k]])
         vim.keymap.set("t", "<c-w>l", [[<c-\><c-n><c-w>l]])
         vim.keymap.set("t", "<c-w>w", [[<c-\><c-n><c-w>p]])
-    end
+    end,
 }

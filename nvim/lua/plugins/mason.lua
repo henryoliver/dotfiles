@@ -9,8 +9,7 @@ return {
         mason.setup({
             ui = {
                 icons = nonicons_extention.icons,
-            }
-
+            },
         })
-    end
+    end,
 }

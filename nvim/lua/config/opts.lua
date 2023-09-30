@@ -6,7 +6,7 @@ vim.g.mapleader = " "
 vim.opt.backup = true
 vim.opt.writebackup = true
 vim.opt.undofile = true
-vim.opt.swapfile = false
+vim.opt.swapfile = true
 
 local home = vim.fn.stdpath("config")
 vim.opt.backupdir = home .. "/tmp/dir_backup/"
@@ -78,8 +78,9 @@ vim.opt.cmdheight = 1
 vim.opt.cmdwinheight = 1
 
 vim.opt.laststatus = 0
-vim.opt.statusline = "%#Normal#" .. "⊱ ──────────── {⋆⌘⋆} ──────────── ⊰" ..
-"%="
+vim.opt.statusline = "%#Normal#"
+    .. "⊱ ──────────── {⋆⌘⋆} ──────────── ⊰"
+    .. "%="
 vim.opt.showtabline = 0
 
 vim.opt.showcmd = false
@@ -95,7 +96,7 @@ vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 
 vim.opt.foldcolumn = "0" -- '0' is not bad
-vim.opt.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vim.opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
 
@@ -113,7 +114,7 @@ vim.opt.confirm = false
 vim.opt.termguicolors = true
 vim.opt.completeopt = { "menuone", "noselect" }
 
-vim.opt.shortmess:append("aIF")
+vim.opt.shortmess:append("sWI")
 vim.opt.whichwrap:append("<,>,[,],h,l")
 
 -- Providers

@@ -16,9 +16,9 @@ return {
     },
     config = function()
         local cmp = require("cmp")
-        local tabnine = require('cmp_tabnine.config')
+        local tabnine = require("cmp_tabnine.config")
 
-        local compare = require('cmp.config.compare')
+        local compare = require("cmp.config.compare")
         local tabnine_compare = require("cmp_tabnine.compare")
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
@@ -31,7 +31,7 @@ return {
             max_num_results = 10,
             snippet_placeholder = " ",
             run_on_every_keystroke = true,
-            show_prediction_strength = false
+            show_prediction_strength = false,
         })
 
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
@@ -84,8 +84,8 @@ return {
 
                         vim_item.kind = ""
 
-                        if detail and detail:find('.*%%.*') then
-                            vim_item.kind = vim_item.kind .. ' ' .. detail
+                        if detail and detail:find(".*%%.*") then
+                            vim_item.kind = vim_item.kind .. " " .. detail
                         end
 
                         if (entry.completion_item.data or {}).multiline then
@@ -130,7 +130,7 @@ return {
         })
 
         -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-        cmp.setup.cmdline({ '/', '?' }, {
+        cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline(),
             sources = {
                 { name = "buffer" },
@@ -150,5 +150,5 @@ return {
 
         -- Highlights
         vim.api.nvim_set_hl(0, "CmpItemKindTabNine", { fg = colors.frost.artic_water })
-    end
+    end,
 }

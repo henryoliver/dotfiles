@@ -11,19 +11,35 @@ return {
             },
         },
         presets = {
-            bottom_search = true,
-            command_palette = true,
-            long_message_to_split = true,
-            inc_rename = false,
+            bottom_search = true, -- use a classic bottom cmdline for search
+            command_palette = true, -- position the cmdline and popupmenu together
+            long_message_to_split = true, -- long messages will be sent to a split
+            inc_rename = false, -- enables an input dialog for inc-rename.nvim
             lsp_doc_border = true,
         },
         routes = {
-            {
+            { -- Show @recording messages
+                view = "notify",
+                filter = { event = "msg_showmode" },
+            },
+            { -- Hide written messages
+                filter = {
+                    any = {
+                        { find = "%d+L, %d+B" },
+                        { find = "; after #%d+" },
+                        { find = "; before #%d+" },
+                        { find = "%d fewer lines" },
+                        { find = "%d more lines" },
+                    },
+                },
+                opts = { skip = true },
+            },
+            { -- Hide Search Virtual Text
                 filter = {
                     event = "msg_show",
-                    kind = "",
+                    kind = "search_count",
                 },
-                opts = { skip = false },
+                opts = { skip = true },
             },
         },
     },

@@ -13,10 +13,38 @@ return {
             })
         end,
         keys = {
-            { "s",  mode = "n", function() require("substitute").operator() end, desc = "Substitute" },
-            { "ss", mode = "n", function() require("substitute").line() end,     desc = "Substitute line" },
-            { "S",  mode = "n", function() require("substitute").eol() end,      desc = "Substitute eol" },
-            { "s",  mode = "x", function() require("substitute").visual() end,   desc = "Substitute" },
-        }
+            {
+                "s",
+                mode = "n",
+                function()
+                    require("substitute").operator()
+                end,
+                desc = "Substitute",
+            },
+            {
+                "ss",
+                mode = "n",
+                function()
+                    require("substitute").line()
+                end,
+                desc = "Substitute line",
+            },
+            {
+                "S",
+                mode = "n",
+                function()
+                    require("substitute").eol()
+                end,
+                desc = "Substitute eol",
+            },
+            {
+                "s",
+                mode = "x",
+                function()
+                    require("substitute").visual()
+                end,
+                desc = "Substitute",
+            },
+        },
     },
 }
