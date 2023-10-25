@@ -3,17 +3,17 @@
 # Paths
 eval $(/opt/homebrew/bin/brew shellenv)
 fpath+=($HOME/.zsh/pure)
-
-if [ -d $HOME"/go/bin" ]; then
-    export GOPATH=$HOME/go
-    export PATH=$PATH:$GOPATH/bin
-    export PATH=$PATH:$(go env GOPATH)/bin
-fi
-
-if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
-    export PATH=/opt/homebrew/opt/ruby/bin:$PATH 
-    export PATH=`gem environment gemdir`/bin:$PATH
-fi
+path=(
+    # Go
+    $GOPATH/bin
+    $(go env GOPATH)/bin
+    # Ruby
+    /opt/homebrew/opt/ruby/bin
+    `gem environment gemdir`/bin
+    # Curl
+    /opt/homebrew/opt/curl/bin
+    $path
+) 
 
 # Pure ZSH prompt
 autoload -U promptinit; promptinit

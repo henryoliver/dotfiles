@@ -8,16 +8,17 @@ return {
 
             conform.setup({
                 formatters_by_ft = {
-                    lua = { "stylua" },
+                    css = { "prettierd" },
                     go = { "gofumpt" },
                     html = { "prettierd" },
-                    css = { "prettierd" },
-                    markdown = { "prettierd" },
-                    yaml = { "prettierd" },
-                    json = { "prettierd" },
                     javascript = { "prettierd" },
-                    typescript = { "prettierd" },
+                    json = { "prettierd" },
+                    lua = { "stylua" },
+                    markdown = { "prettierd" },
+                    ruby = { "rubocop" },
                     svelte = { "prettierd" },
+                    typescript = { "prettierd" },
+                    yaml = { "prettierd" },
                 },
                 format_on_save = {
                     -- These options will be passed to conform.format()

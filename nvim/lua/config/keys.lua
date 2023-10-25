@@ -13,11 +13,6 @@ vim.keymap.set("n", "p", "_dP", default_options)
 vim.keymap.set("n", "B", "^", default_options)
 vim.keymap.set("n", "E", "$", default_options)
 
--- Apply Macros with Q
--- Hit qq to record, q to stop recording, and Q to apply.
-vim.keymap.set("n", "Q", "@q", { noremap = true })
-vim.keymap.set("v", "Q", ":norm @q<cr>", { noremap = true })
-
 -- Navigate Buffers
 vim.keymap.set("n", "[b", ":bprevious<cr>", default_options)
 vim.keymap.set("n", "]b", ":bnext<cr>", default_options)
