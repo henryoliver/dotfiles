@@ -25,6 +25,7 @@ return {
         local icons = require("config.icons")
         local colors = require("nord.colors").palette
 
+        -- Tabnine config
         tabnine:setup({
             sort = true,
             max_lines = 1000,
@@ -34,6 +35,7 @@ return {
             show_prediction_strength = false,
         })
 
+        -- Cmp config
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
 
         cmp.setup({

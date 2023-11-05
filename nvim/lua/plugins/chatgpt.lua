@@ -35,12 +35,14 @@ return {
 
             wk.register({
                 i = {
-                    name = "ChatGPT",
-                    c = { chatgpt.openChat, "ChatGPT" },
-                    l = { chatgpt.complete_code, "Complete code" },
-                    e = { chatgpt.edit_with_instructions, "Edit with instruction" },
-                    -- Actions
-                    r = { ":ChatGPTRun refactor_code<cr>", "Code refactoring" },
+                    c = {
+                        name = "ChatGPT",
+                        c = { chatgpt.openChat, "ChatGPT" },
+                        l = { chatgpt.complete_code, "Complete code" },
+                        e = { chatgpt.edit_with_instructions, "Edit with instruction" },
+                        -- Actions
+                        r = { ":ChatGPTRun refactor_code<cr>", "Code refactoring" },
+                    },
                 },
             }, { prefix = "<leader>", mode = { "n", "v" } })
         end,
