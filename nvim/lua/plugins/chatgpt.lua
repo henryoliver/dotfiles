@@ -10,11 +10,11 @@ return {
         },
         opts = {
             openai_params = {
-                model = "gpt-4",
+                model = "gpt-4-1106-preview",
                 max_tokens = 1000,
             },
             openai_edit_params = {
-                model = "gpt-4",
+                model = "gpt-4-1106-preview",
             },
             popup_layout = {
                 default = "right",
@@ -35,14 +35,13 @@ return {
 
             wk.register({
                 i = {
-                    c = {
-                        name = "ChatGPT",
-                        c = { chatgpt.openChat, "ChatGPT" },
-                        l = { chatgpt.complete_code, "Complete code" },
-                        e = { chatgpt.edit_with_instructions, "Edit with instruction" },
-                        -- Actions
-                        r = { ":ChatGPTRun refactor_code<cr>", "Code refactoring" },
-                    },
+                    name = "ChatGPT",
+                    c = { chatgpt.openChat, "ChatGPT" },
+                    l = { chatgpt.complete_code, "Complete code" },
+                    e = { chatgpt.edit_with_instructions, "Edit with instruction" },
+                    -- Actions
+                    r = { ":ChatGPTRun refactor_code<cr>", "Code refactoring" },
+                    -- r = { chatgpt.run_action("refactor_code"), "Refactor code" },
                 },
             }, { prefix = "<leader>", mode = { "n", "v" } })
         end,

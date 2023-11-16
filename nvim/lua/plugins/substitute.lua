@@ -3,15 +3,7 @@ return {
     {
         "gbprod/substitute.nvim",
         event = "VeryLazy",
-        dependencies = "gbprod/yanky.nvim",
-        config = function()
-            local substitute = require("substitute")
-            local yanky_integration = require("yanky.integration")
-
-            substitute.setup({
-                on_substitute = yanky_integration.substitute(),
-            })
-        end,
+        config = true,
         keys = {
             {
                 "s",

@@ -6,9 +6,6 @@ vim.keymap.set("i", "jj", "<esc>", default_options)
 -- Use v to toggle visual mode.
 vim.keymap.set("v", "v", "<Esc>", default_options)
 
--- Preserve original clipboard when pasting selected words.
-vim.keymap.set("n", "p", "_dP", default_options)
-
 -- Move to beginning/end of line
 vim.keymap.set("n", "B", "^", default_options)
 vim.keymap.set("n", "E", "$", default_options)
