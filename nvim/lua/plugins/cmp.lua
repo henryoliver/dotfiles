@@ -57,13 +57,14 @@ return {
                 ["<c-l>"] = cmp.mapping.confirm({ select = true }),
                 ["<c-h>"] = cmp.mapping.abort(),
             }),
-            sources = cmp.config.sources({
-                { name = "cmp_tabnine" },
-                { name = "nvim_lsp" },
-                { name = "vsnip" }, -- For vsnip users.
-            }, {
-                { name = "buffer", keyword_length = 3 },
-            }),
+            completion = {
+                keyword_length = 3,
+            },
+            sources = {
+                { name = "cmp_tabnine", group_index = 1 },
+                { name = "nvim_lsp", group_index = 1 },
+                { name = "buffer", group_index = 2 },
+            },
             formatting = {
                 fields = { "kind", "abbr", "menu" },
                 format = function(entry, vim_item)
@@ -74,7 +75,6 @@ return {
                     vim_item.menu = ({
                         cmp_tabnine = "[AI]",
                         nvim_lsp = "[LSP]",
-                        vsnip = "[VSnip]",
                         buffer = "[Buffer]",
                         cmdline = "[CMD]",
                         path = "[Path]",
@@ -129,6 +129,7 @@ return {
             experimental = {
                 ghost_text = true,
             },
+            performance = { max_view_entries = 10 },
         })
 
         -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).

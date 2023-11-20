@@ -2,9 +2,10 @@ return {
     -- Treesitter
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdateSync",
-    dependencies = "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects", "JoosepAlviste/nvim-ts-context-commentstring" },
     config = function()
         local treesitter = require("nvim-treesitter.configs")
+        local ts_context_commentstring = require("ts_context_commentstring")
 
         treesitter.setup({
             highlight = {
@@ -48,10 +49,6 @@ return {
                     node_decremental = "<c-k>",
                 },
             },
-            context_commentstring = {
-                enable = true,
-                enable_autocmd = false,
-            },
             textobjects = {
                 select = {
                     enable = true,
@@ -60,5 +57,8 @@ return {
                 },
             },
         })
+
+        vim.g.skip_ts_context_commentstring_module = true -- skip backwards compatibility routines and speed up loading.
+        ts_context_commentstring.setup({ enable_autocmd = false })
     end,
 }
