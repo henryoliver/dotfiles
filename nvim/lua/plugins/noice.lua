@@ -22,22 +22,25 @@ return {
                 view = "notify",
                 filter = { event = "msg_showmode" },
             },
-            { -- Hide written messages
+            { -- Avoid written messages
                 filter = {
-                    any = {
-                        { find = "%d+L, %d+B" },
-                        { find = "; after #%d+" },
-                        { find = "; before #%d+" },
-                        { find = "%d fewer lines" },
-                        { find = "%d more lines" },
-                    },
+                    event = "msg_show",
+                    kind = "",
+                    find = "written",
                 },
                 opts = { skip = true },
             },
-            { -- Hide Search Virtual Text
+            { -- Avoid search messages
                 filter = {
                     event = "msg_show",
                     kind = "search_count",
+                },
+                opts = { skip = true },
+            },
+            { -- Avoid all messages with kind ""
+                filter = {
+                    event = "msg_show",
+                    kind = "",
                 },
                 opts = { skip = true },
             },

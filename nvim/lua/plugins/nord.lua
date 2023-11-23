@@ -18,7 +18,7 @@ return {
                 highlights.ErrorMsg = { bg = colors.none, fg = colors.aurora.red }
                 highlights.WarningMsg = { bg = colors.none, fg = colors.aurora.yellow }
 
-                highlights.Folded = { bg = colors.none }
+                highlights.Folded = { bg = colors.none, fg = colors.polar_night.bright }
             end,
         })
 

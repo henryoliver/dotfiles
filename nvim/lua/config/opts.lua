@@ -29,9 +29,8 @@ vim.opt.smartcase = true
 vim.opt.ignorecase = true
 vim.opt.grepprg = "rg --hidden --vimgrep --smart-case --" -- use rg instead of grep
 
-vim.opt.hlsearch = true
+vim.opt.hlsearch = false
 vim.opt.incsearch = true
-vim.opt.inccommand = "split"
 
 vim.opt.wildignorecase = true
 vim.opt.wildignore = [[
@@ -62,7 +61,7 @@ vim.opt.listchars = { tab = icons.layout.tab .. " " }
 
 -- Presentation
 vim.opt.hidden = true
-vim.opt.pumheight = 20
+vim.opt.pumheight = 10
 vim.opt.complete = {}
 
 vim.opt.number = true
@@ -74,7 +73,7 @@ vim.opt.ruler = true
 vim.opt.cursorline = true
 
 vim.opt.more = false -- don't pause listing when screen is filled
-vim.opt.cmdheight = 1
+vim.opt.cmdheight = 0
 vim.opt.cmdwinheight = 1
 
 vim.opt.laststatus = 0
@@ -86,7 +85,7 @@ vim.opt.showtabline = 0
 vim.opt.showcmd = false
 vim.opt.showmode = false
 
-vim.opt.wrap = true -- display lines as one long line
+vim.opt.wrap = true
 vim.opt.colorcolumn = "80"
 vim.opt.linespace = 1
 vim.opt.linebreak = true
@@ -95,12 +94,9 @@ vim.opt.showbreak = icons.layout.wrap .. " "
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 
-vim.opt.foldcolumn = "0" -- '0' is not bad
-vim.opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-vim.opt.foldlevelstart = 99
-vim.opt.foldenable = true
-
-vim.opt.joinspaces = false
+vim.opt.foldmethod = "indent"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 3
 
 vim.opt.splitbelow = true
 vim.opt.splitright = true
@@ -114,7 +110,7 @@ vim.opt.confirm = false
 vim.opt.termguicolors = true
 vim.opt.completeopt = { "menuone", "noselect" }
 
-vim.opt.shortmess:append("sWI")
+vim.opt.shortmess:append("sWAIcCFS")
 vim.opt.whichwrap:append("<,>,[,],h,l")
 
 -- Providers
