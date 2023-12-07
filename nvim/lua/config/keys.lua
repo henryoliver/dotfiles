@@ -14,10 +14,6 @@ vim.keymap.set("n", "E", "$", default_options)
 vim.keymap.set("n", "n", "nzz", default_options)
 vim.keymap.set("n", "N", "Nzz", default_options)
 
--- Paste without yank
-vim.keymap.set("x", "p", "_dP", default_options)
-vim.keymap.set("x", "P", "_dp", default_options)
-
 -- Navigate Buffers
 vim.keymap.set("n", "[b", ":bprevious<cr>", default_options)
 vim.keymap.set("n", "]b", ":bnext<cr>", default_options)
