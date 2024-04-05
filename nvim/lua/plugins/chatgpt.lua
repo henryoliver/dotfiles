@@ -1,5 +1,6 @@
 return {
     -- ChatGPT
+    -- ChatGPT is a Neovim plugin that allows you to effortlessly utilize the OpenAI ChatGPT API, empowering you to generate natural language responses from OpenAI's ChatGPT directly within the editor in response to your inquiries.
     {
         "jackMort/ChatGPT.nvim",
         event = "VeryLazy",
@@ -10,11 +11,11 @@ return {
         },
         opts = {
             openai_params = {
-                model = "gpt-4-1106-preview",
+                model = "gpt-4-0125-preview",
                 max_tokens = 1000,
             },
             openai_edit_params = {
-                model = "gpt-4-1106-preview",
+                model = "gpt-4-0125-preview",
             },
             popup_layout = {
                 default = "right",

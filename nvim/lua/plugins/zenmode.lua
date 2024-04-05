@@ -1,5 +1,6 @@
 return {
     -- ZenMode
+    -- Distraction-free coding for Neovim >= 0.5
     "folke/zen-mode.nvim",
     lazy = true,
     cmd = "ZenMode",

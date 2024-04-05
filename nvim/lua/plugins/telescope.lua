@@ -81,5 +81,11 @@ return {
                 g = { ":Telescope git_bcommits<cr>", "Git Buffer Commits" },
             },
         }, { prefix = "<leader>", mode = "n" })
+
+        -- Disable folding in Telescope's result window.
+        vim.api.nvim_create_autocmd(
+            "FileType",
+            { pattern = "TelescopeResults", command = "setlocal foldlevelstart=999" }
+        )
     end,
 }

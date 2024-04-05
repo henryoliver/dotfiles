@@ -19,8 +19,8 @@ vim.keymap.set("n", "[b", ":bprevious<cr>", default_options)
 vim.keymap.set("n", "]b", ":bnext<cr>", default_options)
 
 -- Close Buffers
-vim.keymap.set("n", "<leader>x", ":bdelete<cr>", default_options)
-vim.keymap.set("n", "<leader>X", ":bufdo! bdelete<cr>", default_options)
+vim.keymap.set("n", "<leader>x", ":Bdelete<cr>", default_options)
+vim.keymap.set("n", "<leader>X", ":bufdo! Bdelete<cr>", default_options)
 
 -- Write (Save) Buffers
 vim.keymap.set("n", "<leader>w", ":update<cr>", default_options)

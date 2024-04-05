@@ -1,5 +1,6 @@
 return {
     -- Conform
+    -- Lightweight yet powerful formatter plugin for Neovim
     {
         "stevearc/conform.nvim",
         event = "VeryLazy",

@@ -12,7 +12,6 @@ return {
             },
         },
     },
-    config = true,
     init = function()
         -- Mappings
         local wk = require("which-key")

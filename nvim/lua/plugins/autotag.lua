@@ -1,5 +1,6 @@
 return {
     -- Autotag
+    -- Use treesitter to autoclose and autorename html tag
     {
         "windwp/nvim-ts-autotag",
         lazy = true,
@@ -28,6 +29,5 @@ return {
                 "jsx",
             },
         },
-        config = true,
     },
 }

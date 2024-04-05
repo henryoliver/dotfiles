@@ -1,5 +1,6 @@
 return {
     -- Spectre
+    -- A search panel for neovim.
     "windwp/nvim-spectre",
     lazy = true,
     cmd = "Spectre",
