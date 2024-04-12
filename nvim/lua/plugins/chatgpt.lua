@@ -27,6 +27,12 @@ return {
                     },
                 },
             },
+            chat = {
+                sessions_window = {
+                    active_sign = "  ",
+                    inactive_sign = "  ",
+                },
+            },
             actions_paths = { "~/.config/others/gpt-actions.json" },
         },
         init = function()

@@ -11,6 +11,7 @@ return {
     },
     config = function()
         local telescope = require("telescope")
+        local telescope_actions = require("telescope.actions")
 
         local icons = require("nvim-nonicons")
         local colors = require("nord.colors").palette
@@ -24,6 +25,12 @@ return {
                 sorting_strategy = "ascending",
                 file_ignore_patterns = { "^%.git/", "^cypress/", "package-lock.json" },
                 color_devicons = true,
+                mappings = {
+                    i = {
+                        ["<C-n>"] = telescope_actions.cycle_history_next,
+                        ["<C-p>"] = telescope_actions.cycle_history_prev,
+                    },
+                },
             },
             extensions = {
                 undo = {
