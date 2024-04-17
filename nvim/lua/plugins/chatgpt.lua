@@ -9,13 +9,14 @@ return {
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope.nvim",
         },
+        -- Config: https://github.com/jackMort/ChatGPT.nvim/blob/f1453f588eb47e49e57fa34ac1776b795d71e2f1/lua/chatgpt/config.lua#L10-L182
         opts = {
             openai_params = {
-                model = "gpt-4-0125-preview",
+                model = "gpt-4-turbo",
                 max_tokens = 1000,
             },
             openai_edit_params = {
-                model = "gpt-4-0125-preview",
+                model = "gpt-4-turbo",
             },
             popup_layout = {
                 default = "right",
@@ -47,8 +48,7 @@ return {
                     l = { chatgpt.complete_code, "Complete code" },
                     e = { chatgpt.edit_with_instructions, "Edit with instruction" },
                     -- Actions
-                    r = { ":ChatGPTRun refactor_code<cr>", "Code refactoring" },
-                    -- r = { chatgpt.run_action("refactor_code"), "Refactor code" },
+                    r = { ":ChatGPTRun refactor_code<cr>", "Refactor code" },
                 },
             }, { prefix = "<leader>", mode = { "n", "v" } })
         end,

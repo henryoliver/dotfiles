@@ -26,7 +26,7 @@ return {
                 file_ignore_patterns = { "^%.git/", "^cypress/", "package-lock.json" },
                 color_devicons = true,
                 mappings = {
-                    i = {
+                    n = {
                         ["<C-n>"] = telescope_actions.cycle_history_next,
                         ["<C-p>"] = telescope_actions.cycle_history_prev,
                     },
