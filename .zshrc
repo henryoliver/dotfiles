@@ -7,9 +7,11 @@ path=(
     # Go
     $GOPATH/bin
     $(go env GOPATH)/bin
+
     # Ruby
     /opt/homebrew/opt/ruby/bin
     `gem environment gemdir`/bin
+
     # Curl
     /opt/homebrew/opt/curl/bin
     $path
@@ -84,34 +86,42 @@ alias flush="dscacheutil -flushcache"    # Flush your dns cache
 alias path="echo $PATH | tr -s ":" "\n"" # Pretty print the path
 
 alias clean="
-    echo General &&
+    echo Bash... &&
     brew cleanup &&
     zplug clean --force &&
     zplug clear &&
     dscacheutil -flushcache && 
+    echo Done &&
 
-    echo JavaScript &&
+    echo TypeScript... &&
     npm cache --force clean &&
     npm list -g --depth 0 &&
+    echo Done &&
 
     echo Python &&
+    echo &&
 
     echo Ruby &&
+    echo &&
 
     echo Go &&
+    echo &&
 
     echo Rust &&
-
-    "
+    echo"
 
 alias update="
+    echo Bash &&
     brew update &&
     brew upgrade &&
     brew update --all &&
     brew doctor &&
+    echo &&
 
+    echo TypeScript &&
     npm install -g npm@latest &&
     npm update -g &&
+    echo &&
 
     curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin &&
 

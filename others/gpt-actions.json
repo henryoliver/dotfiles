@@ -5,7 +5,7 @@
       "template": "Refactor the following code written in {{lang}} by using its latest api available and making it clean using clean code principles by pasting the new code only as output.\n\nExisting code:\n```{{filetype}}\n{{input}}\n```\n\n```{{filetype}}\n\n",
       "strategy": "edit",
       "params": {
-        "model": "gpt-4-1106-preview"
+        "model": "gpt-4-turbo"
       }
     }
   }

@@ -10,18 +10,17 @@ return {
         local wk = require("which-key")
         local spectre = require("spectre")
 
-        wk.register({
-            f = {
-                name = "Find & Replace",
-                p = { spectre.open, "Project-Wide" },
-                b = { spectre.open_file_search, "Buffer" },
-                w = {
-                    function()
-                        spectre.open_visual({ select_word = true })
-                    end,
-                    "Current Word",
-                },
+        wk.add({
+            { "<leader>f", group = "Find & Replace" },
+            { "<leader>fb", spectre.open_file_search, desc = "Buffer" },
+            { "<leader>fp", spectre.open, desc = "Project-Wide" },
+            {
+                "<leader>fw",
+                function()
+                    spectre.open_visual({ select_word = true })
+                end,
+                desc = "Current Word",
             },
-        }, { prefix = "<leader>", mode = "n" })
+        })
     end,
 }

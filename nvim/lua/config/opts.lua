@@ -110,7 +110,7 @@ vim.opt.confirm = false
 vim.opt.termguicolors = true
 vim.opt.completeopt = { "menuone", "noselect" }
 
-vim.opt.shortmess:append("sWAIcCFS")
+vim.opt.shortmess:append("sWAIcCF")
 vim.opt.whichwrap:append("<,>,[,],h,l")
 
 -- Providers

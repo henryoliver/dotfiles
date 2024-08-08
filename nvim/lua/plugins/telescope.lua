@@ -67,27 +67,25 @@ return {
         -- Mappings
         local wk = require("which-key")
 
-        wk.register({
+        wk.add({
             -- Explore Browser
-            e = { ":Telescope file_browser path=%:p:h select_buffer=true<cr>", "Explore" },
+            { "<leader>e", ":Telescope file_browser path=%:p:h select_buffer=true<cr>", desc = "Explore" },
             -- Buffers
-            b = { ":Telescope buffers sort_mru=true<cr>", "Buffers" },
-            s = {
-                name = "Search",
-                -- Words
-                w = { ":Telescope live_grep<cr>", "Project Words" },
-                W = { ":Telescope current_buffer_fuzzy_find<cr>", "Current Buffer Words" },
-                -- Files
-                f = { ":Telescope git_files<cr>", "Git Files" },
-                F = { ":Telescope find_files<cr>", "Project Files" },
-                -- Others
-                u = { ":Telescope undo<cr>", "Undo" },
-                m = { ":Telescope marks<cr>", "Marks" },
-                r = { ":Telescope registers<cr>", "Registers" },
-                -- Git
-                g = { ":Telescope git_bcommits<cr>", "Git Buffer Commits" },
-            },
-        }, { prefix = "<leader>", mode = "n" })
+            { "<leader>b", ":Telescope buffers sort_mru=true<cr>", desc = "Buffers" },
+            { "<leader>s", group = "Search" },
+            -- Words
+            { "<leader>sw", ":Telescope live_grep<cr>", desc = "Project Words" },
+            { "<leader>sW", ":Telescope current_buffer_fuzzy_find<cr>", desc = "Current Buffer Words" },
+            -- Files
+            { "<leader>sF", ":Telescope find_files<cr>", desc = "Project Files" },
+            { "<leader>sf", ":Telescope git_files<cr>", desc = "Git Files" },
+            -- Git
+            { "<leader>sg", ":Telescope git_bcommits<cr>", desc = "Git Buffer Commits" },
+            -- Others
+            { "<leader>sm", ":Telescope marks<cr>", desc = "Marks" },
+            { "<leader>sr", ":Telescope registers<cr>", desc = "Registers" },
+            { "<leader>su", ":Telescope undo<cr>", desc = "Undo" },
+        }, { mode = { "n", "v" } })
 
         -- Disable folding in Telescope's result window.
         vim.api.nvim_create_autocmd(

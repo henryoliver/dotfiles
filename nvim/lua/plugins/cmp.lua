@@ -1,9 +1,10 @@
 return {
     -- Nvim CMP
-    -- A completion engine plugin for neovim written in Lua. Completion sources are installed from external repositories and "sourced".
     "hrsh7th/nvim-cmp",
     dependencies = {
         "nvim-lua/plenary.nvim",
+
+        { "tzachar/cmp-tabnine", build = "./install.sh" },
         "hrsh7th/cmp-nvim-lsp",
 
         "hrsh7th/cmp-vsnip",
@@ -15,11 +16,24 @@ return {
     },
     config = function()
         local cmp = require("cmp")
+        local tabnine = require("cmp_tabnine.config")
 
         local compare = require("cmp.config.compare")
+        local tabnine_compare = require("cmp_tabnine.compare")
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
         local icons = require("config.icons")
+        local colors = require("nord.colors").palette
+
+        -- Tabnine config
+        tabnine:setup({
+            sort = true,
+            max_lines = 1000,
+            max_num_results = 10,
+            snippet_placeholder = " ",
+            run_on_every_keystroke = true,
+            show_prediction_strength = false,
+        })
 
         -- Cmp config
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
@@ -47,6 +61,7 @@ return {
                 keyword_length = 3,
             },
             sources = {
+                { name = "cmp_tabnine", group_index = 1 },
                 { name = "nvim_lsp", group_index = 1 },
                 { name = "buffer", group_index = 2 },
             },
@@ -58,11 +73,27 @@ return {
 
                     -- Set source name
                     vim_item.menu = ({
+                        cmp_tabnine = "[AI]",
                         nvim_lsp = "[LSP]",
                         buffer = "[Buffer]",
                         cmdline = "[CMD]",
                         path = "[Path]",
                     })[entry.source.name]
+
+                    -- AI custom symbol and type
+                    if entry.source.name == "cmp_tabnine" then
+                        local detail = (entry.completion_item.labelDetails or {}).detail
+
+                        vim_item.kind = ""
+
+                        if detail and detail:find(".*%%.*") then
+                            vim_item.kind = vim_item.kind .. " " .. detail
+                        end
+
+                        if (entry.completion_item.data or {}).multiline then
+                            vim_item.menu = "[AI - ML]"
+                        end
+                    end
 
                     local maxwidth = 80
                     vim_item.abbr = string.sub(vim_item.abbr, 1, maxwidth)
@@ -84,6 +115,7 @@ return {
             sorting = {
                 priority_weight = 2,
                 comparators = {
+                    tabnine_compare,
                     compare.offset,
                     compare.exact,
                     compare.score,
@@ -118,5 +150,8 @@ return {
                 { name = "path" },
             }),
         })
+
+        -- Highlights
+        vim.api.nvim_set_hl(0, "CmpItemKindTabNine", { fg = colors.frost.artic_water })
     end,
 }

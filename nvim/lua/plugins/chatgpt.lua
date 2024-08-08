@@ -9,7 +9,7 @@ return {
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope.nvim",
         },
-        -- Config: https://github.com/jackMort/ChatGPT.nvim/blob/f1453f588eb47e49e57fa34ac1776b795d71e2f1/lua/chatgpt/config.lua#L10-L182
+        -- Config: ChatGPT.nvim/lua/chatgpt/config.lua
         opts = {
             openai_params = {
                 model = "gpt-4-turbo",
@@ -41,16 +41,14 @@ return {
             local wk = require("which-key")
             local chatgpt = require("chatgpt")
 
-            wk.register({
-                i = {
-                    name = "ChatGPT",
-                    c = { chatgpt.openChat, "ChatGPT" },
-                    l = { chatgpt.complete_code, "Complete code" },
-                    e = { chatgpt.edit_with_instructions, "Edit with instruction" },
-                    -- Actions
-                    r = { ":ChatGPTRun refactor_code<cr>", "Refactor code" },
-                },
-            }, { prefix = "<leader>", mode = { "n", "v" } })
+            wk.add({
+                { "<leader>i", group = "ChatGPT" },
+                { "<leader>ic", chatgpt.openChat, desc = "ChatGPT" },
+                { "<leader>ie", chatgpt.edit_with_instructions, desc = "Edit with instruction" },
+                { "<leader>il", chatgpt.complete_code, desc = "Complete code" },
+                { "<leader>ir", ":ChatGPTRun refactor_code<cr>", desc = "Refactor code" },
+                { "<leader>ix", ":ChatGPTRun explain_code<cr>", desc = "Explain code" },
+            }, { mode = { "n", "v" } })
         end,
     },
 }

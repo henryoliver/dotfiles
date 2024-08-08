@@ -17,29 +17,30 @@ return {
         local wk = require("which-key")
         local terminal = require("nvterm.terminal")
 
-        wk.register({
-            t = {
-                name = "Terminal",
-                f = {
-                    function()
-                        terminal.toggle("float")
-                    end,
-                    "Float",
-                },
-                h = {
-                    function()
-                        terminal.toggle("horizontal")
-                    end,
-                    "Horizontal",
-                },
-                v = {
-                    function()
-                        terminal.toggle("vertical")
-                    end,
-                    "Vertical",
-                },
+        wk.add({
+            { "<leader>t", group = "Terminal" },
+            {
+                "<leader>tf",
+                function()
+                    terminal.toggle("float")
+                end,
+                desc = "Float",
             },
-        }, { prefix = "<leader>", mode = "n" })
+            {
+                "<leader>th",
+                function()
+                    terminal.toggle("horizontal")
+                end,
+                desc = "Horizontal",
+            },
+            {
+                "<leader>tv",
+                function()
+                    terminal.toggle("vertical")
+                end,
+                desc = "Vertical",
+            },
+        })
 
         vim.keymap.set("t", "<c-w>h", [[<c-\><c-n><c-w>h]])
         vim.keymap.set("t", "<c-w>j", [[<c-\><c-n><c-w>j]])

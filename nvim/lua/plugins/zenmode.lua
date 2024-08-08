@@ -56,8 +56,8 @@ return {
         -- Mappings
         local wk = require("which-key")
 
-        wk.register({
-            z = { ":ZenMode<cr>", "ZenMode" },
-        }, { prefix = "<leader>", mode = "n" })
+        wk.add({
+            { "<leader>z", ":ZenMode<cr>", desc = "ZenMode" },
+        })
     end,
 }

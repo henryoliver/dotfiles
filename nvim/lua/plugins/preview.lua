@@ -12,14 +12,12 @@ return {
         local wk = require("which-key")
         local preview = require("goto-preview")
 
-        wk.register({
-            p = {
-                name = "Preview",
-                d = { preview.goto_preview_definition, "Definition" },
-                t = { preview.goto_preview_type_definition, "Type Definition" },
-                r = { preview.goto_preview_references, "References" },
-                i = { preview.goto_preview_implementation, "Implementation" },
-            },
-        }, { prefix = "<leader>", mode = "n" })
+        wk.add({
+            { "<leader>p", group = "Preview" },
+            { "<leader>pd", preview.goto_preview_definition, desc = "Definition" },
+            { "<leader>pi", preview.goto_preview_type_definition, desc = "Implementation" },
+            { "<leader>pr", preview.goto_preview_references, desc = "References" },
+            { "<leader>pt", preview.goto_preview_implementation, desc = "Type Definition" },
+        })
     end,
 }

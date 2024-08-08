@@ -90,9 +90,9 @@ return {
         -- Mappings
         local wk = require("which-key")
 
-        wk.register({
+        wk.add({
             -- Explore Browser
-            E = { ":NvimTreeToggle<cr>", "NvimTree" },
-        }, { prefix = "<leader>", mode = "n" })
+            { "<leader>E", ":NvimTreeToggle<cr>", desc = "NvimTree" },
+        }, { mode = { "n", "v" } })
     end,
 }

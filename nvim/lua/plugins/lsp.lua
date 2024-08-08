@@ -20,7 +20,7 @@ return {
             "jsonls",
             "lua_ls",
             "pylsp",
-            "ruby_ls",
+            "ruby_lsp",
             "tailwindcss",
             "tsserver",
             "vimls",
@@ -93,28 +93,27 @@ return {
         local conform = require("conform")
         local telescope = require("telescope.builtin")
 
-        wk.register({
-            l = {
-                name = "LSP",
-                h = { vim.lsp.buf.hover, "Hover" },
-                n = { vim.lsp.buf.rename, "Rename" },
-                a = { vim.lsp.buf.code_action, "Action" },
-                r = { telescope.lsp_references, "References" },
-                d = { telescope.lsp_definitions, "Definition" },
-                g = { telescope.diagnostics, "Diagnostics" },
-                i = { telescope.lsp_implementations, "Implementations" },
-                c = { vim.lsp.buf.declaration, "Declaration" },
-                s = { vim.lsp.buf.signature_help, "Signature" },
-                y = { telescope.lsp_document_symbols, "Symbols" },
-                t = { telescope.lsp_type_definitions, "Type Definition" },
-                f = {
-                    function()
-                        conform.format({ async = true, lsp_fallback = true })
-                    end,
-                    "Format",
-                },
+        wk.add({
+            { "<leader>l", group = "LSP" },
+            { "<leader>la", vim.lsp.buf.code_action, desc = "Action" },
+            { "<leader>lc", vim.lsp.buf.declaration, desc = "Declaration" },
+            { "<leader>ld", telescope.lsp_definitions, desc = "Definition" },
+            {
+                "<leader>lf",
+                function()
+                    conform.format({ async = true, lsp_fallback = true })
+                end,
+                desc = "Format",
             },
-        }, { prefix = "<leader>", mode = "n" })
+            { "<leader>lg", telescope.diagnostics, desc = "Diagnostics" },
+            { "<leader>lh", vim.lsp.buf.hover, desc = "Hover" },
+            { "<leader>li", telescope.lsp_implementations, desc = "Implementations" },
+            { "<leader>ln", vim.lsp.buf.rename, desc = "Rename" },
+            { "<leader>lr", telescope.lsp_references, desc = "References" },
+            { "<leader>ls", vim.lsp.buf.signature_help, desc = "Signature" },
+            { "<leader>lt", telescope.lsp_type_definitions, desc = "Type Definition" },
+            { "<leader>ly", telescope.lsp_document_symbols, desc = "Symbols" },
+        })
 
         vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
         vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
