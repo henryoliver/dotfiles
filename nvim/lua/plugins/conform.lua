@@ -8,6 +8,7 @@ return {
             local conform = require("conform")
 
             conform.setup({
+                -- Define your formatters
                 formatters_by_ft = {
                     css = { "prettierd" },
                     go = { "gofumpt" },
@@ -21,19 +22,23 @@ return {
                     typescript = { "prettierd" },
                     yaml = { "prettierd" },
                 },
-                format_on_save = {
-                    -- These options will be passed to conform.format()
-                    timeout_ms = 500,
-                    lsp_fallback = true,
+                -- Set default options
+                default_format_opts = {
+                    lsp_format = "fallback",
+                },
+                -- Set up format-on-save
+                format_on_save = { timeout_ms = 500 },
+                -- Customize formatters
+                formatters = {
+                    rubocop = {
+                        command = "bundle exec rubocop",
+                    },
                 },
             })
-
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                pattern = "*",
-                callback = function(args)
-                    conform.format({ bufnr = args.buf })
-                end,
-            })
+        end,
+        init = function()
+            -- If you want the formatexpr, here is the place to set it
+            vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
         end,
     },
 }

@@ -11,6 +11,7 @@ return {
 
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+        -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         local servers = {
             "bashls",
             "cssls",
@@ -101,7 +102,7 @@ return {
             {
                 "<leader>lf",
                 function()
-                    conform.format({ async = true, lsp_fallback = true })
+                    conform.format({ async = true })
                 end,
                 desc = "Format",
             },

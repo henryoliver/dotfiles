@@ -91,8 +91,9 @@ return {
         local wk = require("which-key")
 
         wk.add({
+            mode = { "n", "v" },
             -- Explore Browser
             { "<leader>E", ":NvimTreeToggle<cr>", desc = "NvimTree" },
-        }, { mode = { "n", "v" } })
+        })
     end,
 }

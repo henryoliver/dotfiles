@@ -14,7 +14,7 @@ return {
                 desc = "Substitute",
             },
             {
-                "ss",
+                "sl",
                 mode = "n",
                 function()
                     require("substitute").line()

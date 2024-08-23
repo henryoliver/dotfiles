@@ -4,13 +4,15 @@
 eval $(/opt/homebrew/bin/brew shellenv)
 fpath+=($HOME/.zsh/pure)
 path=(
+    # PostgreSQL
+    /opt/homebrew/opt/postgresql@16/bin
+
     # Go
     $GOPATH/bin
     $(go env GOPATH)/bin
 
     # Ruby
-    /opt/homebrew/opt/ruby/bin
-    `gem environment gemdir`/bin
+    $HOME/.rbenv/shims
 
     # Curl
     /opt/homebrew/opt/curl/bin

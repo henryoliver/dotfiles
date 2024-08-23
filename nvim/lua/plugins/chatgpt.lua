@@ -42,13 +42,14 @@ return {
             local chatgpt = require("chatgpt")
 
             wk.add({
+                mode = { "n", "v" },
                 { "<leader>i", group = "ChatGPT" },
                 { "<leader>ic", chatgpt.openChat, desc = "ChatGPT" },
                 { "<leader>ie", chatgpt.edit_with_instructions, desc = "Edit with instruction" },
                 { "<leader>il", chatgpt.complete_code, desc = "Complete code" },
                 { "<leader>ir", ":ChatGPTRun refactor_code<cr>", desc = "Refactor code" },
                 { "<leader>ix", ":ChatGPTRun explain_code<cr>", desc = "Explain code" },
-            }, { mode = { "n", "v" } })
+            })
         end,
     },
 }

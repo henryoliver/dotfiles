@@ -68,6 +68,7 @@ return {
         local wk = require("which-key")
 
         wk.add({
+            mode = { "n", "v" },
             -- Explore Browser
             { "<leader>e", ":Telescope file_browser path=%:p:h select_buffer=true<cr>", desc = "Explore" },
             -- Buffers
@@ -85,7 +86,7 @@ return {
             { "<leader>sm", ":Telescope marks<cr>", desc = "Marks" },
             { "<leader>sr", ":Telescope registers<cr>", desc = "Registers" },
             { "<leader>su", ":Telescope undo<cr>", desc = "Undo" },
-        }, { mode = { "n", "v" } })
+        })
 
         -- Disable folding in Telescope's result window.
         vim.api.nvim_create_autocmd(
