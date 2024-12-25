@@ -7,19 +7,25 @@ return {
         dependencies = {
             "MunifTanjim/nui.nvim",
             "nvim-lua/plenary.nvim",
+            "folke/trouble.nvim",
             "nvim-telescope/telescope.nvim",
         },
         -- Config: ChatGPT.nvim/lua/chatgpt/config.lua
         opts = {
             openai_params = {
-                model = "gpt-4-turbo",
-                max_tokens = 1000,
+                model = "gpt-4o",
+                max_tokens = 4095,
             },
             openai_edit_params = {
-                model = "gpt-4-turbo",
+                model = "gpt-4o",
+                max_tokens = 4095,
             },
             popup_layout = {
                 default = "right",
+                center = {
+                    width = "84%",
+                    height = "84%",
+                },
             },
             popup_window = {
                 border = {

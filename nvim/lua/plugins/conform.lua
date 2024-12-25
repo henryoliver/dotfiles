@@ -29,6 +29,7 @@ return {
                 -- Set up format-on-save
                 format_on_save = { timeout_ms = 500 },
                 -- Customize formatters
+                -- https://github.com/stevearc/conform.nvim/tree/master/lua/conform/formatters
                 formatters = {
                     rubocop = {
                         command = "bundle exec rubocop",

@@ -16,6 +16,7 @@ path=(
 
     # Curl
     /opt/homebrew/opt/curl/bin
+
     $path
 ) 
 
@@ -24,7 +25,7 @@ autoload -U promptinit; promptinit
 prompt pure
 
 # Zsh Plugin Manager
-source ~/.zplug/init.zsh
+source $ZPLUG_HOME/init.zsh
 
 # Make sure to use double quotes to prevent shell expansion
 zplug "Licheam/zsh-ask"
@@ -33,16 +34,15 @@ zplug "b4b4r07/enhancd", use:init.sh
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting"
 
-# Install packages that have not been installed yet
+# Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
     if read -q; then
         echo; zplug install
-    else
-        echo
     fi
 fi
 
+# Then, source plugins and add commands to $PATH
 zplug load
 
 # Key Bindings
@@ -133,3 +133,6 @@ alias update="
     pip install --upgrade pynvim --break-system-packages &&
     pip list --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
     "
+
+# Added by `rbenv init` on Wed Dec 25 16:17:22 EST 2024
+eval "$(rbenv init - --no-rehash zsh)"

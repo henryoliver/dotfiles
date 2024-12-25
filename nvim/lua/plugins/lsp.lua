@@ -11,11 +11,10 @@ return {
 
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-        -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+        -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         local servers = {
             "bashls",
             "cssls",
-            "eslint",
             "gopls",
             "html",
             "jsonls",
@@ -23,7 +22,7 @@ return {
             "pylsp",
             "ruby_lsp",
             "tailwindcss",
-            "tsserver",
+            "ts_ls",
             "vimls",
         }
 
@@ -31,8 +30,15 @@ return {
             local config = { capabilities = capabilities }
 
             -- Custom settings
-            if lsp == "tailwindcss" then -- Tailwind
-                config.filetypes = { "css", "typescriptreact" }
+            if lsp == "cssls" then -- CSS
+                config.settings = {
+                    Lua = {
+                        -- Get the language server to recognize the `vim` global
+                        diagnostics = { globals = { "vim", "string", "require", "pairs" } },
+                    },
+                }
+            elseif lsp == "tailwindcss" then -- Tailwind
+                config.filetypes = { "css", "javascriptreact", "typescriptreact" }
                 config.settings = {
                     tailwindCSS = {
                         lint = {
@@ -91,6 +97,7 @@ return {
     init = function()
         -- Mappings
         local wk = require("which-key")
+        local lint = require("lint")
         local conform = require("conform")
         local telescope = require("telescope.builtin")
 
@@ -99,6 +106,13 @@ return {
             { "<leader>la", vim.lsp.buf.code_action, desc = "Action" },
             { "<leader>lc", vim.lsp.buf.declaration, desc = "Declaration" },
             { "<leader>ld", telescope.lsp_definitions, desc = "Definition" },
+            {
+                "<leader>ll",
+                function()
+                    lint.try_lint()
+                end,
+                desc = "Lint",
+            },
             {
                 "<leader>lf",
                 function()
