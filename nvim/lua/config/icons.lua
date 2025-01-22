@@ -22,21 +22,20 @@ icons.widget = {
     inactive = "",
     keymap = "",
     lazy = "",
-    nesting = "",
+    nesting = "",
     plugin = "",
     runtime = "",
     source = "",
     start = "",
     task = "",
-    -- telescope = nonicons.get("telescope"),
-    telescope = "",
+    telescope = "",
 }
 
 icons.log = {
     error = "",
     warning = "",
     hint = "",
-    information = "",
+    information = "",
     beaker = "",
     constant = "",
     paste = "",
@@ -80,7 +79,7 @@ icons.kind = {
 }
 
 icons.file = {
-    typescript = "",
+    typescript = "",
     css = "",
     scss = "",
     javascript = "",

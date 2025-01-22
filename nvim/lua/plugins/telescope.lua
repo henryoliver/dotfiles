@@ -32,6 +32,11 @@ return {
                     },
                 },
             },
+            pickers = {
+                colorscheme = {
+                    enable_preview = true,
+                },
+            },
             extensions = {
                 undo = {
                     -- telescope-undo.nvim config, see below

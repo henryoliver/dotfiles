@@ -6,6 +6,7 @@ return {
     config = function()
         local noice = require("noice")
         local notify = require("notify")
+        local nonicons_extention = require("nvim-nonicons.extentions.nvim-notify")
 
         noice.setup({
             lsp = {
@@ -53,6 +54,7 @@ return {
         })
 
         notify.setup({
+            icons = nonicons_extention.icons,
             on_open = function(win)
                 vim.api.nvim_win_set_config(win, { focusable = false })
             end,
