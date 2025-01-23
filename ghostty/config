@@ -1,0 +1,25 @@
+# vi:ft=conf
+# https://ghostty.org/docs/config/reference
+
+theme = nord
+
+font-size = 18
+font-family = MonoLisa Variable Regular Regular
+font-family-bold = MonoLisa Variable Regular SemiBold
+font-family-italic = MonoLisa Variable Italic Light Italic
+font-family-bold-italic = MonoLisa Variable Italic SemiBold Italic
+
+font-codepoint-map = U+E5FA-U+E6AC=Symbols Nerd Font # Seti-UI + Custom
+font-codepoint-map = U+E700-U+E7C5=Symbols Nerd Font # Devicons
+font-codepoint-map = U+F000-U+F2E0=Symbols Nerd Font # Font Awesome
+font-codepoint-map = U+E200-U+E2A9=Symbols Nerd Font # Font Awesome Extension
+font-codepoint-map = U+F0001-U+F1AF0=Symbols Nerd Font # Material Design Icons
+font-codepoint-map = U+E300-U+E3E3=Symbols Nerd Font # Weather
+font-codepoint-map = U+F400-U+F532,U+2665,U+26A1=Symbols Nerd Font # Octicons
+font-codepoint-map = U+E0A0-U+E0A2,U+E0B0-U+E0B3=Symbols Nerd Font # Powerline Symbols
+font-codepoint-map = U+E0A3,U+E0B4-U+E0C8,U+E0CA,U+E0CC-U+E0D4=Symbols Nerd Font # Powerline Extra Symbols
+font-codepoint-map = U+23FB-U+23FE,U+2B58=Symbols Nerd Font # IEC Power Symbols
+font-codepoint-map = U+F300-U+F32F=Symbols Nerd Font # Font Logos
+font-codepoint-map = U+E000-U+E00A=Symbols Nerd Font # Pomicons
+font-codepoint-map = U+EA60-U+EBEB=Symbols Nerd Font # Codicons
+font-codepoint-map = U+f101-U+f25c=nonicons # Nonicons
