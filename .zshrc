@@ -116,23 +116,18 @@ alias update="
     echo Bash &&
     brew update &&
     brew upgrade &&
-    brew update --all &&
+    brew update --force &&
     brew doctor &&
+    zplug update --force &&
     echo &&
 
     echo TypeScript &&
     npm install -g npm@latest &&
     npm update -g &&
-    echo &&
+    echo Done &&
 
-    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin &&
-
-    zplug update --force &&
-
-    pip install --upgrade pip --break-system-packages &&
-    pip install --upgrade pynvim --break-system-packages &&
-    pip list --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
+    echo Python &&
+    python -m pip install --upgrade pip --break-system-packages &&
+    pip list --outdated | tail -n +3 | cut -d' ' -f 1 | xargs -n 1 pip install --upgrade
+    echo Done
     "
-
-# Added by `rbenv init` on Wed Dec 25 16:17:22 EST 2024
-eval "$(rbenv init - --no-rehash zsh)"

@@ -97,7 +97,6 @@ return {
     init = function()
         -- Mappings
         local wk = require("which-key")
-        local lint = require("lint")
         local conform = require("conform")
         local telescope = require("telescope.builtin")
 
@@ -106,13 +105,6 @@ return {
             { "<leader>la", vim.lsp.buf.code_action, desc = "Action" },
             { "<leader>lc", vim.lsp.buf.declaration, desc = "Declaration" },
             { "<leader>ld", telescope.lsp_definitions, desc = "Definition" },
-            {
-                "<leader>ll",
-                function()
-                    lint.try_lint()
-                end,
-                desc = "Lint",
-            },
             {
                 "<leader>lf",
                 function()

@@ -1,4 +1,32 @@
 return {
+    -- Claude Code
+    -- A seamless integration between Claude Code AI assistant and Neovim
+    {
+        "greggh/claude-code.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        -- Config: https://github.com/greggh/claude-code.nvim?tab=readme-ov-file#configuration
+        config = function()
+            require("claude-code").setup({
+                -- Terminal window settings
+                window = {
+                    height_ratio = 0.4, -- Percentage of screen height for the terminal window
+                },
+            })
+        end,
+        init = function()
+            -- Mappings
+            local wk = require("which-key")
+
+            wk.add({
+                mode = { "n", "v" },
+                { "<leader>i", group = "AI" },
+                { "<leader>ia", ":ClaudeCode<cr>", desc = "Claude" },
+            })
+        end,
+    },
     -- ChatGPT
     -- ChatGPT is a Neovim plugin that allows you to effortlessly utilize the OpenAI ChatGPT API, empowering you to generate natural language responses from OpenAI's ChatGPT directly within the editor in response to your inquiries.
     {
@@ -49,12 +77,12 @@ return {
 
             wk.add({
                 mode = { "n", "v" },
-                { "<leader>i", group = "ChatGPT" },
+                { "<leader>i", group = "AI" },
                 { "<leader>ic", chatgpt.openChat, desc = "ChatGPT" },
-                { "<leader>ie", chatgpt.edit_with_instructions, desc = "Edit with instruction" },
-                { "<leader>il", chatgpt.complete_code, desc = "Complete code" },
-                { "<leader>ir", ":ChatGPTRun refactor_code<cr>", desc = "Refactor code" },
-                { "<leader>ix", ":ChatGPTRun explain_code<cr>", desc = "Explain code" },
+                { "<leader>ie", chatgpt.edit_with_instructions, desc = "ChatGPT edit with instruction" },
+                { "<leader>il", chatgpt.complete_code, desc = "ChatGPT Complete code" },
+                { "<leader>ir", ":ChatGPTRun refactor_code<cr>", desc = "ChatGPT refactor code" },
+                { "<leader>ix", ":ChatGPTRun explain_code<cr>", desc = "ChatGPT explain code" },
             })
         end,
     },
