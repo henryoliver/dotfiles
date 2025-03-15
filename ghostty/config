@@ -41,4 +41,14 @@ font-codepoint-map = U+ea60-U+ec1e=Symbols Nerd Font
 # Nonicons
 font-codepoint-map = U+f101-U+f25c=nonicons
 
+title = " "
+window-inherit-font-size = true
+window-subtitle = false
+macos-titlebar-proxy-icon = hidden
+
+maximize = true
 mouse-hide-while-typing = true
+
+working-directory = home
+window-inherit-working-directory = false
+window-inherit-font-size = true

@@ -1,5 +1,3 @@
-local icons = require("config.icons")
-
 vim.g.mapleader = " "
 
 -- Backup, undo, swap options
@@ -55,9 +53,7 @@ vim.opt.expandtab = true
 
 vim.opt.smartindent = true
 vim.opt.breakindent = true
-
 vim.opt.list = true
-vim.opt.listchars = { tab = icons.layout.tab .. " " }
 
 -- Presentation
 vim.opt.hidden = true
@@ -66,7 +62,6 @@ vim.opt.complete = {}
 
 vim.opt.number = true
 vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
-vim.opt.relativenumber = true
 vim.opt.cursorlineopt:append("number", "screenline")
 
 vim.opt.ruler = true
@@ -78,7 +73,7 @@ vim.opt.cmdwinheight = 1
 
 vim.opt.laststatus = 0
 vim.opt.statusline = "%#Normal#"
-    .. "⊱ ──────────── {⋆⌘⋆} ──────────── ⊰"
+    .. "⊱ ──────────────────────── {⋆⌘⋆} ──────────────────────── ⊰"
     .. "%="
 vim.opt.showtabline = 0
 
@@ -89,7 +84,7 @@ vim.opt.wrap = true
 vim.opt.colorcolumn = "80"
 vim.opt.linespace = 1
 vim.opt.linebreak = true
-vim.opt.showbreak = icons.layout.wrap .. " "
+vim.opt.showbreak = "↪"
 
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8

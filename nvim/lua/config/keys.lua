@@ -14,14 +14,6 @@ vim.keymap.set("n", "E", "$", default_options)
 vim.keymap.set("n", "n", "nzz", default_options)
 vim.keymap.set("n", "N", "Nzz", default_options)
 
--- Navigate Buffers
-vim.keymap.set("n", "[b", ":bprevious<cr>", default_options)
-vim.keymap.set("n", "]b", ":bnext<cr>", default_options)
-
--- Close Buffers
-vim.keymap.set("n", "<leader>x", ":Bdelete<cr>", default_options)
-vim.keymap.set("n", "<leader>X", ":bufdo! Bdelete<cr>", default_options)
-
 -- Write (Save) Buffers
-vim.keymap.set("n", "<leader>w", ":update<cr>", default_options)
-vim.keymap.set("n", "<leader>W", ":wall<cr>", default_options)
+vim.keymap.set("n", "<Leader>w", ":update<CR>", vim.tbl_extend("force", default_options, { desc = "Update" }))
+vim.keymap.set("n", "<Leader>W", ":wall<CR>", vim.tbl_extend("force", default_options, { desc = "Update Wall" }))

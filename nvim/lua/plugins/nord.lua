@@ -1,6 +1,7 @@
 return {
-    -- Nord
+    ---@type LazySpec
     "gbprod/nord.nvim",
+    lazy = false,
     priority = 1000,
     config = function()
         require("nord").setup({

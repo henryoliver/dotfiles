@@ -1,19 +1,12 @@
 return {
-    -- Treesitter
+    ---@type LazySpec
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdateSync",
-    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects", "JoosepAlviste/nvim-ts-context-commentstring" },
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
         local treesitter = require("nvim-treesitter.configs")
-        local ts_context_commentstring = require("ts_context_commentstring")
 
         treesitter.setup({
-            highlight = {
-                enable = true,
-            },
-            indent = {
-                enable = true,
-            },
             auto_install = true,
             ensure_installed = {
                 "bash",
@@ -40,25 +33,11 @@ return {
                 "tsx",
                 "vim",
             },
-            incremental_selection = {
-                enable = true,
-                keymaps = {
-                    init_selection = "<c-l>", -- set to `false` to disable one of the mappings
-                    node_incremental = "<c-j>",
-                    scope_incremental = false,
-                    node_decremental = "<c-k>",
-                },
-            },
-            textobjects = {
-                select = {
-                    enable = true,
-                    -- Automatically jump forward to textobj, similar to targets.vim
-                    lookahead = true,
-                },
-            },
+            highlight = { enable = true },
+            indent = { enable = true },
+            incremental_selection = { enable = false },
         })
 
         vim.g.skip_ts_context_commentstring_module = true -- skip backwards compatibility routines and speed up loading.
-        ts_context_commentstring.setup({ enable_autocmd = false })
     end,
 }

@@ -1,8 +1,12 @@
 return {
-    -- Noice
-    -- Highly experimental plugin that completely replaces the UI for messages, cmdline and the popupmenu.
+    ---@type LazySpec
     "folke/noice.nvim",
-    dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
+    event = "VeryLazy",
+    dependencies = {
+        "MunifTanjim/nui.nvim",
+        "rcarriga/nvim-notify",
+        "yamatsum/nvim-nonicons",
+    },
     config = function()
         local noice = require("noice")
         local notify = require("notify")

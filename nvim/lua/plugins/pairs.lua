@@ -1,6 +1,6 @@
 return {
     ---@type LazySpec
-    "echasnovski/mini.surround",
+    "echasnovski/mini.pairs",
     version = false,
     event = "InsertEnter",
     opts = {},

@@ -8,7 +8,8 @@ mkdir ~/.config
 mkdir ~/.config/nvim
 
 ln -sv ~/.dotfiles/lsp ~/.config/lsp
-ln -sv ~/.dotfiles/kitty ~/.config/kitty
+ln -sv ~/.dotfiles/bat ~/.config/bat
+# ln -sv ~/.dotfiles/kitty ~/.config/kitty
 ln -sv ~/.dotfiles/ghostty ~/.config/ghostty 
 
 ln -sv ~/.dotfiles/nvim/init.lua ~/.config/nvim

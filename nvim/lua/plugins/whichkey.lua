@@ -1,6 +1,8 @@
 return {
-    -- Which Key
+    ---@type LazySpec
     "folke/which-key.nvim",
+    event = "VeryLazy",
+    dependencies = "yamatsum/nvim-nonicons",
     opts = {
         preset = "modern", -- false | "classic" | "modern" | "helix"
         plugins = {
@@ -16,12 +18,28 @@ return {
                 operators = true, -- adds help for operators like d, y, ...
                 motions = true, -- adds help for motions
                 text_objects = true, -- help for text objects triggered after entering an operator
-                windows = true, -- default bindings on <c-w>
+                windows = true, -- default bindings on <C-w>
                 nav = true, -- misc bindings to work with windows
                 z = true, -- bindings for folds, spelling and others prefixed with z
                 g = true, -- bindings for prefixed with g
             },
         },
-        icons = { mappings = false },
+        icons = { mappings = true },
     },
+    config = function()
+        -- Mappings
+        local wk = require("which-key")
+
+        wk.add({
+            mode = { "n", "v" },
+            { "<Leader>i", group = "AI" },
+            { "<Leader>g", group = "Git" },
+            { "<Leader>gh", group = "Hunk" },
+            { "<Leader>gt", group = "Toggle" },
+            { "<Leader>f", group = "Find & Raplace" },
+            { "<Leader>l", group = "LSP" },
+            { "<Leader>s", group = "Search" },
+            { "<Leader>p", group = "Preview" },
+        })
+    end,
 }

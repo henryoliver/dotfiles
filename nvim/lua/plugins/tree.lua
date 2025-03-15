@@ -1,6 +1,7 @@
 return {
+    ---@type LazySpec
     "nvim-tree/nvim-tree.lua",
-    event = "VeryLazy",
+    cmd = "NvimTreeToggle",
     dependencies = "yamatsum/nvim-nonicons",
     config = function()
         local nvim_tree = require("nvim-tree")
@@ -86,14 +87,8 @@ return {
         vim.api.nvim_set_hl(0, "NvimTreeModifiedFile", { fg = colors.none })
         vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { fg = colors.none })
     end,
-    init = function()
-        -- Mappings
-        local wk = require("which-key")
-
-        wk.add({
-            mode = { "n", "v" },
-            -- Explore Browser
-            { "<leader>E", ":NvimTreeToggle<cr>", desc = "NvimTree" },
-        })
-    end,
+    keys = {
+        -- Explore Browser
+        { "<Leader>E", "<Cmd>NvimTreeToggle<CR>", mode = { "n", "v" }, desc = "NvimTree" },
+    },
 }

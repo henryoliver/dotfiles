@@ -1,30 +1,40 @@
 return {
-    -- Telescope
+    ---@type LazySpec
     "nvim-telescope/telescope.nvim",
+    lazy = false,
     dependencies = {
-        "nvim-lua/popup.nvim",
         "nvim-lua/plenary.nvim",
         "yamatsum/nvim-nonicons",
         "debugloop/telescope-undo.nvim",
         "nvim-telescope/telescope-fzy-native.nvim",
         "nvim-telescope/telescope-file-browser.nvim",
     },
+    init = function()
+        -- Disable folding in Telescope's result window.
+        vim.api.nvim_create_autocmd(
+            "FileType",
+            { pattern = "TelescopeResults", command = "setlocal foldlevelstart=999" }
+        )
+    end,
     config = function()
         local telescope = require("telescope")
         local telescope_actions = require("telescope.actions")
 
-        local icons = require("nvim-nonicons")
+        local nonicons = require("nvim-nonicons")
         local colors = require("nord.colors").palette
 
         telescope.setup({
             defaults = {
-                prompt_prefix = "  " .. icons.get("telescope") .. "  ",
-                selection_caret = " ❯ ",
+                prompt_prefix = "  " .. nonicons.get("telescope") .. "  ",
+                selection_caret = " " .. nonicons.get("chevron-right") .. " ",
                 entry_prefix = "   ",
-                layout_config = { prompt_position = "top", preview_width = 0.6 },
+                layout_config = {
+                    width = 0.8,
+                    prompt_position = "top",
+                    preview_width = 0.5,
+                },
                 sorting_strategy = "ascending",
                 file_ignore_patterns = { "^%.git/", "^cypress/", "package-lock.json" },
-                color_devicons = true,
                 mappings = {
                     n = {
                         ["<C-n>"] = telescope_actions.cycle_history_next,
@@ -50,6 +60,7 @@ return {
                     grouped = true,
                     hijack_netrw = true,
                     respect_gitignore = false,
+                    dir_icon = nonicons.get("file-directory"),
                 },
             },
         })
@@ -68,35 +79,22 @@ return {
         vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = colors.polar_night.brightest })
         vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = colors.polar_night.brightest })
     end,
-    init = function()
-        -- Mappings
-        local wk = require("which-key")
-
-        wk.add({
-            mode = { "n", "v" },
-            -- Explore Browser
-            { "<leader>e", ":Telescope file_browser path=%:p:h select_buffer=true<cr>", desc = "Explore" },
-            -- Buffers
-            { "<leader>b", ":Telescope buffers sort_mru=true<cr>", desc = "Buffers" },
-            { "<leader>s", group = "Search" },
-            -- Words
-            { "<leader>sw", ":Telescope live_grep<cr>", desc = "Project Words" },
-            { "<leader>sW", ":Telescope current_buffer_fuzzy_find<cr>", desc = "Current Buffer Words" },
-            -- Files
-            { "<leader>sF", ":Telescope find_files<cr>", desc = "Project Files" },
-            { "<leader>sf", ":Telescope git_files<cr>", desc = "Git Files" },
-            -- Git
-            { "<leader>sg", ":Telescope git_bcommits<cr>", desc = "Git Buffer Commits" },
-            -- Others
-            { "<leader>sm", ":Telescope marks<cr>", desc = "Marks" },
-            { "<leader>sr", ":Telescope registers<cr>", desc = "Registers" },
-            { "<leader>su", ":Telescope undo<cr>", desc = "Undo" },
-        })
-
-        -- Disable folding in Telescope's result window.
-        vim.api.nvim_create_autocmd(
-            "FileType",
-            { pattern = "TelescopeResults", command = "setlocal foldlevelstart=999" }
-        )
-    end,
+    keys = {
+        -- Explore Browser
+        { "<Leader>e", "<Cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>", desc = "Explore" },
+        -- Buffers
+        { "<Leader>b", "<Cmd>Telescope buffers sort_mru=true<CR>", desc = "Buffers" },
+        -- Search: Words
+        { "<Leader>sw", "<Cmd>Telescope live_grep<CR>", desc = "Project Words" },
+        { "<Leader>sW", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Current Buffer Words" },
+        -- Search: Files
+        { "<Leader>sF", "<Cmd>Telescope find_files<CR>", desc = "Project Files" },
+        { "<Leader>sf", "<Cmd>Telescope git_files<CR>", desc = "Git Files" },
+        -- Search: Git
+        { "<Leader>sg", "<Cmd>Telescope git_bcommits<CR>", desc = "Git Buffer Commits" },
+        -- Search: Others
+        { "<Leader>sm", "<Cmd>Telescope marks<CR>", desc = "Marks" },
+        { "<Leader>sr", "<Cmd>Telescope registers<CR>", desc = "Registers" },
+        { "<Leader>su", "<Cmd>Telescope undo<CR>", desc = "Undo" },
+    },
 }

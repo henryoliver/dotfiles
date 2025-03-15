@@ -1,9 +1,6 @@
 return {
-    -- ZenMode
-    -- Distraction-free coding for Neovim >= 0.5
+    ---@type LazySpec
     "folke/zen-mode.nvim",
-    lazy = true,
-    cmd = "ZenMode",
     opts = {
         window = {
             backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
@@ -35,29 +32,13 @@ return {
                 showcmd = false, -- disables the command in the last line of the screen
             },
             twilight = { enabled = false },
-            gitsigns = { enabled = false },
-            kitty = {
-                enabled = true,
-                font = "+6",
-            },
         },
         -- callback where you can add custom code when the Zen window opens
-        on_open = function()
-            require("barbecue.ui").toggle()
-            require("sentiment").disable()
-        end,
+        on_open = function() end,
         -- callback where you can add custom code when the Zen window closes
-        on_close = function()
-            require("barbecue.ui").toggle()
-            require("sentiment").enable()
-        end,
+        on_close = function() end,
     },
-    init = function()
-        -- Mappings
-        local wk = require("which-key")
-
-        wk.add({
-            { "<leader>z", ":ZenMode<cr>", desc = "ZenMode" },
-        })
-    end,
+    keys = {
+        { "<Leader>z", "<Cmd>ZenMode<CR>", desc = "ZenMode" },
+    },
 }

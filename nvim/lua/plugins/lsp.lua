@@ -1,45 +1,41 @@
 return {
-    -- LSP
+    ---@type LazySpec
     "neovim/nvim-lspconfig",
+    event = "VeryLazy",
     dependencies = {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
     },
-    config = function()
-        local icons = require("config.icons")
-        local lspconfig = require("lspconfig")
-
-        local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
+    opts = {
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-        local servers = {
-            "bashls",
-            "cssls",
-            "gopls",
-            "html",
-            "jsonls",
-            "lua_ls",
-            "pylsp",
-            "ruby_lsp",
-            "tailwindcss",
-            "ts_ls",
-            "vimls",
-        }
-
-        for _, lsp in ipairs(servers) do
-            local config = { capabilities = capabilities }
-
-            -- Custom settings
-            if lsp == "cssls" then -- CSS
-                config.settings = {
+        servers = {
+            bashls = {},
+            cssls = {
+                settings = {
+                    css = {
+                        validate = true,
+                        lint = {
+                            unknownAtRules = "ignore",
+                        },
+                    },
+                },
+            },
+            gopls = {},
+            html = {},
+            jsonls = {},
+            lua_ls = {
+                settings = {
                     Lua = {
                         -- Get the language server to recognize the `vim` global
                         diagnostics = { globals = { "vim", "string", "require", "pairs" } },
                     },
-                }
-            elseif lsp == "tailwindcss" then -- Tailwind
-                config.filetypes = { "css", "javascriptreact", "typescriptreact" }
-                config.settings = {
+                },
+            },
+            pylsp = {},
+            ruby_lsp = {},
+            tailwindcss = {
+                filetypes = { "css", "javascriptreact", "typescriptreact" },
+                settings = {
                     tailwindCSS = {
                         lint = {
                             invalidScreen = "error",
@@ -52,17 +48,20 @@ return {
                         },
                         validate = true,
                     },
-                }
-            elseif lsp == "lua_ls" then -- Lua
-                config.settings = {
-                    Lua = {
-                        -- Get the language server to recognize the `vim` global
-                        diagnostics = { globals = { "vim", "string", "require", "pairs" } },
-                    },
-                }
-            end
+                },
+            },
+            ts_ls = {},
+            vimls = {},
+        },
+    },
+    config = function(_, opts)
+        local nonicons = require("nvim-nonicons")
+        local lspconfig = require("lspconfig")
+        local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-            lspconfig[lsp].setup(config)
+        for server, config in pairs(opts.servers) do
+            config.capabilities = capabilities
+            lspconfig[server].setup(config)
         end
 
         -- Diagnostics
@@ -76,17 +75,17 @@ return {
                 source = true,
                 focusable = true,
                 border = "rounded", -- none, single, double, rounded, solid
-                header = " Diagnostics",
-                prefix = " " .. icons.layout.list .. " ",
+                header = " " .. nonicons.get("stop") .. " Diagnostics",
+                prefix = " " .. nonicons.get("square") .. " ",
                 suffix = " ",
             },
         })
 
         local signs = {
-            Error = icons.log.error,
-            Warn = icons.log.warning,
-            Hint = icons.log.hint,
-            Info = icons.log.information,
+            Error = nonicons.get("x-circle"),
+            Warn = nonicons.get("alert"),
+            Hint = nonicons.get("light-bulb"),
+            Info = nonicons.get("info"),
         }
 
         for type, icon in pairs(signs) do
@@ -94,35 +93,55 @@ return {
             vim.fn.sign_define(hl, { text = icon, texthl = hl, linehl = nil, numhl = nil, culhl = nil })
         end
     end,
-    init = function()
-        -- Mappings
-        local wk = require("which-key")
-        local conform = require("conform")
-        local telescope = require("telescope.builtin")
-
-        wk.add({
-            { "<leader>l", group = "LSP" },
-            { "<leader>la", vim.lsp.buf.code_action, desc = "Action" },
-            { "<leader>lc", vim.lsp.buf.declaration, desc = "Declaration" },
-            { "<leader>ld", telescope.lsp_definitions, desc = "Definition" },
-            {
-                "<leader>lf",
-                function()
-                    conform.format({ async = true })
-                end,
-                desc = "Format",
-            },
-            { "<leader>lg", telescope.diagnostics, desc = "Diagnostics" },
-            { "<leader>lh", vim.lsp.buf.hover, desc = "Hover" },
-            { "<leader>li", telescope.lsp_implementations, desc = "Implementations" },
-            { "<leader>ln", vim.lsp.buf.rename, desc = "Rename" },
-            { "<leader>lr", telescope.lsp_references, desc = "References" },
-            { "<leader>ls", vim.lsp.buf.signature_help, desc = "Signature" },
-            { "<leader>lt", telescope.lsp_type_definitions, desc = "Type Definition" },
-            { "<leader>ly", telescope.lsp_document_symbols, desc = "Symbols" },
-        })
-
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
-    end,
+    keys = {
+        {
+            "<Leader>la",
+            function()
+                return vim.lsp.buf.code_action()
+            end,
+            desc = "Action",
+        },
+        {
+            "<Leader>ld",
+            function()
+                return vim.lsp.buf.definition()
+            end,
+            desc = "Definition",
+        },
+        {
+            "<Leader>lc",
+            function()
+                return vim.lsp.buf.declaration()
+            end,
+            desc = "Declaration",
+        },
+        {
+            "<Leader>lh",
+            function()
+                return vim.lsp.buf.hover()
+            end,
+            desc = "Hover",
+        },
+        {
+            "<Leader>ln",
+            function()
+                return vim.lsp.buf.rename()
+            end,
+            desc = "Rename",
+        },
+        {
+            "<Leader>ls",
+            function()
+                return vim.lsp.buf.signature_help()
+            end,
+            desc = "Signature",
+        },
+        {
+            "<Leader>lt",
+            function()
+                return vim.lsp.buf.type_definition()
+            end,
+            desc = "Type Definition",
+        },
+    },
 }
