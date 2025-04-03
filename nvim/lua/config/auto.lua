@@ -1,6 +1,16 @@
+-- Set up an auto-command group for handling new line comments
+-- Remove 'c', 'r', and 'o' options from 'formatoptions' for all file types
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("FormatOptions", { clear = true }),
+    pattern = "*",
+    callback = function()
+        vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+    end,
+})
+
 -- Close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
-    group = vim.api.nvim_create_augroup("close_with_q", { clear = true }),
+    group = vim.api.nvim_create_augroup("CloseWithQ", { clear = true }),
     pattern = {
         "PlenaryTestPopup",
         "checkhealth",
@@ -9,7 +19,6 @@ vim.api.nvim_create_autocmd("FileType", {
         "help",
         "lspinfo",
         "notify",
-        "codecompanion",
         "qf",
     },
     callback = function(event)
@@ -29,7 +38,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Wrap and check for spell in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
-    group = vim.api.nvim_create_augroup("wrap_spell", { clear = true }),
+    group = vim.api.nvim_create_augroup("WrapSpell", { clear = true }),
     pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
     callback = function()
         vim.opt_local.wrap = true

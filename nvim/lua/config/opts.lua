@@ -62,6 +62,7 @@ vim.opt.complete = {}
 
 vim.opt.number = true
 vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
+vim.opt.relativenumber = true
 vim.opt.cursorlineopt:append("number", "screenline")
 
 vim.opt.ruler = true

@@ -66,7 +66,14 @@ return {
 
         -- Diagnostics
         vim.diagnostic.config({
-            signs = true,
+            signs = {
+                text = {
+                    [vim.diagnostic.severity.ERROR] = "" .. nonicons.get("x-circle") .. " ",
+                    [vim.diagnostic.severity.WARN] = "" .. nonicons.get("alert") .. " ",
+                    [vim.diagnostic.severity.INFO] = "" .. nonicons.get("info") .. " ",
+                    [vim.diagnostic.severity.HINT] = "" .. nonicons.get("light-bulb") .. " ",
+                },
+            },
             underline = false,
             virtual_text = false,
             severity_sort = true,
@@ -76,22 +83,10 @@ return {
                 focusable = true,
                 border = "rounded", -- none, single, double, rounded, solid
                 header = " " .. nonicons.get("stop") .. " Diagnostics",
-                prefix = " " .. nonicons.get("square") .. " ",
+                prefix = "\n" .. nonicons.get("square") .. " ",
                 suffix = " ",
             },
         })
-
-        local signs = {
-            Error = nonicons.get("x-circle"),
-            Warn = nonicons.get("alert"),
-            Hint = nonicons.get("light-bulb"),
-            Info = nonicons.get("info"),
-        }
-
-        for type, icon in pairs(signs) do
-            local hl = "DiagnosticSign" .. type
-            vim.fn.sign_define(hl, { text = icon, texthl = hl, linehl = nil, numhl = nil, culhl = nil })
-        end
     end,
     keys = {
         {
@@ -123,7 +118,7 @@ return {
             desc = "Hover",
         },
         {
-            "<Leader>ln",
+            "<Leader>lr",
             function()
                 return vim.lsp.buf.rename()
             end,

@@ -51,4 +51,4 @@ mouse-hide-while-typing = true
 
 working-directory = home
 window-inherit-working-directory = false
-window-inherit-font-size = true
+window-inherit-font-size = false

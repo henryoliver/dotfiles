@@ -24,10 +24,10 @@
 
 [diff]
     tool = vimdiff
-  
+
 [merge]
     tool = vimdiff
-  
+
 [mergetool "vimdiff"]
     path = nvim
     keepBackup = false
