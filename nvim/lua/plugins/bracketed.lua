@@ -1,7 +1,6 @@
 return {
     ---@type LazySpec
     "echasnovski/mini.bracketed",
-    version = false,
     event = "VeryLazy",
     opts = {
         buffer = { suffix = "b", options = {} },

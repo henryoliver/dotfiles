@@ -8,17 +8,22 @@ return {
     opts = {
         -- Define your formatters
         formatters_by_ft = {
-            css = { "prettier" },
-            go = { "gofumpt" },
-            html = { "prettier" },
-            javascript = { "prettier" },
-            json = { "prettier" },
+            css = { "prettierd" },
+            html = { "prettierd" },
+            json = { "prettierd" },
+            markdown = { "prettierd" },
+
+            javascript = { "prettierd" },
+            typescript = { "prettierd" },
+            javascriptreact = { "prettierd" },
+            typescriptreact = { "prettierd" },
+            svelte = { "prettierd" },
+
             lua = { "stylua" },
-            markdown = { "prettier" },
+            go = { "gofumpt" },
             ruby = { "rubocop" },
-            svelte = { "prettier" },
-            typescript = { "prettier" },
-            yaml = { "prettier" },
+            yaml = { "prettierd" },
+            graphql = { "prettierd" },
         },
         -- Set default options
         default_format_opts = {

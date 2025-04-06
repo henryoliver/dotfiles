@@ -1,7 +1,6 @@
 return {
     ---@type LazySpec
     "echasnovski/mini.hipatterns",
-    version = false,
     ft = { "css", "javascript", "typescript" },
     config = function()
         local hipatterns = require("mini.hipatterns")

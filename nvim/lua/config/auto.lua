@@ -1,13 +1,3 @@
--- Set up an auto-command group for handling new line comments
--- Remove 'c', 'r', and 'o' options from 'formatoptions' for all file types
-vim.api.nvim_create_autocmd("FileType", {
-    group = vim.api.nvim_create_augroup("FormatOptions", { clear = true }),
-    pattern = "*",
-    callback = function()
-        vim.opt_local.formatoptions:remove({ "c", "r", "o" })
-    end,
-})
-
 -- Close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("CloseWithQ", { clear = true }),
@@ -45,5 +35,3 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.spell = true
     end,
 })
-
--- Plugins

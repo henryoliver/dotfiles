@@ -55,7 +55,6 @@ return {
         },
     },
     config = function(_, opts)
-        local nonicons = require("nvim-nonicons")
         local lspconfig = require("lspconfig")
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -63,30 +62,6 @@ return {
             config.capabilities = capabilities
             lspconfig[server].setup(config)
         end
-
-        -- Diagnostics
-        vim.diagnostic.config({
-            signs = {
-                text = {
-                    [vim.diagnostic.severity.ERROR] = "" .. nonicons.get("x-circle") .. " ",
-                    [vim.diagnostic.severity.WARN] = "" .. nonicons.get("alert") .. " ",
-                    [vim.diagnostic.severity.INFO] = "" .. nonicons.get("info") .. " ",
-                    [vim.diagnostic.severity.HINT] = "" .. nonicons.get("light-bulb") .. " ",
-                },
-            },
-            underline = false,
-            virtual_text = false,
-            severity_sort = true,
-            update_in_insert = false,
-            float = {
-                source = true,
-                focusable = true,
-                border = "rounded", -- none, single, double, rounded, solid
-                header = " " .. nonicons.get("stop") .. " Diagnostics",
-                prefix = "\n" .. nonicons.get("square") .. " ",
-                suffix = " ",
-            },
-        })
     end,
     keys = {
         {
