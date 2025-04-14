@@ -33,9 +33,11 @@ return {
         wk.add({
             mode = { "n", "v" },
             { "<Leader>i", group = "AI" },
+
             { "<Leader>g", group = "Git" },
             { "<Leader>gh", group = "Hunk" },
             { "<Leader>gt", group = "Toggle" },
+
             { "<Leader>f", group = "Find & Raplace" },
             { "<Leader>l", group = "LSP" },
             { "<Leader>s", group = "Search" },
