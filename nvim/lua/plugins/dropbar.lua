@@ -103,14 +103,6 @@ return {
     end,
     keys = {
         {
-            "<Leader>;",
-            function()
-                return require("dropbar.api").pick()
-            end,
-            mode = "n",
-            desc = "Pick symbols in winbar",
-        },
-        {
             "[;",
             function()
                 return require("dropbar.api").goto_context_start()

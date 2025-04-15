@@ -15,5 +15,5 @@ vim.keymap.set("n", "n", "nzz", default_options)
 vim.keymap.set("n", "N", "Nzz", default_options)
 
 -- Write (Save) Buffers
-vim.keymap.set("n", "<Leader>w", ":update<CR>", vim.tbl_extend("force", default_options, { desc = "Update" }))
-vim.keymap.set("n", "<Leader>W", ":wall<CR>", vim.tbl_extend("force", default_options, { desc = "Update Wall" }))
+vim.keymap.set("n", "<Leader>w", ":update<CR>", vim.tbl_extend("force", default_options, { desc = "which_key_ignore" }))
+vim.keymap.set("n", "<Leader>W", ":wall<CR>", vim.tbl_extend("force", default_options, { desc = "which_key_ignore" }))

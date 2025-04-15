@@ -5,26 +5,31 @@ return {
     dependencies = "yamatsum/nvim-nonicons",
     opts = {
         preset = "modern", -- false | "classic" | "modern" | "helix"
+        notify = false, -- show a warning when issues were detected with your mappings
+        ignore_missing = true,
         plugins = {
-            marks = true, -- shows a list of your marks on ' and `
-            registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+            marks = false, -- shows a list of your marks on ' and `
+            registers = false, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
             -- the presets plugin, adds help for a bunch of default keybindings in Neovim
             -- No actual key bindings are created
-            spelling = {
-                enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-                suggestions = 20, -- how many suggestions should be shown in the list?
-            },
+            spelling = false,
             presets = {
-                operators = true, -- adds help for operators like d, y, ...
-                motions = true, -- adds help for motions
-                text_objects = true, -- help for text objects triggered after entering an operator
-                windows = true, -- default bindings on <C-w>
-                nav = true, -- misc bindings to work with windows
-                z = true, -- bindings for folds, spelling and others prefixed with z
-                g = true, -- bindings for prefixed with g
+                operators = false, -- adds help for operators like d, y, ...
+                motions = false, -- adds help for motions
+                text_objects = false, -- help for text objects triggered after entering an operator
+                windows = false, -- default bindings on <C-w>
+                nav = false, -- misc bindings to work with windows
+                z = false, -- bindings for folds, spelling and others prefixed with z
+                g = false, -- bindings for prefixed with g
             },
         },
+        layout = {
+            width = { min = 40 }, -- min and max width of the columns
+            spacing = 50, -- spacing between columns
+        },
         icons = { mappings = true },
+        show_help = false, -- show a help message in the command line for using WhichKey
+        show_keys = true, -- show the currently pressed key and its label as a message in the command line
     },
     config = function()
         -- Mappings
@@ -36,12 +41,12 @@ return {
 
             { "<Leader>g", group = "Git" },
             { "<Leader>gh", group = "Hunk" },
-            { "<Leader>gt", group = "Toggle" },
+            { "<Leader>gl", group = "Link" },
 
-            { "<Leader>f", group = "Find & Raplace" },
-            { "<Leader>l", group = "LSP" },
             { "<Leader>s", group = "Search" },
-            { "<Leader>p", group = "Preview" },
+
+            { "<Leader>l", group = "LSP" },
+            { "<Leader>lp", group = "Preview" },
         })
     end,
 }

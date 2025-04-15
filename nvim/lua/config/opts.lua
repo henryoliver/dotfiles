@@ -72,10 +72,7 @@ vim.opt.more = false -- don't pause listing when screen is filled
 vim.opt.cmdheight = 0
 vim.opt.cmdwinheight = 1
 
-vim.opt.laststatus = 3
-vim.opt.statusline = "%#Normal#"
-    .. "⊱ ──────────────────────── {⋆⌘⋆} ──────────────────────── ⊰"
-    .. "%="
+vim.opt.laststatus = 0
 vim.opt.showtabline = 0
 
 vim.opt.showcmd = false

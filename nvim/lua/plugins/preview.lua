@@ -11,28 +11,28 @@ return {
     },
     keys = {
         {
-            "<Leader>pd",
+            "<Leader>lpd",
             function()
                 return require("goto-preview").goto_preview_definition()
             end,
             desc = "Definition",
         },
         {
-            "<Leader>pi",
+            "<Leader>lpt",
             function()
                 return require("goto-preview").goto_preview_type_definition()
             end,
             desc = "Type Definition",
         },
         {
-            "<Leader>pr",
+            "<Leader>lpr",
             function()
                 return require("goto-preview").goto_preview_references()
             end,
             desc = "References",
         },
         {
-            "<Leader>pt",
+            "<Leader>lpi",
             function()
                 return require("goto-preview").goto_preview_implementation()
             end,

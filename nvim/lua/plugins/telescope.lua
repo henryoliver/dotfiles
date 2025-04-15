@@ -87,12 +87,12 @@ return {
         -- Search: Words
         { "<Leader>sw", "<Cmd>Telescope live_grep<CR>", desc = "Project Words" },
         { "<Leader>sW", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Current Buffer Words" },
-        -- Search: Files
-        { "<Leader>sF", "<Cmd>Telescope find_files<CR>", desc = "Project Files" },
+        -- Find: Files
         { "<Leader>sf", "<Cmd>Telescope git_files<CR>", desc = "Git Files" },
-        -- Search: Git
+        { "<Leader>sF", "<Cmd>Telescope find_files<CR>", desc = "Project Files" },
+        -- Find: Git
         { "<Leader>sg", "<Cmd>Telescope git_bcommits<CR>", desc = "Git Buffer Commits" },
-        -- Search: Others
+        -- Find: Others
         { "<Leader>sm", "<Cmd>Telescope marks<CR>", desc = "Marks" },
         { "<Leader>sr", "<Cmd>Telescope registers<CR>", desc = "Registers" },
         { "<Leader>su", "<Cmd>Telescope undo<CR>", desc = "Undo" },

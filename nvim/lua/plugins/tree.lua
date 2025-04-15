@@ -89,6 +89,6 @@ return {
     end,
     keys = {
         -- Explore Browser
-        { "<Leader>E", "<Cmd>NvimTreeToggle<CR>", mode = { "n", "v" }, desc = "NvimTree" },
+        { "<Leader>t", "<Cmd>NvimTreeToggle<CR>", mode = { "n", "v" }, desc = "Tree" },
     },
 }
