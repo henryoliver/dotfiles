@@ -10,11 +10,11 @@ return {
     },
     keys = {
         {
-            "<Leader>f",
+            "<Leader>p",
             function()
                 return require("grug-far").open()
             end,
-            desc = "Find & Raplace",
+            desc = "Find & Replace",
         },
     },
 }

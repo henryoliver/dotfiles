@@ -37,8 +37,6 @@ return {
 
         wk.add({
             mode = { "n", "v" },
-            { "<Leader>i", group = "AI" },
-
             { "<Leader>g", group = "Git" },
             { "<Leader>gh", group = "Hunk" },
             { "<Leader>gl", group = "Link" },
