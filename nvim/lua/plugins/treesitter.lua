@@ -6,6 +6,7 @@ return {
     config = function()
         local treesitter = require("nvim-treesitter.configs")
 
+        -- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#supported-languages
         treesitter.setup({
             auto_install = true,
             ensure_installed = {

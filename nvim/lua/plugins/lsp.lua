@@ -33,6 +33,7 @@ return {
             },
             pylsp = {},
             ruby_lsp = {},
+            svelte = {},
             tailwindcss = {
                 filetypes = { "css", "javascriptreact", "typescriptreact" },
                 settings = {

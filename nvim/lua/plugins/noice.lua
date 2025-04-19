@@ -24,13 +24,20 @@ return {
                 bottom_search = true, -- use a classic bottom cmdline for search
                 command_palette = true, -- position the cmdline and popupmenu together
                 long_message_to_split = true, -- long messages will be sent to a split
-                inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                inc_rename = true, -- enables an input dialog for inc-rename.nvim
                 lsp_doc_border = true,
             },
             routes = {
                 { -- Show @recording messages
                     view = "notify",
                     filter = { event = "msg_showmode" },
+                },
+                { -- Silence all telescope notifications
+                    filter = {
+                        event = "notify",
+                        find = "telescope",
+                    },
+                    opts = { skip = true },
                 },
                 { -- Avoid written messages
                     filter = {
@@ -56,7 +63,6 @@ return {
                 },
             },
         })
-
         notify.setup({
             icons = nonicons_extention.icons,
             on_open = function(win)

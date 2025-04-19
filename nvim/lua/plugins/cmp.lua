@@ -98,6 +98,9 @@ return {
                 { name = "cmp_tabnine", group_index = 1 },
                 { name = "nvim_lsp", group_index = 1 },
                 { name = "buffer", group_index = 2 },
+                per_filetype = {
+                    codecompanion = { "codecompanion" },
+                },
             },
             formatting = {
                 fields = { "kind", "abbr", "menu" },
