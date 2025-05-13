@@ -87,6 +87,9 @@ vim.opt.showbreak = "↪"
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldenable = false -- disable folding on startup
 vim.opt.foldmethod = "indent"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 3

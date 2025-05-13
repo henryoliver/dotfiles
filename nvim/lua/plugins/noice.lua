@@ -32,41 +32,30 @@ return {
                     view = "notify",
                     filter = { event = "msg_showmode" },
                 },
-                { -- Silence all telescope notifications
+                { -- Silence
                     filter = {
-                        event = "notify",
-                        find = "telescope",
+                        any = {
+                            { find = "telescope" },
+                            { find = "file_browser" },
+                            { event = { "msg_showmode", "msg_showcmd", "msg_ruler" } },
+                            { event = "msg_show", kind = "" },
+                            { event = "msg_show", kind = "search_count" },
+                            { event = "msg_show", find = "%swritten" },
+                            { event = "msg_show", find = "%d+L,%s%d+B" }, -- skip save notifications
+                            { event = "msg_show", find = "^E486: Pattern not found:" },
+                        },
                     },
                     opts = { skip = true },
                 },
-                { -- Avoid written messages
-                    filter = {
-                        event = "msg_show",
-                        kind = "",
-                        find = "written",
-                    },
-                    opts = { skip = true },
-                },
-                { -- Avoid search messages
-                    filter = {
-                        event = "msg_show",
-                        kind = "search_count",
-                    },
-                    opts = { skip = true },
-                },
-                { -- Avoid all messages with kind ""
-                    filter = {
-                        event = "msg_show",
-                        kind = "",
-                    },
-                    opts = { skip = true },
-                },
+                { filter = { event = "msg_show", cmdline = "^:lua" }, view = "messages" }, -- send lua output to split
+                { filter = { event = "msg_show", cmdline = "^:=" }, view = "messages" }, -- send lua output to split
+                { filter = { event = "msg_show", min_height = 20 }, view = "messages" }, -- send long messages to split
             },
         })
         notify.setup({
             icons = nonicons_extention.icons,
             on_open = function(win)
-                vim.api.nvim_win_set_config(win, { focusable = false })
+                vim.api.nvim_win_set_config(win, { focusable = true })
             end,
         })
     end,

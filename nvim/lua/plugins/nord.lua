@@ -20,6 +20,15 @@ return {
                 highlights.WarningMsg = { bg = colors.none, fg = colors.aurora.yellow }
 
                 highlights.Folded = { bg = colors.none, fg = colors.polar_night.bright }
+
+                -- VimDiff
+                highlights.DiffText = { bg = colors.none, fg = colors.polar_night.brightest } -- DiffText guifg=#81a1c1 guibg=#3b4252
+                highlights.DiffAdd = { bg = colors.none, fg = colors.frost.ice } -- DiffAdd guifg=#a3be8c guibg=#3b4252
+                highlights.DiffChange = { bg = colors.none, fg = colors.aurora.yellow } -- DiffChange guifg=#ebcb8b guibg=#3b4252
+                highlights.DiffDelete = { bg = colors.none, fg = colors.aurora.red } -- DiffDelete guifg=#bf616a guibg=#3b4252
+                highlights.DiffviewFilePanelInsertions = { bg = colors.none, fg = colors.frost.ice } -- DiffviewFilePanelInsertions xxx guifg=#a3be8c
+                highlights.DiffviewStatusModified = { bg = colors.none, fg = colors.aurora.yellow } -- DiffviewStatusModified guifg=#ebcb8b
+                highlights.DiffviewFilePanelDeletions = { bg = colors.none, fg = colors.aurora.red } -- DiffviewFilePanelDeletions guifg=#bf616a
             end,
         })
 

@@ -10,7 +10,6 @@ vim.api.nvim_create_autocmd("FileType", {
         "lspinfo",
         "notify",
         "qf",
-        "codecompanion",
     },
     callback = function(event)
         vim.bo[event.buf].buflisted = false

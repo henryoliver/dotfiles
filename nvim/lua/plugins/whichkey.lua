@@ -35,6 +35,7 @@ return {
         -- Mappings
         local wk = require("which-key")
 
+        -- https://neovim.io/doc/user/map.html#_1.4-listing-mappings
         wk.add({
             mode = { "n", "v" },
             { "<Leader>i", group = "AI" },
@@ -46,7 +47,7 @@ return {
             { "<Leader>s", group = "Search" },
 
             { "<Leader>l", group = "LSP" },
-            { "<Leader>lp", group = "Preview" },
+            { "<Leader>p", group = "LSP Preview" },
         })
     end,
 }

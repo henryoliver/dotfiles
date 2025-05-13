@@ -20,7 +20,32 @@ return {
                     },
                 },
             },
+            css_variables = {},
             gopls = {},
+            -- harper_ls = {
+            --     linters = {
+            --         SpellCheck = true,
+            --         SpelledNumbers = false,
+            --         AnA = true,
+            --         SentenceCapitalization = false,
+            --         UnclosedQuotes = true,
+            --         WrongQuotes = false,
+            --         LongSentences = true,
+            --         RepeatedWords = true,
+            --         Spaces = true,
+            --         Matcher = true,
+            --         CorrectNumberSuffix = true,
+            --     },
+            --     codeActions = {
+            --         ForceStable = false,
+            --     },
+            --     markdown = {
+            --         IgnoreLinkTitle = false,
+            --     },
+            --     diagnosticSeverity = "hint",
+            --     isolateEnglish = false,
+            --     dialect = "American",
+            -- },
             html = {},
             jsonls = {},
             lua_ls = {
@@ -32,10 +57,12 @@ return {
                 },
             },
             pylsp = {},
-            ruby_lsp = {},
+            ruby_lsp = {
+                cmd_env = { BUNDLE_GEMFILE = vim.fn.getenv("GLOBAL_GEMFILE") },
+            },
             svelte = {},
             tailwindcss = {
-                filetypes = { "css", "javascriptreact", "typescriptreact" },
+                filetypes = { "css", "postcss", "javascriptreact", "typescriptreact", "svelte" },
                 settings = {
                     tailwindCSS = {
                         lint = {

@@ -1,11 +1,13 @@
 return {
     ---@type LazySpec
     "olimorris/codecompanion.nvim",
+    event = "VeryLazy",
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
     },
     config = function()
+        local nonicons = require("nvim-nonicons")
         local codecompanion = require("codecompanion")
         local codecompanion_adapters = require("codecompanion.adapters")
 
@@ -14,6 +16,7 @@ return {
             strategies = {
                 chat = { adapter = "anthropic" },
                 inline = { adapter = "anthropic" },
+                cmd = { adapter = "anthropic" },
             },
             sources = {
                 per_filetype = {
@@ -49,15 +52,65 @@ return {
                 action_palette = {
                     provider = "telescope",
                 },
+                chat = {
+                    show_header_separator = false, -- Show header separators in the chat buffer? Set this to false if you're using an external markdown formatting plugin
+                    separator = nonicons.get("horizontal-rule"), -- The separator between the different messages in the chat buffer
+                    show_references = true, -- Show references (from slash commands and variables) in the chat buffer?
+                    show_settings = false, -- Show LLM settings at the top of the chat buffer?
+                    show_token_count = false, -- Show the token count for each response?
+                    start_in_insert_mode = true, -- Open the chat buffer in insert mode?
+
+                    -- Change the default icons
+                    icons = {
+                        pinned_buffer = "" .. nonicons.get("milestone") .. " ",
+                        watched_buffer = "" .. nonicons.get("eye") .. " ",
+                    },
+
+                    -- Options to customize the UI of the chat buffer
+                    window = {
+                        layout = "vertical", -- float|vertical|horizontal|buffer
+                        position = nil, -- left|right|top|bottom (nil will default depending on vim.opt.plitright|vim.opt.splitbelow)
+                        border = "single", -- none, single, double, rounded, solid
+                        -- height = 0.8,
+                        -- width = 0.8,
+                        -- full_height = false, -- when set to false, vsplit will be used to open the chat buffer vs. botright/topleft vsplit
+                        relative = "editor",
+                        opts = {
+                            signcolumn = "no", -- disable signcolumn
+                            number = false, -- disable number column
+                            relativenumber = false, -- disable relative numbers
+                            foldenable = false, -- when off, all folds are open
+                            breakindent = true,
+                            cursorcolumn = false,
+                            cursorline = false,
+                            foldcolumn = "0",
+                            linebreak = true,
+                            list = false,
+                            numberwidth = 1,
+                            spell = false,
+                            wrap = true,
+                        },
+                    },
+                },
+                diff = {
+                    enabled = true,
+                    close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
+                    layout = "vertical", -- vertical|horizontal split for default provider
+                    opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
+                    provider = "default", -- default|mini_diff
+                },
             },
         })
     end,
     keys = {
-        { "<Leader>ic", "<Cmd>CodeCompanionChat openai<CR>", desc = "Chat OpenAI" },
-        { "<Leader>io", "<Cmd>CodeCompanionChat anthropic<CR>", desc = "Chat ClaudeAI" },
-        { "<Leader>it", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "Chat" },
+        -- https://codecompanion.olimorris.dev/getting-started.html#list-of-commands
+        { "<Leader>ic", "<Cmd>CodeCompanionChat Toggle<CR>", mode = "n", desc = "Chat Toggle" },
+
+        { "<Leader>io", "<Cmd>CodeCompanionChat openai<CR>", mode = "n", desc = "Chat OpenAI" },
+        { "<Leader>ih", "<Cmd>CodeCompanionChat anthropic<CR>", mode = "n", desc = "Chat ClaudeAI" },
+
         { "<Leader>ii", "<Cmd>CodeCompanion<CR>", desc = "Inline" },
-        { "<Leader>ia", "<Cmd>CodeCompanionActions<CR>", desc = "Action Palette" },
+        { "<Leader>ia", "<Cmd>CodeCompanionActions<CR>", mode = { "n", "v" }, desc = "Action Palette" },
         { "<Leader>ia", "<Cmd>CodeCompanionChat Add<CR>", mode = "v", desc = "Chat Add" },
     },
 }

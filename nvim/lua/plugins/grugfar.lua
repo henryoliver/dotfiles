@@ -10,7 +10,7 @@ return {
     },
     keys = {
         {
-            "<Leader>p",
+            "<Leader>r",
             function()
                 return require("grug-far").open()
             end,

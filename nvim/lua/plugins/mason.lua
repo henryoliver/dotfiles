@@ -37,6 +37,7 @@ return {
                 "eslint_d",
                 "rubocop",
                 "stylelint",
+                "harper-ls",
 
                 "prettierd",
                 "stylua",
