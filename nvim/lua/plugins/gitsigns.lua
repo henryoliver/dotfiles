@@ -8,16 +8,16 @@ return {
 
         gitsigns.setup({
             signs = {
-                delete = { text = "⁚" }, -- ": ⁚ ⁝ ⁞"
-                topdelete = { text = "⁚" },
-                changedelete = { text = "⁝" },
-                untracked = { text = "¦" },
+                delete = { text = "⁝" }, -- ": ⁚ ⁝ ⁞"
+                topdelete = { text = "⁝" },
+                changedelete = { text = "┃" },
+                untracked = { text = "⁞" },
             },
             signs_staged = {
-                delete = { text = "⁚" }, -- ": ⁚ ⁝ ⁞"
-                topdelete = { text = "⁚" },
-                changedelete = { text = "⁝" },
-                untracked = { text = "¦" },
+                delete = { text = "⁝" }, -- ": ⁚ ⁝ ⁞"
+                topdelete = { text = "⁝" },
+                changedelete = { text = "┃" },
+                untracked = { text = "⁞" },
             },
         })
 

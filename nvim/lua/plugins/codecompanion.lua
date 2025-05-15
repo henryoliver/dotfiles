@@ -4,6 +4,7 @@ return {
     event = "VeryLazy",
     dependencies = {
         "nvim-lua/plenary.nvim",
+        "yamatsum/nvim-nonicons",
         "nvim-treesitter/nvim-treesitter",
     },
     config = function()
@@ -104,13 +105,20 @@ return {
     end,
     keys = {
         -- https://codecompanion.olimorris.dev/getting-started.html#list-of-commands
-        { "<Leader>ic", "<Cmd>CodeCompanionChat Toggle<CR>", mode = "n", desc = "Chat Toggle" },
+        { "<Leader>icc", "<Cmd>CodeCompanionChat<CR>", mode = "n", desc = "Chat" },
+        { "<Leader>ict", "<Cmd>CodeCompanionChat Toggle<CR>", mode = "n", desc = "Toggle" },
 
-        { "<Leader>io", "<Cmd>CodeCompanionChat openai<CR>", mode = "n", desc = "Chat OpenAI" },
-        { "<Leader>ih", "<Cmd>CodeCompanionChat anthropic<CR>", mode = "n", desc = "Chat ClaudeAI" },
+        { "<Leader>ico", "<Cmd>CodeCompanionChat openai<CR>", mode = "n", desc = "Chat OpenAI" },
+        { "<Leader>icn", "<Cmd>CodeCompanionChat anthropic<CR>", mode = "n", desc = "Chat ClaudeAI" },
 
-        { "<Leader>ii", "<Cmd>CodeCompanion<CR>", desc = "Inline" },
-        { "<Leader>ia", "<Cmd>CodeCompanionActions<CR>", mode = { "n", "v" }, desc = "Action Palette" },
-        { "<Leader>ia", "<Cmd>CodeCompanionChat Add<CR>", mode = "v", desc = "Chat Add" },
+        { "<Leader>icm", "<Cmd>CodeCompanionCmd<CR>", mode = "n", desc = "Generate Command" },
+        { "<Leader>ica", "<Cmd>CodeCompanionActions<CR>", mode = "n", desc = "Action Palette" },
+
+        { "<Leader>ica", "<Cmd>CodeCompanionChat Add<CR>", mode = "v", desc = "Add Chat" },
+
+        -- https://codecompanion.olimorris.dev/getting-started#inline-assistant
+        { "<Leader>ici", "<Cmd>CodeCompanion<CR>", mode = "v", desc = "Inline" },
+        { "<Leader>ico", "<Cmd>CodeCompanion openai<CR>", mode = "v", desc = "Inline OpenAI" },
+        { "<Leader>icn", "<Cmd>CodeCompanion anthropic<CR>", mode = "v", desc = "Inline ClaudeAI" },
     },
 }

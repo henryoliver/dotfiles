@@ -89,16 +89,22 @@ vim.opt.sidescrolloff = 8
 
 -- vim.opt.foldmethod = "expr"
 -- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
--- vim.opt.foldenable = false -- disable folding on startup
+vim.opt.foldenable = true
 vim.opt.foldmethod = "indent"
 vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 3
+vim.opt.foldlevelstart = 1
 
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.equalalways = false
 
-vim.opt.fillchars:append({ eob = " ", fold = " ", foldopen = " ", foldsep = " ", foldclose = " ", diff = "╱" })
+vim.opt.fillchars:append({ eob = " " })
+vim.opt.fillchars:append({ fold = " " })
+vim.opt.fillchars:append({ foldopen = " " })
+vim.opt.fillchars:append({ foldsep = " " })
+vim.opt.fillchars:append({ foldclose = " " })
+vim.opt.fillchars:append({ diff = "╱" })
+-- vim.opt.fillchars:append({ eob = " ", fold = " ", foldopen = " ", foldsep = " ", foldclose = " ", diff = "╱" })
 
 -- Interface options
 vim.opt.wildmenu = true
