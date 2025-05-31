@@ -1,8 +1,8 @@
 return {
     ---@type LazySpec
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "codecompanion", "Avante" },
+    ft = { "markdown", "codecompanion" },
     opts = {
-        file_types = { "markdown", "codecompanion", "Avante" },
+        file_types = { "markdown", "codecompanion" },
     },
 }

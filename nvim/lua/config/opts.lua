@@ -79,7 +79,7 @@ vim.opt.showcmd = false
 vim.opt.showmode = false
 
 vim.opt.wrap = true
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "120"
 vim.opt.linespace = 1
 vim.opt.linebreak = true
 vim.opt.showbreak = "↪"

@@ -22,30 +22,12 @@ return {
             },
             css_variables = {},
             gopls = {},
-            -- harper_ls = {
-            --     linters = {
-            --         SpellCheck = true,
-            --         SpelledNumbers = false,
-            --         AnA = true,
-            --         SentenceCapitalization = false,
-            --         UnclosedQuotes = true,
-            --         WrongQuotes = false,
-            --         LongSentences = true,
-            --         RepeatedWords = true,
-            --         Spaces = true,
-            --         Matcher = true,
-            --         CorrectNumberSuffix = true,
-            --     },
-            --     codeActions = {
-            --         ForceStable = false,
-            --     },
-            --     markdown = {
-            --         IgnoreLinkTitle = false,
-            --     },
-            --     diagnosticSeverity = "hint",
-            --     isolateEnglish = false,
-            --     dialect = "American",
-            -- },
+            harper_ls = {
+                linters = {
+                    SentenceCapitalization = false,
+                    SpellCheck = false,
+                },
+            },
             html = {},
             jsonls = {},
             lua_ls = {

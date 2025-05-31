@@ -6,15 +6,13 @@ return {
         -- Define your formatters
         linters_by_ft = {
             css = { "stylelint" },
-            json = { "eslint_d" },
+            json = { "jsonlint" },
 
             javascript = { "eslint_d" },
             typescript = { "eslint_d" },
-            javascriptreact = { "eslint_d" },
-            typescriptreact = { "eslint_d" },
-            svelte = { "eslint_d" },
 
             lua = { "stylua" },
+            go = { "revive" },
             ruby = { "rubocop" },
         },
     },

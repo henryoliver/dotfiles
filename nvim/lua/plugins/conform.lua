@@ -22,8 +22,6 @@ return {
             lua = { "stylua" },
             go = { "gofumpt" },
             ruby = { "rubocop" },
-            yaml = { "prettierd" },
-            graphql = { "prettierd" },
         },
         -- Set default options
         default_format_opts = {

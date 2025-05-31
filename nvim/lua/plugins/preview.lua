@@ -46,5 +46,12 @@ return {
             end,
             desc = "References",
         },
+        {
+            "<Leader>px",
+            function()
+                return require("goto-preview").close_all_win()
+            end,
+            desc = "Close All",
+        },
     },
 }
