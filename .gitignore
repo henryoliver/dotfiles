@@ -5,6 +5,7 @@
 .DS_Store
 Desktop.ini
 ranger/plugins
+.vectorcode
 
 # Thumbnail cache files
 ._*

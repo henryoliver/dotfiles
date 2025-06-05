@@ -81,7 +81,17 @@ return {
                             number = false, -- disable number column
                             relativenumber = false, -- disable relative numbers
                             colorcolumn = "",
+                            foldenable = false,
                         },
+                    },
+                },
+            },
+            extensions = {
+                vectorcode = {
+                    opts = {
+                        add_tool = true,
+                        add_slash_command = true,
+                        tool_opts = {},
                     },
                 },
             },

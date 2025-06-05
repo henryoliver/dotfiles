@@ -8,13 +8,6 @@ return {
         "nvim-telescope/telescope-fzy-native.nvim",
         "nvim-telescope/telescope-file-browser.nvim",
     },
-    init = function()
-        -- Disable folding in Telescope's result window.
-        vim.api.nvim_create_autocmd(
-            "FileType",
-            { pattern = "TelescopeResults", command = "setlocal foldlevelstart=999" }
-        )
-    end,
     config = function()
         local telescope = require("telescope")
         local telescope_actions = require("telescope.actions")
@@ -77,6 +70,23 @@ return {
         vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = colors.polar_night.brightest })
         vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = colors.polar_night.brightest })
         vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = colors.polar_night.brightest })
+
+        -- Auto Commands
+        -- Disable folding in Telescope preview
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "TelescopeResults",
+            callback = function()
+                vim.opt_local.foldenable = false
+            end,
+        })
+
+        -- Also disable folding in the preview buffer
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "TelescopePreviewerLoaded",
+            callback = function()
+                vim.opt_local.foldenable = false
+            end,
+        })
     end,
     keys = {
         -- Explore Browser

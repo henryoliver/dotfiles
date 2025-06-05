@@ -17,6 +17,9 @@ path=(
     # Curl
     /opt/homebrew/opt/curl/bin
 
+    # Local bin
+    $HOME/.local/bin
+
     $path
 ) 
 
@@ -78,7 +81,7 @@ alias ttt="tree -LC 3"
 alias duh="du -h -d 0 [^.]*" # List folder sizes
 
 alias python="python3"
-alias pip="pip3"
+alias pip="uv"
 
 # Others
 alias c="clear"
@@ -127,7 +130,7 @@ alias update="
     echo Done &&
 
     echo Python &&
-    python -m pip install --upgrade pip --break-system-packages &&
-    pip list --outdated | tail -n +3 | cut -d' ' -f 1 | xargs -n 1 pip install --upgrade
+    uv self update &&
+    uv tool upgrade --all &&
     echo Done
     "

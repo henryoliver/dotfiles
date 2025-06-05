@@ -82,12 +82,13 @@ vim.opt.wrap = true
 vim.opt.colorcolumn = "120"
 vim.opt.linespace = 1
 vim.opt.linebreak = true
-vim.opt.showbreak = "↪"
+vim.opt.showbreak = ""
 
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 
 vim.opt.foldmethod = "indent"
+vim.opt.foldlevelstart = 1
 
 vim.opt.splitbelow = true
 vim.opt.splitright = true
@@ -108,3 +109,4 @@ vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
+vim.g.loaded_python3_provider = 0

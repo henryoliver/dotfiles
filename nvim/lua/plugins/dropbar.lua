@@ -2,11 +2,6 @@ return {
     "Bekaboo/dropbar.nvim",
     event = "VeryLazy",
     dependencies = "yamatsum/nvim-nonicons",
-    enabled = function()
-        if vim.bo.filetype == "codecompanion" then
-            return false
-        end
-    end,
     config = function()
         local dropbar = require("dropbar")
         local nonicons = require("nvim-nonicons")
@@ -103,6 +98,15 @@ return {
                     },
                 },
             },
+        })
+
+        -- Auto Commands
+        -- Disable folding in Telescope preview
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "codecompanion",
+            callback = function()
+                dropbar.setup({ bar = { enable = false } })
+            end,
         })
     end,
     keys = {
