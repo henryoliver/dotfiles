@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "rmagatti/goto-preview",
     dependencies = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig" },
     opts = {

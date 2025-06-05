@@ -1,6 +1,14 @@
 return {
-    ---@type LazySpec
     "echasnovski/mini.pairs",
     event = "InsertEnter",
-    opts = {},
+    opts = {
+        mappings = {
+            ["`"] = {
+                action = "closeopen",
+                pair = "``",
+                neigh_pattern = "[^\\`].",
+                register = { cr = false },
+            },
+        },
+    },
 }

@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "neovim/nvim-lspconfig",
     event = "VeryLazy",
     dependencies = {
@@ -22,12 +21,6 @@ return {
             },
             css_variables = {},
             gopls = {},
-            harper_ls = {
-                linters = {
-                    SentenceCapitalization = false,
-                    SpellCheck = false,
-                },
-            },
             html = {},
             jsonls = {},
             lua_ls = {

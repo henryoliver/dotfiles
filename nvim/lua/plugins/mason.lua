@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "williamboman/mason.nvim",
     dependencies = {
         "yamatsum/nvim-nonicons",
@@ -19,6 +18,7 @@ return {
 
         mason_tool.setup({
             ensure_installed = {
+                -- LSP
                 "html",
                 "cssls",
                 "jsonls",
@@ -34,13 +34,17 @@ return {
                 "pylsp",
                 "vimls",
 
-                "eslint_d",
-                "rubocop",
+                -- Linter
                 "stylelint",
-                "harper-ls",
+                "eslint_d",
+                "jsonlint",
+                "revive",
+                "rubocop",
 
+                -- Formatter
                 "prettierd",
                 "stylua",
+                "gofumpt",
             },
             auto_update = true,
             integrations = {

@@ -1,8 +1,12 @@
 return {
-    ---@type LazySpec
     "Bekaboo/dropbar.nvim",
     event = "VeryLazy",
     dependencies = "yamatsum/nvim-nonicons",
+    enabled = function()
+        if vim.bo.filetype == "codecompanion" then
+            return false
+        end
+    end,
     config = function()
         local dropbar = require("dropbar")
         local nonicons = require("nvim-nonicons")

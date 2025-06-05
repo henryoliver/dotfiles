@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {

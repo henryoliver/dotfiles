@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "echasnovski/mini.bufremove",
     opts = {},
     keys = {

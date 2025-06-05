@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
     opts = {

@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "folke/which-key.nvim",
     event = "VeryLazy",
     dependencies = "yamatsum/nvim-nonicons",

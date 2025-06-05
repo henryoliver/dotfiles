@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "linrongbin16/gitlinker.nvim",
     cmd = "GitLink",
     opts = {},

@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "nvim-telescope/telescope.nvim",
     lazy = false,
     dependencies = {

@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "folke/zen-mode.nvim",
     opts = {
         window = {

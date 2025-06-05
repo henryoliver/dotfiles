@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdateSync",
     event = { "BufReadPre", "BufNewFile" },

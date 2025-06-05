@@ -41,19 +41,18 @@ font-codepoint-map = U+ea60-U+ec1e=Symbols Nerd Font
 # Nonicons
 font-codepoint-map = U+f101-U+f25c=nonicons
 
+working-directory = home
+
 title = " "
-window-inherit-font-size = true
 window-subtitle = false
+window-inherit-font-size = true
+window-inherit-working-directory = true
+
 macos-titlebar-style = tabs
 macos-titlebar-proxy-icon = hidden
 
 maximize = true
 mouse-hide-while-typing = true
 
-# alpha-blending = linear-corrected
-# background-opacity = 0.96
-# background-blur-radius = 40
-
-working-directory = home
-window-inherit-working-directory = false
-window-inherit-font-size = false
+background-opacity = 0.96
+background-blur = true

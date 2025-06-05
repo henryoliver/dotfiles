@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "NeogitOrg/neogit",
     dependencies = {
         "nvim-lua/plenary.nvim",

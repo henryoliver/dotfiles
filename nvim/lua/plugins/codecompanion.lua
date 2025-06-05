@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "olimorris/codecompanion.nvim",
     event = "VeryLazy",
     dependencies = {
@@ -15,7 +14,12 @@ return {
         -- https://codecompanion.olimorris.dev/getting-started.html#variables
         codecompanion.setup({
             strategies = {
-                chat = { adapter = "anthropic" },
+                chat = {
+                    adapter = "anthropic",
+                    opts = {
+                        completion_provider = "cmp", -- blink|cmp|coc|default
+                    },
+                },
                 inline = { adapter = "anthropic" },
                 cmd = { adapter = "anthropic" },
             },
@@ -60,16 +64,10 @@ return {
                 end,
             },
             display = {
-                action_palette = {
-                    provider = "telescope",
-                },
                 chat = {
-                    show_header_separator = false, -- Show header separators in the chat buffer? Set this to false if you're using an external markdown formatting plugin
-                    separator = nonicons.get("horizontal-rule"), -- The separator between the different messages in the chat buffer
-                    show_references = true, -- Show references (from slash commands and variables) in the chat buffer?
-                    show_settings = false, -- Show LLM settings at the top of the chat buffer?
+                    intro_message = "",
+                    -- separator = nonicons.get("horizontal-rule"), -- The separator between the different messages in the chat buffer
                     show_token_count = false, -- Show the token count for each response?
-                    start_in_insert_mode = false, -- Open the chat buffer in insert mode?
 
                     -- Change the default icons
                     icons = {
@@ -79,32 +77,13 @@ return {
 
                     -- Options to customize the UI of the chat buffer
                     window = {
-                        -- layout = "vertical", -- float|vertical|horizontal|buffer
-                        -- position = nil, -- left|right|top|bottom (nil will default depending on vim.opt.plitright|vim.opt.splitbelow)
-                        -- border = "single", -- none, single, double, rounded, solid
-                        -- height = 0.9,
-                        -- width = 0.8,
-                        -- full_height = false, -- when set to false, vsplit will be used to open the chat buffer vs. botright/topleft vsplit
-                        relative = "editor",
                         opts = {
-                            signcolumn = "no", -- disable signcolumn
                             number = false, -- disable number column
                             relativenumber = false, -- disable relative numbers
-                            foldenable = false, -- when off, all folds are open
-                            breakindent = true,
-                            cursorcolumn = false,
-                            cursorline = false,
-                            foldcolumn = "0",
-                            linebreak = true,
                             colorcolumn = "",
-                            list = false,
-                            numberwidth = 1,
-                            spell = false,
-                            wrap = true,
                         },
                     },
                 },
-                diff = { enabled = false },
             },
         })
     end,

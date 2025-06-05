@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "MagicDuck/grug-far.nvim",
     cmd = "GrugFar",
     opts = {

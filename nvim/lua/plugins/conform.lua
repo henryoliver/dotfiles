@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "stevearc/conform.nvim",
     init = function()
         -- If you want the formatexpr, here is the place to set it

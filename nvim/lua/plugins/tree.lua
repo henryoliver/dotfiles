@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "nvim-tree/nvim-tree.lua",
     cmd = "NvimTreeToggle",
     dependencies = "yamatsum/nvim-nonicons",

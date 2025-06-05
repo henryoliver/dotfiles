@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "windwp/nvim-ts-autotag",
     event = "InsertEnter",
     opts = {

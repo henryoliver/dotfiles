@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown", "codecompanion" },
     opts = {

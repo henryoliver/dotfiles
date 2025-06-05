@@ -1,5 +1,4 @@
 return {
-    ---@type LazySpec
     "gbprod/substitute.nvim",
     opts = {},
     keys = {
