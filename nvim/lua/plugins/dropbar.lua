@@ -80,6 +80,8 @@ return {
         }
 
         dropbar.setup({
+            bar = { hover = false },
+            menu = { quick_navigation = false, preview = false, hover = false, keymaps = {} },
             icons = {
                 enable = true,
                 kinds = {

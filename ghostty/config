@@ -46,7 +46,7 @@ working-directory = home
 title = " "
 window-subtitle = false
 window-inherit-font-size = true
-window-inherit-working-directory = true
+window-inherit-working-directory = false
 
 macos-titlebar-style = tabs
 macos-titlebar-proxy-icon = hidden
@@ -54,5 +54,5 @@ macos-titlebar-proxy-icon = hidden
 maximize = true
 mouse-hide-while-typing = true
 
-background-opacity = 0.96
-background-blur = true
+# background-opacity = 0.96
+# background-blur = true

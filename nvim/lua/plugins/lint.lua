@@ -1,32 +1,29 @@
 return {
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
-    opts = {
-        -- Define your formatters
-        linters_by_ft = {
-            css = { "stylelint" },
-            json = { "jsonlint" },
-
-            javascript = { "eslint_d" },
-            typescript = { "eslint_d" },
-
-            lua = { "stylua" },
-            go = { "revive" },
-            ruby = { "rubocop" },
-        },
-    },
     config = function()
         local lint = require("lint")
         local nonicons = require("nvim-nonicons")
 
-        -- Diagnostics
+        -- Set up linters by filetype (this was missing!)
+        lint.linters_by_ft = {
+            css = { "stylelint" },
+            json = { "jsonlint" },
+            javascript = { "eslint_d" },
+            typescript = { "eslint_d" },
+            -- lua = { "stylua" },
+            go = { "revive" },
+            ruby = { "rubocop" },
+        }
+
+        -- Rest of your config...
         vim.diagnostic.config({
             signs = {
                 text = {
-                    [vim.diagnostic.severity.ERROR] = "" .. nonicons.get("x-circle") .. " ",
-                    [vim.diagnostic.severity.WARN] = "" .. nonicons.get("alert") .. " ",
-                    [vim.diagnostic.severity.INFO] = "" .. nonicons.get("info") .. " ",
-                    [vim.diagnostic.severity.HINT] = "" .. nonicons.get("light-bulb") .. " ",
+                    [vim.diagnostic.severity.ERROR] = nonicons.get("square-fill"),
+                    [vim.diagnostic.severity.WARN] = nonicons.get("square-fill"),
+                    [vim.diagnostic.severity.INFO] = nonicons.get("square"),
+                    [vim.diagnostic.severity.HINT] = nonicons.get("square"),
                 },
             },
             underline = false,
@@ -36,7 +33,7 @@ return {
             float = {
                 source = true,
                 focusable = true,
-                border = "rounded", -- none, single, double, rounded, solid
+                border = "rounded",
                 header = " " .. nonicons.get("stop") .. " Diagnostics",
                 prefix = " " .. nonicons.get("square") .. " ",
                 suffix = " ",

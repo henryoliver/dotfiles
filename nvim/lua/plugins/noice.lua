@@ -34,6 +34,7 @@ return {
                 { -- Silence
                     filter = {
                         any = {
+                            { find = "NvimTree" },
                             { find = "telescope" },
                             { find = "file_browser" },
                             { event = { "msg_showmode", "msg_showcmd", "msg_ruler" } },
@@ -54,7 +55,7 @@ return {
         notify.setup({
             icons = nonicons_extention.icons,
             on_open = function(win)
-                vim.api.nvim_win_set_config(win, { focusable = true })
+                vim.api.nvim_win_set_config(win, { focusable = false })
             end,
         })
     end,

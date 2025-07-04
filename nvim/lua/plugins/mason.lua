@@ -32,6 +32,7 @@ return {
                 "bashls",
                 "lua_ls",
                 "pylsp",
+                "postgres_lsp",
                 "vimls",
 
                 -- Linter

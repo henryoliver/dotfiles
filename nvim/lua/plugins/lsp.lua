@@ -19,7 +19,6 @@ return {
                     },
                 },
             },
-            css_variables = {},
             gopls = {},
             html = {},
             jsonls = {},
@@ -31,6 +30,7 @@ return {
                     },
                 },
             },
+            postgres_lsp = {},
             pylsp = {},
             ruby_lsp = {
                 cmd_env = { BUNDLE_GEMFILE = vim.fn.getenv("GLOBAL_GEMFILE") },

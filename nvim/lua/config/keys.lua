@@ -10,13 +10,19 @@ vim.keymap.set("v", "v", "<Esc>", default_options)
 vim.keymap.set("n", "B", "^", default_options)
 vim.keymap.set("n", "E", "$", default_options)
 
--- Center search results
-vim.keymap.set("n", "n", "nzz", default_options)
-vim.keymap.set("n", "N", "Nzz", default_options)
-
 -- Write (Save) Buffers
-vim.keymap.set("n", "<Leader>w", ":update<CR>", vim.tbl_extend("force", default_options, { desc = "which_key_ignore" }))
-vim.keymap.set("n", "<Leader>W", ":wall<CR>", vim.tbl_extend("force", default_options, { desc = "which_key_ignore" }))
+vim.keymap.set(
+    "n",
+    "<Leader>w",
+    "<Cmd>update<CR>",
+    vim.tbl_extend("force", default_options, { desc = "which_key_ignore" })
+)
+vim.keymap.set(
+    "n",
+    "<Leader>W",
+    "<Cmd>wall<CR>",
+    vim.tbl_extend("force", default_options, { desc = "which_key_ignore" })
+)
 
 -- Sort lines by length
 vim.keymap.set(

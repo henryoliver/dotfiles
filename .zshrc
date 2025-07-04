@@ -5,7 +5,7 @@ eval $(/opt/homebrew/bin/brew shellenv)
 fpath+=($HOME/.zsh/pure)
 path=(
     # PostgreSQL
-    /opt/homebrew/opt/postgresql@16/bin
+    /opt/homebrew/opt/postgresql@17/bin
 
     # Go
     $GOPATH/bin
@@ -31,6 +31,7 @@ prompt pure
 source $ZPLUG_HOME/init.zsh
 
 # Make sure to use double quotes to prevent shell expansion
+# https://github.com/unixorn/awesome-zsh-plugins?tab=readme-ov-file#plugins
 zplug "supercrabtree/k"
 zplug "b4b4r07/enhancd", use:init.sh
 zplug "zsh-users/zsh-autosuggestions"
@@ -75,9 +76,9 @@ alias ll="ls -alh"
 alias l="ls -a"
 alias l1="ls -1"
 
-alias t="tree -LC 1"
-alias tt="tree -LC 2"
-alias ttt="tree -LC 3"
+alias t="tree -LC 1 --dirsfirst"
+alias tt="tree -LC 2 --dirsfirst"
+alias ttt="tree -LC 3 --dirsfirst"
 alias duh="du -h -d 0 [^.]*" # List folder sizes
 
 alias python="python3"
@@ -130,7 +131,6 @@ alias update="
     echo Done &&
 
     echo Python &&
-    uv self update &&
     uv tool upgrade --all &&
     echo Done
     "

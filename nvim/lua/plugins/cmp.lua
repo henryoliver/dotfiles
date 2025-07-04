@@ -14,6 +14,9 @@ return {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
+
+        "hrsh7th/cmp-nvim-lsp-signature-help", -- Function signatures
+        "hrsh7th/cmp-emoji", -- Emoji completion
     },
     config = function()
         local cmp = require("cmp")
@@ -64,10 +67,14 @@ return {
         tabnine:setup({
             sort = true,
             max_lines = 1000,
-            max_num_results = 10,
+            max_num_results = 5, -- Reduce for better performance
             snippet_placeholder = "" .. nonicons.get("kebab-horizontal") .. " ",
             run_on_every_keystroke = true,
-            show_prediction_strength = false,
+            show_prediction_strength = true, -- Enable this for better context
+            ignored_file_types = { -- Add ignored filetypes
+                TelescopePrompt = true,
+                NvimTree = true,
+            },
         })
 
         -- Cmp config
@@ -93,13 +100,18 @@ return {
             completion = {
                 keyword_length = 3,
             },
-            sources = {
-                { name = "cmp_tabnine", group_index = 1 },
-                { name = "nvim_lsp", group_index = 1 },
-                { name = "buffer", group_index = 2 },
-                per_filetype = {
-                    codecompanion = { "codecompanion" },
-                },
+            sources = cmp.config.sources({
+                { name = "cmp_tabnine", group_index = 1, priority = 1000 },
+                { name = "nvim_lsp", group_index = 1, priority = 900 },
+                { name = "nvim_lsp_signature_help", group_index = 1, priority = 800 },
+                { name = "vsnip", group_index = 2, priority = 700 },
+            }, {
+                { name = "buffer", group_index = 2, priority = 500, keyword_length = 3 },
+                { name = "path", group_index = 2, priority = 400 },
+                { name = "emoji", group_index = 2, priority = 300 },
+            }),
+            per_filetype = {
+                codecompanion = { "codecompanion" },
             },
             formatting = {
                 fields = { "kind", "abbr", "menu" },
@@ -111,9 +123,11 @@ return {
                     vim_item.menu = ({
                         cmp_tabnine = "[AI]",
                         nvim_lsp = "[LSP]",
+                        nvim_lsp_signature_help = "[LSP]",
                         buffer = "[Buffer]",
                         cmdline = "[CMD]",
                         path = "[Path]",
+                        emoji = "[Emoji]",
                     })[entry.source.name]
 
                     -- AI custom symbol and type
@@ -165,7 +179,14 @@ return {
             experimental = {
                 ghost_text = true,
             },
-            performance = { max_view_entries = 20 },
+            performance = {
+                debounce = 60,
+                throttle = 30,
+                fetching_timeout = 500,
+                confirm_resolve_timeout = 80,
+                async_budget = 1,
+                max_view_entries = 20,
+            },
         })
 
         -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).

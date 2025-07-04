@@ -37,6 +37,8 @@ return {
         -- https://neovim.io/doc/user/map.html#_1.4-listing-mappings
         wk.add({
             mode = { "n", "v" },
+            { "<Leader>u", group = "Time Machine [Undo]" },
+
             { "<Leader>i", group = "AI" },
 
             { "<Leader>g", group = "Git" },
