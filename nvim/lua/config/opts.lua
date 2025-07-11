@@ -1,27 +1,42 @@
--- Leader key
+-- Leader key (should be set in init.lua, but keeping for safety)
 vim.g.mapleader = " "
 
--- Backup and recovery
+-- Backup and recovery with better path handling
 vim.opt.backup = true
 vim.opt.writebackup = true
 vim.opt.undofile = true
 vim.opt.swapfile = true
 
--- Backup directories
-local config_path = vim.fn.stdpath("config")
-vim.opt.backupdir = { config_path .. "/tmp/dir_backup/" }
-vim.opt.directory = { config_path .. "/tmp/dir_swap/", vim.o.directory }
-vim.opt.undodir = { config_path .. "/tmp/dir_undo/" }
+-- Backup directories with automatic creation
+-- local config_path = vim.fn.stdpath("config")
+local data_path = vim.fn.stdpath("data") -- Better location for temporary files
 
--- Performance
-vim.opt.lazyredraw = false
-vim.opt.updatetime = 100
+-- Create directories if they don't exist
+local backup_dirs = {
+    backup = data_path .. "/backup",
+    swap = data_path .. "/swap",
+    undo = data_path .. "/undo",
+}
+
+for _, dir in pairs(backup_dirs) do
+    if vim.fn.isdirectory(dir) == 0 then
+        vim.fn.mkdir(dir, "p")
+    end
+end
+
+vim.opt.backupdir = { backup_dirs.backup .. "/" }
+vim.opt.directory = { backup_dirs.swap .. "/" }
+vim.opt.undodir = { backup_dirs.undo .. "/" }
+
+-- Performance optimizations
+vim.opt.lazyredraw = false -- Keep false for modern Neovim
+vim.opt.updatetime = 250 -- More reasonable for modern systems
 vim.opt.redrawtime = 1500
 vim.opt.timeout = true
 vim.opt.timeoutlen = 300
 vim.opt.ttimeoutlen = 0
 
--- File search
+-- File search and clipboard
 vim.opt.path = { ".", "**" }
 vim.opt.clipboard = "unnamedplus"
 vim.opt.errorformat:append("%f,")
@@ -40,9 +55,11 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = { "longest:full", "full" }
 vim.opt.wildignorecase = true
 vim.opt.wildignore = {
+    -- Version control
     ".git",
     ".hg",
     ".svn",
+    -- Compiled files
     "*.aux",
     "*.out",
     "*.toc",
@@ -53,6 +70,7 @@ vim.opt.wildignore = {
     "*.manifest",
     "*.rbc",
     "*.class",
+    -- Images
     "*.ai",
     "*.bmp",
     "*.gif",
@@ -62,6 +80,7 @@ vim.opt.wildignore = {
     "*.png",
     "*.psd",
     "*.webp",
+    -- Video
     "*.avi",
     "*.divx",
     "*.mp4",
@@ -72,35 +91,55 @@ vim.opt.wildignore = {
     "*.vob",
     "*.mpg",
     "*.mpeg",
+    -- Audio
     "*.mp3",
     "*.oga",
     "*.ogg",
     "*.wav",
     "*.flac",
+    -- Fonts
     "*.eot",
     "*.otf",
     "*.ttf",
     "*.woff",
+    "*.woff2",
+    -- Documents
     "*.doc",
+    "*.docx",
     "*.pdf",
     "*.cbr",
     "*.cbz",
+    -- Archives
     "*.zip",
     "*.tar.gz",
     "*.tar.bz2",
     "*.rar",
     "*.tar.xz",
     "*.kgb",
+    -- Temporary/cache
     "*.swp",
+    "*.swo",
+    "*~",
     ".lock",
     ".DS_Store",
     "._*",
+    "Thumbs.db",
+    -- Directories
     "*/tmp/*",
-    "*.so",
-    "*.zip",
     "**/node_modules/**",
     "**/target/**",
     "**/.terraform/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/.next/**",
+    "**/.nuxt/**",
+    -- Language specific
+    "*.so",
+    "*.pyc",
+    "*.pyo",
+    "__pycache__",
+    "*.class",
+    "*.jar",
 }
 
 -- Indentation
@@ -122,11 +161,11 @@ vim.opt.cursorlineopt = { "number", "screenline" }
 vim.opt.showmatch = true
 vim.opt.matchtime = 2
 
--- Command area
-vim.opt.cmdheight = 0
-vim.opt.cmdwinheight = 1
-vim.opt.laststatus = 0
-vim.opt.showtabline = 0
+-- Command area (modern minimalist approach)
+vim.opt.cmdheight = 0 -- Use floating command line
+vim.opt.cmdwinheight = 5 -- Better height for command window
+vim.opt.laststatus = 0 -- Global statusline (better for multiple windows)
+vim.opt.showtabline = 0 -- Hide tabline (use bufferline plugin instead)
 vim.opt.showcmd = false
 vim.opt.showmode = false
 vim.opt.more = false
@@ -134,73 +173,123 @@ vim.opt.more = false
 -- Text display
 vim.opt.wrap = true
 vim.opt.linebreak = true
-vim.opt.showbreak = ""
-vim.opt.colorcolumn = "120"
+vim.opt.breakindentopt = "shift:2,min:40,sbr" -- Better line breaking
+vim.opt.showbreak = "↳ " -- Visual indicator for wrapped lines
+vim.opt.colorcolumn = "80,120" -- Multiple reference lines
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.smoothscroll = true
 
--- Folding
-vim.opt.foldmethod = "indent"
-vim.opt.foldlevelstart = 3
+-- Folding configuration for preservation
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- Use treesitter for better folding
+vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()" -- Better fold text
+vim.opt.foldlevelstart = 99 -- Start with all folds open
 vim.opt.foldminlines = 1
-vim.opt.fillchars = {
+vim.opt.foldnestmax = 10 -- Prevent excessive nesting
+vim.opt.fillchars:append({
     fold = " ",
     foldsep = " ",
     foldopen = " ",
     foldclose = " ",
-}
+})
 
 -- Windows
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.equalalways = true
+vim.opt.equalalways = false -- Don't auto-resize windows
+vim.opt.winminwidth = 5 -- Minimum window width
+vim.opt.winminheight = 1 -- Minimum window height
 
 -- Buffers
 vim.opt.hidden = true
 vim.opt.switchbuf = { "useopen", "uselast" }
 vim.opt.autoread = true
+vim.opt.autowrite = true -- Automatically save when switching buffers
 
 -- Interface
 vim.opt.confirm = true
 vim.opt.termguicolors = true
+vim.opt.pumheight = 10 -- Limit popup menu height
+vim.opt.pumblend = 10 -- Slight transparency for popup menu
 
--- Special characters
+-- Special characters with better Unicode symbols
 vim.opt.fillchars:append({
-    eob = " ",
-    diff = " ",
-    vert = "│",
-    horiz = "",
+    eob = " ", -- End of buffer
+    diff = "╱", -- Diff separator
+    vert = "│", -- Vertical separator
+    horiz = "─", -- Horizontal separator
+    horizup = "┴", -- Horizontal up
+    horizdown = "┬", -- Horizontal down
+    vertleft = "┤", -- Vertical left
+    vertright = "├", -- Vertical right
+    verthoriz = "┼", -- Cross
 })
+
 vim.opt.listchars = {
-    tab = " ",
-    trail = "·",
-    extends = "",
-    precedes = "",
-    nbsp = "",
+    tab = "  ", -- Tab characters
+    trail = "·", -- Trailing spaces
+    extends = "›", -- Line extends beyond screen
+    precedes = "‹", -- Line precedes screen
+    nbsp = "⦸", -- Non-breaking space
+    space = " ", -- Show spaces (optional, can be distracting)
 }
 
--- Messages and info: Customize brevity of Neovim messages
-vim.opt.shortmess:append("sWAIcCqFS") -- Append flags to suppress various messages
--- Breakdown of flags:
--- s: Don't show "search hit BOTTOM/TOP" messages
--- W: Don't show "written" or "[w]" when writing a file
--- A: Don't show "ATTENTION" message for existing swap file
--- I: Don't show intro message when starting Vim
--- c: Don't show ins-completion-menu messages
--- C: Don't show messages while scanning for ins-completion items
--- q: Use "recording" instead of "recording @a"
--- F: Don't show file info when editing a file
--- S: Don't show search count message when searching
+-- Messages and info: Comprehensive message suppression
+vim.opt.shortmess:append("sWAIcCqFST")
+-- Additional flags:
+-- T: Truncate other messages in the middle if too long
 
--- Performance
-vim.opt.synmaxcol = 300
+-- Performance and limits
+vim.opt.synmaxcol = 300 -- Syntax highlighting limit
 vim.opt.undolevels = 10000
 vim.opt.history = 10000
+vim.opt.maxmempattern = 20000 -- Increase pattern memory
 
--- Providers
+-- Modern Neovim features
+vim.opt.inccommand = "split" -- Live preview of substitute commands
+vim.opt.completeopt = { "menu", "menuone", "noselect" } -- Better completion
+vim.opt.virtualedit = { "block" } -- Allow cursor beyond end of line in visual block
+
+-- Session options for fold preservation
+vim.opt.sessionoptions = {
+    "buffers",
+    "curdir",
+    "folds", -- Preserve folds in sessions
+    "help",
+    "tabpages",
+    "winsize",
+    "winpos",
+    "terminal",
+    "localoptions", -- Preserve local options
+}
+
+-- View options for automatic fold saving/loading
+vim.opt.viewoptions = {
+    "folds",
+    "cursor",
+    "curdir",
+    "slash",
+    "unix",
+}
+
+-- Disable providers that aren't needed (keep Python3 if you use it)
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
-vim.g.loaded_python3_provider = 0
+-- Only disable python3_provider if you don't use Python plugins
+-- vim.g.loaded_python3_provider = 0
+
+-- Disable some built-in plugins for performance
+vim.g.loaded_matchparen = 1 -- Use treesitter instead
+vim.g.loaded_matchit = 1 -- Use treesitter instead
+vim.g.loaded_logiPat = 1
+vim.g.loaded_rrhelper = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_gzip = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_2html_plugin = 1
+vim.g.loaded_shada_plugin = 1
+vim.g.loaded_spellfile_plugin = 1
+vim.g.loaded_netrw = 1 -- Disable if using a file explorer plugin

@@ -82,6 +82,10 @@ return {
                         watched_buffer = "" .. nonicons.get("eye") .. " ",
                     },
                     window = {
+                        layout = "float", -- float|vertical|horizontal|buffer
+                        border = "rounded",
+                        height = 0.9,
+                        width = 0.8,
                         opts = {
                             number = false,
                             relativenumber = false,

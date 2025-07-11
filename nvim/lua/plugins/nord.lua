@@ -8,6 +8,7 @@ return {
             diff = { mode = "none" },
             errors = { mode = "none" },
             on_highlights = function(highlights, colors)
+                -- https://github.com/gbprod/nord.nvim/blob/main/lua/nord/colors.lua
                 -- Search highlights
                 highlights.Search = { bg = colors.polar_night.brightest }
                 highlights.IncSearch = { bg = colors.polar_night.brightest }
@@ -32,7 +33,7 @@ return {
 
                 -- 🪟 Float transparency
                 highlights.NormalFloat = { bg = colors.none }
-                highlights.FloatBorder = { bg = colors.none, fg = colors.none }
+                highlights.FloatBorder = { bg = colors.none, fg = colors.polar_night.brighter }
                 highlights.FloatTitle = { bg = colors.none } -- optional: for titled floats
             end,
         })

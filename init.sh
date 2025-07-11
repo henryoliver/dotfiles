@@ -8,7 +8,9 @@ ln -sv ~/.dotfiles/scripts ~/.scripts
 
 mkdir ~/.config
 mkdir ~/.config/nvim
+mkdir ~/.config/pgcli
 
+ln -sv ~/.dotfiles/pgcli/config ~/.config/pgcli/config
 ln -sv ~/.dotfiles/lsp ~/.config/lsp
 ln -sv ~/.dotfiles/bat ~/.config/bat
 ln -sv ~/.dotfiles/ghostty ~/.config/ghostty 

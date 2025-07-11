@@ -31,3 +31,8 @@ vim.keymap.set(
     "!awk '{ print length, $0 }'|sort -n -s|cut -d' ' -f2-<CR>",
     vim.tbl_extend("force", default_options, { desc = "Sort lines by length" })
 )
+
+-- Toggle relative line numbers
+vim.keymap.set("n", "gl", function()
+    vim.opt_local.relativenumber = not vim.opt_local.relativenumber
+end, vim.tbl_extend("force", default_options, { desc = "Toggle relative line numbers" }))
