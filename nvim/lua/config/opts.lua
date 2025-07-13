@@ -175,16 +175,17 @@ vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.breakindentopt = "shift:2,min:40,sbr" -- Better line breaking
 vim.opt.showbreak = "↳ " -- Visual indicator for wrapped lines
-vim.opt.colorcolumn = "80,120" -- Multiple reference lines
+vim.opt.colorcolumn = "120"
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.smoothscroll = true
 
 -- Folding configuration for preservation
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- Use treesitter for better folding
-vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()" -- Better fold text
-vim.opt.foldlevelstart = 99 -- Start with all folds open
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- Use treesitter for better folding
+-- vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()" -- Better fold text
+vim.opt.foldmethod = "indent"
+vim.opt.foldlevelstart = 3
 vim.opt.foldminlines = 1
 vim.opt.foldnestmax = 10 -- Prevent excessive nesting
 vim.opt.fillchars:append({
@@ -211,7 +212,6 @@ vim.opt.autowrite = true -- Automatically save when switching buffers
 vim.opt.confirm = true
 vim.opt.termguicolors = true
 vim.opt.pumheight = 10 -- Limit popup menu height
-vim.opt.pumblend = 10 -- Slight transparency for popup menu
 
 -- Special characters with better Unicode symbols
 vim.opt.fillchars:append({
@@ -279,7 +279,7 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 -- Only disable python3_provider if you don't use Python plugins
--- vim.g.loaded_python3_provider = 0
+vim.g.loaded_python3_provider = 0
 
 -- Disable some built-in plugins for performance
 vim.g.loaded_matchparen = 1 -- Use treesitter instead

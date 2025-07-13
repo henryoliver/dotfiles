@@ -61,65 +61,6 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- Toggle relative line numbers based on context
-vim.api.nvim_create_autocmd({ "InsertEnter", "InsertLeave", "WinLeave", "WinEnter", "FocusLost", "FocusGained" }, {
-    group = vim.api.nvim_create_augroup("RelativeNumbers", { clear = true }),
-    callback = function(event)
-        -- Skip if line numbers are disabled or for certain filetypes
-        if not vim.wo.number or vim.bo.filetype == "" then
-            return
-        end
-
-        -- Disable relative numbers for specific filetypes
-        local excluded_filetypes = {
-            "help",
-            "terminal",
-            "prompt",
-            "neo-tree",
-            "oil",
-            "trouble",
-            "qf",
-            "lspinfo",
-            "checkhealth",
-            "TelescopePrompt",
-            "lazy",
-            "mason",
-            "notify",
-            "noice",
-            "codecompanion",
-            "neogit",
-            "fugitive",
-            "gitcommit",
-            "gitrebase",
-            "man",
-            "undotree",
-            "Outline",
-            "dapui_watches",
-            "dapui_stacks",
-            "dapui_breakpoints",
-            "dapui_scopes",
-            "dapui_console",
-            "dap-repl",
-            "neotest-output",
-            "neotest-summary",
-            "neotest-output-panel",
-            "spectre_panel",
-            "diff",
-        }
-
-        if vim.tbl_contains(excluded_filetypes, vim.bo.filetype) then
-            vim.wo.relativenumber = false
-            return
-        end
-
-        local should_show_relative = event.event == "InsertLeave"
-            or event.event == "WinEnter"
-            or event.event == "FocusGained"
-
-        vim.wo.relativenumber = should_show_relative
-    end,
-})
-
 -- Highlight yanked text
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("HighlightYank", { clear = true }),
@@ -170,61 +111,6 @@ vim.api.nvim_create_autocmd("WinEnter", {
     callback = function()
         if vim.fn.winnr("$") == 1 and vim.bo.buftype == "quickfix" then
             vim.cmd.quit()
-        end
-    end,
-})
-
--- Restore cursor position when opening files
-vim.api.nvim_create_autocmd("BufReadPost", {
-    group = vim.api.nvim_create_augroup("RestoreCursorPosition", { clear = true }),
-    callback = function(event)
-        local exclude_ft = { "gitcommit", "gitrebase", "svn", "hgcommit" }
-        local buf = event.buf
-        if vim.tbl_contains(exclude_ft, vim.bo[buf].filetype) then
-            return
-        end
-
-        local mark = vim.api.nvim_buf_get_mark(buf, '"')
-        local line_count = vim.api.nvim_buf_line_count(buf)
-        if mark[1] > 0 and mark[1] <= line_count then
-            vim.api.nvim_win_set_cursor(0, mark)
-        end
-    end,
-})
-
--- Terminal-specific settings
-vim.api.nvim_create_autocmd("TermOpen", {
-    group = vim.api.nvim_create_augroup("TerminalSettings", { clear = true }),
-    callback = function()
-        vim.wo.number = false
-        vim.wo.relativenumber = false
-        vim.wo.spell = false
-        vim.wo.signcolumn = "no"
-
-        -- Enter insert mode automatically
-        vim.defer_fn(function()
-            if vim.api.nvim_get_current_buf() == vim.fn.bufnr("%") then
-                vim.cmd.startinsert()
-            end
-        end, 100)
-    end,
-})
-
--- Large file optimization
-vim.api.nvim_create_autocmd("BufReadPre", {
-    group = vim.api.nvim_create_augroup("LargeFileOptimization", { clear = true }),
-    callback = function(event)
-        local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(event.buf))
-        if ok and stats and stats.size > 1024 * 1024 then -- 1MB
-            vim.b[event.buf].large_file = true
-            vim.opt_local.eventignore:append({ "FileType", "Syntax" })
-            vim.bo.undolevels = -1
-            vim.bo.swapfile = false
-            vim.wo.foldmethod = "manual"
-            vim.wo.spell = false
-            vim.wo.wrap = false
-            vim.wo.relativenumber = false
-            vim.wo.number = false
         end
     end,
 })

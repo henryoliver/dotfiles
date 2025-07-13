@@ -17,13 +17,13 @@ return {
             },
             strategies = {
                 chat = {
-                    adapter = "anthropic",
+                    adapter = "xai",
                     opts = {
                         completion_provider = "cmp",
                     },
                 },
-                inline = { adapter = "anthropic" },
-                cmd = { adapter = "anthropic" },
+                inline = { adapter = "xai" },
+                cmd = { adapter = "xai" },
             },
             keymaps = {
                 send = {
@@ -67,7 +67,7 @@ return {
                     return codecompanion_adapters.extend("xai", {
                         schema = {
                             model = {
-                                default = "grok-3",
+                                default = "grok-4",
                             },
                         },
                     })
@@ -90,159 +90,133 @@ return {
                             number = false,
                             relativenumber = false,
                             colorcolumn = "",
-                            foldenable = false,
+                            foldenable = false, -- Disable folding completely
+                            foldmethod = "manual", -- Set to manual to prevent conflicts
+                            foldlevel = 99, -- Keep everything unfolded
                         },
                     },
                 },
                 diff = { enabled = false },
             },
-            prompt_library = {
-                ["Senior Developer"] = {
-                    strategy = "chat",
-                    description = "Get expert code advice with full project context and external references",
-                    opts = {
-                        short_name = "senior",
-                        auto_submit = false,
-                        is_default = true,
-                        is_slash_cmd = true,
-                        ignore_system_prompt = true,
-                    },
-                    prompts = {
-                        {
-                            role = "system",
-                            content = function(context)
-                                return string.format(
-                                    [[I want you to act as a senior %s developer. I will ask you specific questions and I want you to return raw code only (no codeblocks and no explanations). If you can't respond with code, respond with nothing]],
-                                    context.filetype
-                                )
-                            end,
-                            opts = {
-                                visible = true,
-                            },
-                        },
-                        {
-                            role = "user",
-                            opts = {
-                                contains_code = true,
-                            },
-                        },
-                    },
-                },
-            },
         })
 
         -- CodeCompanion Spinner Module
-        local spinner = (function()
-            local M = {
-                processing = false,
-                spinner_index = 1,
-                namespace_id = nil,
-                timer = nil,
-                spinner_symbols = {
-                    "⠋",
-                    "⠙",
-                    "⠹",
-                    "⠸",
-                    "⠼",
-                    "⠴",
-                    "⠦",
-                    "⠧",
-                    "⠇",
-                    "⠏",
-                },
-                filetype = "codecompanion",
-            }
+        local M = {
+            processing = false,
+            spinner_index = 1,
+            namespace_id = nil,
+            timer = nil,
+            spinner_symbols = {
+                "⠋",
+                "⠙",
+                "⠹",
+                "⠸",
+                "⠼",
+                "⠴",
+                "⠦",
+                "⠧",
+                "⠇",
+                "⠏",
+            },
+            filetype = "codecompanion",
+        }
 
-            function M:get_buf(filetype)
-                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                    if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == filetype then
-                        return buf
+        function M:get_buf(filetype)
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == filetype then
+                    return buf
+                end
+            end
+            return nil
+        end
+
+        function M:update_spinner()
+            if not self.processing then
+                self:stop_spinner()
+                return
+            end
+
+            self.spinner_index = (self.spinner_index % #self.spinner_symbols) + 1
+
+            local buf = self:get_buf(self.filetype)
+            if buf == nil then
+                return
+            end
+
+            vim.api.nvim_buf_clear_namespace(buf, self.namespace_id, 0, -1)
+
+            local last_line = vim.api.nvim_buf_line_count(buf) - 1
+            vim.api.nvim_buf_set_extmark(buf, self.namespace_id, last_line, 0, {
+                virt_lines = { { { self.spinner_symbols[self.spinner_index] .. " Processing...", "Comment" } } },
+                virt_lines_above = true,
+            })
+        end
+
+        function M:start_spinner()
+            self.processing = true
+            self.spinner_index = 0
+
+            if self.timer then
+                if self.timer:is_active() then
+                    self.timer:stop()
+                end
+                if not self.timer:is_closing() then
+                    self.timer:close()
+                end
+                self.timer = nil
+            end
+
+            self.timer = vim.uv and vim.uv.new_timer() or vim.loop.new_timer()
+            self.timer:start(
+                0,
+                100,
+                vim.schedule_wrap(function()
+                    self:update_spinner()
+                end)
+            )
+        end
+
+        function M:stop_spinner()
+            self.processing = false
+
+            if self.timer then
+                if self.timer:is_active() then
+                    self.timer:stop()
+                end
+                if not self.timer:is_closing() then
+                    self.timer:close()
+                end
+                self.timer = nil
+            end
+
+            local buf = self:get_buf(self.filetype)
+            if buf == nil then
+                return
+            end
+
+            vim.api.nvim_buf_clear_namespace(buf, self.namespace_id, 0, -1)
+        end
+
+        function M:init()
+            self.namespace_id = vim.api.nvim_create_namespace("CodeCompanionSpinner")
+
+            vim.api.nvim_create_augroup("CodeCompanionHooks", { clear = true })
+            local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
+
+            vim.api.nvim_create_autocmd({ "User" }, {
+                pattern = "CodeCompanionRequest*",
+                group = group,
+                callback = function(request)
+                    if request.match == "CodeCompanionRequestStarted" then
+                        self:start_spinner()
+                    elseif request.match == "CodeCompanionRequestFinished" then
+                        self:stop_spinner()
                     end
-                end
-                return nil
-            end
+                end,
+            })
+        end
 
-            function M:update_spinner()
-                if not self.processing then
-                    self:stop_spinner()
-                    return
-                end
-
-                self.spinner_index = (self.spinner_index % #self.spinner_symbols) + 1
-
-                local buf = self:get_buf(self.filetype)
-                if buf == nil then
-                    return
-                end
-
-                vim.api.nvim_buf_clear_namespace(buf, self.namespace_id, 0, -1)
-
-                local last_line = vim.api.nvim_buf_line_count(buf) - 1
-                vim.api.nvim_buf_set_extmark(buf, self.namespace_id, last_line, 0, {
-                    virt_lines = { { { self.spinner_symbols[self.spinner_index] .. " Processing...", "Comment" } } },
-                    virt_lines_above = true,
-                })
-            end
-
-            function M:start_spinner()
-                self.processing = true
-                self.spinner_index = 0
-
-                if self.timer then
-                    self.timer:stop()
-                    self.timer:close()
-                    self.timer = nil
-                end
-
-                self.timer = vim.loop.new_timer()
-                self.timer:start(
-                    0,
-                    100,
-                    vim.schedule_wrap(function()
-                        self:update_spinner()
-                    end)
-                )
-            end
-
-            function M:stop_spinner()
-                self.processing = false
-
-                if self.timer then
-                    self.timer:stop()
-                    self.timer:close()
-                    self.timer = nil
-                end
-
-                local buf = self:get_buf(self.filetype)
-                if buf == nil then
-                    return
-                end
-
-                vim.api.nvim_buf_clear_namespace(buf, self.namespace_id, 0, -1)
-            end
-
-            function M:init()
-                self.namespace_id = vim.api.nvim_create_namespace("CodeCompanionSpinner")
-
-                vim.api.nvim_create_augroup("CodeCompanionHooks", { clear = true })
-                local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
-
-                vim.api.nvim_create_autocmd({ "User" }, {
-                    pattern = "CodeCompanionRequest*",
-                    group = group,
-                    callback = function(request)
-                        if request.match == "CodeCompanionRequestStarted" then
-                            self:start_spinner()
-                        elseif request.match == "CodeCompanionRequestFinished" then
-                            self:stop_spinner()
-                        end
-                    end,
-                })
-            end
-
-            M:init()
-            return M
-        end)()
+        M:init()
     end,
     keys = {
         { "<Leader>in", "<Cmd>CodeCompanionChat<CR>", desc = "Chat" },
@@ -256,7 +230,6 @@ return {
         { "<Leader>ia", "<Cmd>CodeCompanionActions<CR>", desc = "Action Palette" },
 
         { "<Leader>ig", "<Cmd>CodeCompanion /commit<CR>", desc = "Git Commit" },
-        { "<Leader>is", "<Cmd>CodeCompanion /senior<CR>", desc = "Senior Developer" },
 
         { "<Leader>ia", "<Cmd>CodeCompanionChat Add<CR>", mode = "v", desc = "Add Chat" },
 

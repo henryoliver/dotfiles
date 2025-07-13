@@ -7,7 +7,7 @@ return {
 
         -- Set up linters by filetype (this was missing!)
         lint.linters_by_ft = {
-            css = { "stylelint" },
+            -- css = { "stylelint" },
             json = { "jsonlint" },
             javascript = { "eslint_d" },
             typescript = { "eslint_d" },
