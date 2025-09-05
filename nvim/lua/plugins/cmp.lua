@@ -10,8 +10,6 @@ return {
 
         -- LSP
         "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-nvim-lsp-signature-help",
-        "hrsh7th/cmp-nvim-lsp-document-symbol",
 
         -- Snippets
         "hrsh7th/cmp-vsnip",
@@ -24,7 +22,6 @@ return {
 
         -- Additional sources
         "hrsh7th/cmp-emoji", -- Emoji completion
-        "ray-x/cmp-treesitter", -- Treesitter completions
     },
     config = function()
         local cmp = require("cmp")
@@ -81,7 +78,7 @@ return {
             max_lines = 1000,
             max_num_results = 3, -- Reduced for better performance
             snippet_placeholder = "" .. nonicons.get("kebab-horizontal") .. " ",
-            run_on_every_keystroke = false, -- Better performance
+            run_on_every_keystroke = true,
             show_prediction_strength = true,
             ignored_file_types = {
                 TelescopePrompt = true,
@@ -128,7 +125,6 @@ return {
                 -- High priority sources
                 { name = "cmp_tabnine", group_index = 1, priority = 1100, max_item_count = 3 },
                 { name = "nvim_lsp", group_index = 1, priority = 1000 },
-                { name = "nvim_lsp_signature_help", group_index = 1, priority = 950 },
                 { name = "vsnip", group_index = 1, priority = 900 },
 
                 -- Medium priority sources
@@ -153,7 +149,6 @@ return {
 
                 -- Lower priority sources
                 { name = "calc", group_index = 3, priority = 200 },
-                { name = "treesitter", group_index = 3, priority = 150, keyword_length = 3 },
             }),
             per_filetype = {
                 codecompanion = { "codecompanion" },
@@ -168,14 +163,11 @@ return {
                     vim_item.menu = ({
                         cmp_tabnine = "[AI]",
                         nvim_lsp = "[LSP]",
-                        nvim_lsp_signature_help = "[Sig]",
-                        nvim_lsp_document_symbol = "[Sym]",
                         vsnip = "[Snip]",
                         buffer = "[Buf]",
                         cmdline = "[Cmd]",
                         path = "[Path]",
                         emoji = "[Emoji]",
-                        treesitter = "[TS]",
                     })[entry.source.name]
 
                     -- AI custom symbol and type

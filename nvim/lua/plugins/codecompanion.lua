@@ -17,13 +17,13 @@ return {
             },
             strategies = {
                 chat = {
-                    adapter = "xai",
+                    adapter = "openai",
                     opts = {
                         completion_provider = "cmp",
                     },
                 },
-                inline = { adapter = "xai" },
-                cmd = { adapter = "xai" },
+                inline = { adapter = "openai" },
+                cmd = { adapter = "openai" },
             },
             keymaps = {
                 send = {
@@ -82,10 +82,10 @@ return {
                         watched_buffer = "" .. nonicons.get("eye") .. " ",
                     },
                     window = {
-                        layout = "float", -- float|vertical|horizontal|buffer
-                        border = "rounded",
-                        height = 0.9,
-                        width = 0.8,
+                        -- layout = "float", -- float|vertical|horizontal|buffer
+                        -- border = "rounded",
+                        -- height = 0.9,
+                        -- width = 0.8,
                         opts = {
                             number = false,
                             relativenumber = false,

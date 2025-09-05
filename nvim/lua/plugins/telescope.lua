@@ -26,8 +26,12 @@ return {
                     preview_width = 0.5,
                 },
                 sorting_strategy = "ascending",
-                file_ignore_patterns = { "^%.git/", "^cypress/", "package-lock.json" },
+                file_ignore_patterns = { "^%.git/", "package-lock.json" },
                 mappings = {
+                    i = {
+                        -- Paste from system clipboard
+                        ["<C-v>"] = telescope_actions.paste_register,
+                    },
                     n = {
                         ["<C-n>"] = telescope_actions.cycle_history_next,
                         ["<C-p>"] = telescope_actions.cycle_history_prev,
