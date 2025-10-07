@@ -42,36 +42,38 @@ return {
                 },
             },
             adapters = {
-                opts = {
-                    show_defaults = false,
+                http = {
+                    opts = {
+                        show_defaults = false,
+                    },
+                    anthropic = function()
+                        return codecompanion_adapters.extend("anthropic", {
+                            schema = {
+                                model = {
+                                    default = "claude-opus-4-0",
+                                },
+                            },
+                        })
+                    end,
+                    openai = function()
+                        return codecompanion_adapters.extend("openai", {
+                            schema = {
+                                model = {
+                                    default = "o4-mini",
+                                },
+                            },
+                        })
+                    end,
+                    xai = function()
+                        return codecompanion_adapters.extend("xai", {
+                            schema = {
+                                model = {
+                                    default = "grok-4",
+                                },
+                            },
+                        })
+                    end,
                 },
-                anthropic = function()
-                    return codecompanion_adapters.extend("anthropic", {
-                        schema = {
-                            model = {
-                                default = "claude-opus-4-0",
-                            },
-                        },
-                    })
-                end,
-                openai = function()
-                    return codecompanion_adapters.extend("openai", {
-                        schema = {
-                            model = {
-                                default = "o4-mini",
-                            },
-                        },
-                    })
-                end,
-                xai = function()
-                    return codecompanion_adapters.extend("xai", {
-                        schema = {
-                            model = {
-                                default = "grok-4",
-                            },
-                        },
-                    })
-                end,
             },
             display = {
                 chat = {
@@ -157,16 +159,22 @@ return {
             self.spinner_index = 0
 
             if self.timer then
-                if self.timer:is_active() then
+                ---@diagnostic disable-next-line: undefined-field
+                if self.timer.is_active and self.timer:is_active() then
+                    ---@diagnostic disable-next-line: undefined-field
                     self.timer:stop()
                 end
-                if not self.timer:is_closing() then
+                ---@diagnostic disable-next-line: undefined-field
+                if self.timer.is_closing and not self.timer:is_closing() then
+                    ---@diagnostic disable-next-line: undefined-field
                     self.timer:close()
                 end
                 self.timer = nil
             end
 
+            ---@type userdata
             self.timer = vim.uv and vim.uv.new_timer() or vim.loop.new_timer()
+            ---@diagnostic disable-next-line: undefined-field
             self.timer:start(
                 0,
                 100,
@@ -180,10 +188,14 @@ return {
             self.processing = false
 
             if self.timer then
-                if self.timer:is_active() then
+                ---@diagnostic disable-next-line: undefined-field
+                if self.timer.is_active and self.timer:is_active() then
+                    ---@diagnostic disable-next-line: undefined-field
                     self.timer:stop()
                 end
-                if not self.timer:is_closing() then
+                ---@diagnostic disable-next-line: undefined-field
+                if self.timer.is_closing and not self.timer:is_closing() then
+                    ---@diagnostic disable-next-line: undefined-field
                     self.timer:close()
                 end
                 self.timer = nil
