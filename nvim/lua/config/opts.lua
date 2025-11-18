@@ -236,7 +236,7 @@ vim.opt.listchars = {
 }
 
 -- Messages and info: Comprehensive message suppression
-vim.opt.shortmess:append("sWAIcCqFST")
+vim.opt.shortmess:append("sWAIcCqFT")
 -- Additional flags:
 -- T: Truncate other messages in the middle if too long
 
@@ -248,8 +248,10 @@ vim.opt.maxmempattern = 20000 -- Increase pattern memory
 
 -- Modern Neovim features
 vim.opt.inccommand = "split" -- Live preview of substitute commands
-vim.opt.completeopt = { "menu", "menuone", "noselect" } -- Better completion
+vim.opt.completeopt = { "menu", "menuone", "noselect", "fuzzy" } -- Better completion with fuzzy matching (Neovim 0.11+)
 vim.opt.virtualedit = { "block" } -- Allow cursor beyond end of line in visual block
+vim.opt.messagesopt = "history:100" -- Configure message behavior (Neovim 0.11+)
+vim.opt.winborder = "single" -- Default border for floating windows (Neovim 0.11+)
 
 -- Session options for fold preservation
 vim.opt.sessionoptions = {

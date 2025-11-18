@@ -30,7 +30,7 @@ return {
                     },
                 },
             },
-            postgres_lsp = {},
+            sqls = {},
             pylsp = {},
             ruby_lsp = {
                 cmd_env = { BUNDLE_GEMFILE = vim.fn.getenv("GLOBAL_GEMFILE") },
@@ -62,8 +62,13 @@ return {
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
         for server, config in pairs(opts.servers) do
-            config.capabilities = capabilities
-            lspconfig[server].setup(config)
+            -- Check if the server exists before setting it up
+            if lspconfig[server] then
+                config.capabilities = capabilities
+                lspconfig[server].setup(config)
+            else
+                vim.notify("LSP server '" .. server .. "' not found", vim.log.levels.WARN)
+            end
         end
     end,
     keys = {

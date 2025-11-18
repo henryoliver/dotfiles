@@ -16,4 +16,5 @@ ln -sv ~/.dotfiles/bat ~/.config/bat
 ln -sv ~/.dotfiles/ghostty ~/.config/ghostty 
 
 ln -sv ~/.dotfiles/nvim/init.lua ~/.config/nvim
+ln -sv ~/.dotfiles/nvim/.luarc.json ~/.config/nvim
 ln -sv ~/.dotfiles/nvim/lua ~/.config/nvim

@@ -72,17 +72,7 @@ return {
             },
             acp = {
                 claude_code = function()
-                    return require("codecompanion.adapters").extend("claude_code", {
-                        -- No API key needed - uses your existing Claude CLI authentication
-                        env = {
-                            api_key = "cmd:echo ''", -- Empty string to avoid API key requirement
-                        },
-                        schema = {
-                            model = {
-                                default = "claude-sonnet-4-5-20250929",
-                            },
-                        },
-                    })
+                    return require("codecompanion.adapters").extend("claude_code", {})
                 end,
             },
         },
@@ -95,12 +85,6 @@ return {
                     watched_buffer = "" .. require("nvim-nonicons").get("eye") .. " ",
                 },
                 window = {
-                    layout = "float",
-                    border = "single",
-                    height = 0.9,
-                    width = 0.9,
-                    relative = "editor",
-                    title = "",
                     opts = {
                         number = false,
                         relativenumber = false,
@@ -117,12 +101,3 @@ return {
             spinner = {},
         },
     },
-    keys = {
-        -- Chat with specific adapters
-        { "<Leader>ic", "<Cmd>CodeCompanionChat claude_code<CR>", desc = "Chat Claude Code" },
-        { "<Leader>io", "<Cmd>CodeCompanionChat openai<CR>", desc = "Chat OpenAI" },
-        { "<Leader>il", "<Cmd>CodeCompanionChat anthropic<CR>", desc = "Chat Claude" },
-        { "<Leader>ik", "<Cmd>CodeCompanionChat xai<CR>", desc = "Chat Grok" },
-    },
-}
-

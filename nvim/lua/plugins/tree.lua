@@ -64,6 +64,7 @@ return {
 
                 icons = {
                     webdev_colors = true,
+                    padding = "  ",
                     show = {
                         file = true,
                         folder = true,

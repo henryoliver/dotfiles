@@ -2,18 +2,17 @@
     name = Henry Oliver
     email = henry_oliver@me.com
 
-[color]
-    ui = auto
-    diff = auto
-    remote = auto
-    status = auto
-
 [push]
-    default = simple
     autoSetupRemote = true
+    followTags = true
+    useForceIfIncludes = true
 
 [pull]
     rebase = false
+
+[fetch]
+    prune = true
+    pruneTags = true
 
 [core]
     eol = lf
@@ -24,9 +23,14 @@
 
 [diff]
     tool = vimdiff
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
 
 [merge]
     tool = vimdiff
+    conflictstyle = zdiff3
 
 [mergetool "vimdiff"]
     path = nvim
@@ -44,12 +48,25 @@
     process = git-lfs filter-process
     required = true
 
+[rebase]
+    autoSquash = true
+    autoStash = true
+    updateRefs = true
+
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[commit]
+    verbose = true
+
 [alias]
     ls = log --decorate --abbrev-commit --date=short --pretty=format:"%C(yellow)%h' '%C(blue)%ad' | '%C(green)[%cn]' '%C(reset)%s%C(red)%d"
     lsd = diff-tree --no-commit-id --name-status -r
     standup = log --since '1 day ago' --oneline --author "henry_oliver@me.com"
     up = !git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
-    prune-branches = !ls "$(git rev-parse --show-toplevel)/.git/refs/heads/" | grep -v master | xargs git branch -d amend = commit --amend
+    prune-branches = !ls "$(git rev-parse --show-toplevel)/.git/refs/heads/" | grep -v master | xargs git branch -d
+    amend = commit --amend
 
     bam = "!source ~/.scripts/git.sh && delete_local_merged_branches"
     bamr = "!source ~/.scripts/git.sh && delete_remote_merged_branches"
@@ -66,3 +83,14 @@
     lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
     lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset)%n'' %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
 
+[color "diff"]
+	meta = blue bold
+	frag = cyan bold
+	old = magenta
+	new = cyan
+	commit = blue bold
+	whitespace = red reverse
+[color "status"]
+	added = cyan
+	changed = blue
+	untracked = magenta

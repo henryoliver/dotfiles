@@ -10,6 +10,7 @@ font-family-italic = "MonoLisa Variable"
 font-family-bold-italic = "MonoLisa Variable"
 
 font-thicken = false
+adjust-cell-width = 2%
 
 # https://github.com/ryanoasis/nerd-fonts/wiki/Glyph-Sets-and-Code-Points
 # Seti-UI + Custom
@@ -56,3 +57,4 @@ mouse-hide-while-typing = true
 
 # background-opacity = 0.96
 # background-blur = true
+keybind = shift+enter=text:\x1b\r
