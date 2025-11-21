@@ -79,7 +79,7 @@ return {
                         },
                         schema = {
                             model = {
-                                default = "claude-sonnet-4-5-20250929",
+                                default = "claude-sonnet-4-5",
                             },
                         },
                     })
@@ -95,12 +95,10 @@ return {
                     watched_buffer = "" .. require("nvim-nonicons").get("eye") .. " ",
                 },
                 window = {
-                    layout = "float",
+                    layout = "vertical",
                     border = "single",
-                    height = 0.9,
-                    width = 0.9,
-                    relative = "editor",
                     title = "",
+                    style = "minimal",
                     opts = {
                         number = false,
                         relativenumber = false,
@@ -108,10 +106,21 @@ return {
                         foldenable = false,
                         foldmethod = "manual",
                         foldlevel = 99,
+                        winblend = 0,
                     },
                 },
             },
-            diff = { enabled = false },
+            diff = {
+                enabled = true,
+                layout = "float",
+                dim = 0,
+                window = {
+                    border = "single",
+                    relative = "editor",
+                    title = "",
+                    style = "minimal",
+                },
+            },
         },
         extensions = {
             spinner = {},
@@ -125,4 +134,3 @@ return {
         { "<Leader>ik", "<Cmd>CodeCompanionChat xai<CR>", desc = "Chat Grok" },
     },
 }
-

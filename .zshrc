@@ -102,6 +102,9 @@ function zvm_config() {
     # Use jj as escape key in insert mode
     ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 
+    # Automatically switch back to insert mode after command execution
+    ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+
     # Nord Theme Colors for zsh-vi-mode
     # Visual selection highlighting
     ZVM_VI_HIGHLIGHT_BACKGROUND=#5E81AC    # Nord10 (blue)
@@ -138,12 +141,6 @@ function zvm_after_init() {
     bindkey -M vicmd 'k' history-substring-search-up
     bindkey -M vicmd 'j' history-substring-search-down
 }
-
-# Optional: Define custom keybindings for normal/visual modes
-# function zvm_after_lazy_keybindings() {
-#     # Custom normal/visual mode keybindings here
-#     # Example: bindkey -M vicmd 's' your_custom_widget
-# }
 
 # 🔌 Plugin Manager
 # Zplug - A next-generation plugin manager for zsh

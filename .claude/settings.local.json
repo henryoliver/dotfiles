@@ -3,7 +3,13 @@
     "allow": [
       "WebFetch(domain:ghostty.org)",
       "WebSearch",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(tree:*)",
+      "Bash(cat:*)",
+      "Bash(git rm:*)",
+      "Bash(nvim --version:*)",
+      "Bash(nvim:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

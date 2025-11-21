@@ -24,9 +24,15 @@ for _, dir in pairs(backup_dirs) do
     end
 end
 
-vim.opt.backupdir = { backup_dirs.backup .. "/" }
-vim.opt.directory = { backup_dirs.swap .. "/" }
-vim.opt.undodir = { backup_dirs.undo .. "/" }
+-- Use // suffix to enable full path encoding in backup filenames
+-- This prevents name collisions and ensures all backups go to the backup dir
+vim.opt.backupdir = { backup_dirs.backup .. "//" }
+vim.opt.directory = { backup_dirs.swap .. "//" }
+vim.opt.undodir = { backup_dirs.undo .. "//" }
+
+-- Additional backup settings to ensure backups are created
+vim.opt.backupcopy = "yes" -- Preserve file attributes (safer for some tools)
+vim.opt.backupskip = "" -- Don't skip any files for backup
 
 -- Performance optimizations
 vim.opt.lazyredraw = false -- Keep false for modern Neovim
@@ -250,8 +256,8 @@ vim.opt.maxmempattern = 20000 -- Increase pattern memory
 vim.opt.inccommand = "split" -- Live preview of substitute commands
 vim.opt.completeopt = { "menu", "menuone", "noselect", "fuzzy" } -- Better completion with fuzzy matching (Neovim 0.11+)
 vim.opt.virtualedit = { "block" } -- Allow cursor beyond end of line in visual block
-vim.opt.messagesopt = "history:100" -- Configure message behavior (Neovim 0.11+)
-vim.opt.winborder = "single" -- Default border for floating windows (Neovim 0.11+)
+-- vim.opt.messagesopt = "history:100" -- Not a valid option
+-- vim.opt.winborder = "single" -- Not a valid global option (borders are configured per-window)
 
 -- Session options for fold preservation
 vim.opt.sessionoptions = {

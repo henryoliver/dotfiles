@@ -72,3 +72,21 @@ vim.api.nvim_create_autocmd("TextYankPost", {
         })
     end,
 })
+
+-- Clean up old backup and swap files (30 days)
+vim.api.nvim_create_autocmd("VimEnter", {
+    group = vim.api.nvim_create_augroup("CleanupOldBackups", { clear = true }),
+    callback = function()
+        local data_path = vim.fn.stdpath("data")
+        local backup_dir = data_path .. "/backup"
+        local swap_dir = data_path .. "/swap"
+        
+        -- Clean files older than 30 days (2592000 seconds)
+        local cleanup_cmd = string.format(
+            'find "%s" "%s" -type f -mtime +30 -delete 2>/dev/null &',
+            backup_dir,
+            swap_dir
+        )
+        vim.fn.jobstart(cleanup_cmd, { detach = true })
+    end,
+})
