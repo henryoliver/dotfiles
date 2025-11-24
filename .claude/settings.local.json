@@ -9,7 +9,10 @@
       "Bash(git rm:*)",
       "Bash(nvim --version:*)",
       "Bash(nvim:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
