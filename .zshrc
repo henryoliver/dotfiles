@@ -265,7 +265,7 @@ alias clean='
         echo "✓ pip cache cleaned"
     fi
     if command -v pipx &> /dev/null; then
-        pipx upgrade-all --include-injected
+        pipx upgrade-all --upgrade-injected
         echo "✓ pipx packages cleaned"
     fi
     if command -v poetry &> /dev/null; then
