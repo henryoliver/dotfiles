@@ -6,7 +6,7 @@ return {
         local nvim_tree = require("nvim-tree")
 
         local colors = require("nord.colors").palette
-        local nonicons_extension = require("nvim-nonicons.extensions.nvim-tree")
+        local nonicons_extention = require("nvim-nonicons.extentions.nvim-tree")
 
         nvim_tree.setup({
             filters = {
@@ -71,7 +71,7 @@ return {
                         folder_arrow = true,
                         git = false,
                     },
-                    glyphs = nonicons_extension.glyphs,
+                    glyphs = nonicons_extention.glyphs,
                 },
             },
         })
