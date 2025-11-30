@@ -2,6 +2,7 @@ return {
     "waiting-for-dev/ergoterm.nvim",
     event = "VeryLazy",
     opts = {
+        picker = "telescope", -- Explicitly configure telescope as picker
         layout = "float",
         float_opts = {
             border = "single",

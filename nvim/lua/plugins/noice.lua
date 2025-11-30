@@ -38,7 +38,7 @@ return {
                     ["cmp.entry.get_documentation"] = true,
                 },
                 signature = {
-                    enabled = false, -- Disable if you have cmp-nvim-lsp-signature-help
+                    enabled = true, -- Enable signature help handling by Noice
                 },
                 hover = {
                     enabled = true,
