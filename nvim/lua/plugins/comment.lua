@@ -3,6 +3,9 @@ return {
     event = "VeryLazy",
     dependencies = "JoosepAlviste/nvim-ts-context-commentstring",
     config = function()
+        -- Skip deprecated module integration for better performance
+        vim.g.skip_ts_context_commentstring_module = true
+
         local mini_comment = require("mini.comment")
         local ts_context_commentstring = require("ts_context_commentstring")
 

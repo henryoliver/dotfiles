@@ -9,7 +9,7 @@ return {
     config = function()
         local noice = require("noice")
         local notify = require("notify")
-        local nonicons_extention = require("nvim-nonicons.extentions.nvim-notify")
+        local nonicons_extension = require("nvim-nonicons.extensions.nvim-notify")
 
         -- Setup notify first
         notify.setup({
@@ -26,7 +26,7 @@ return {
             render = "wrapped-compact",
             stages = "fade_in_slide_out",
             top_down = false,
-            icons = nonicons_extention.icons,
+            icons = nonicons_extension.icons,
         })
 
         noice.setup({

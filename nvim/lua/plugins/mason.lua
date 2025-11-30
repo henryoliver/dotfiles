@@ -8,11 +8,11 @@ return {
     config = function()
         local mason = require("mason")
         local mason_tool = require("mason-tool-installer")
-        local nonicons_extention = require("nvim-nonicons.extentions.mason")
+        local nonicons_extension = require("nvim-nonicons.extensions.mason")
 
         mason.setup({
             ui = {
-                icons = nonicons_extention.icons,
+                icons = nonicons_extension.icons,
             },
         })
 

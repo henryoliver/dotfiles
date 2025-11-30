@@ -150,9 +150,6 @@ return {
                 -- Lower priority sources
                 { name = "calc", group_index = 3, priority = 200 },
             }),
-            per_filetype = {
-                codecompanion = { "codecompanion" },
-            },
             formatting = {
                 fields = { "kind", "abbr", "menu" },
                 format = function(entry, vim_item)
@@ -231,9 +228,7 @@ return {
                     compare.order,
                 },
             },
-            experimental = {
-                ghost_text = true,
-            },
+            ghost_text = true, -- Moved from experimental (now stable)
             performance = {
                 debounce = 100, -- Slightly increased for better performance
                 throttle = 50,
@@ -247,6 +242,13 @@ return {
                 disallow_partial_matching = false,
                 disallow_prefix_unmatching = false,
             },
+        })
+
+        -- Filetype-specific completion for codecompanion
+        cmp.setup.filetype("codecompanion", {
+            sources = cmp.config.sources({
+                { name = "codecompanion", priority = 1200 },
+            }),
         })
 
         -- Command line completion

@@ -8,9 +8,7 @@ return {
         "franco-ruggeri/codecompanion-spinner.nvim",
     },
     opts = {
-        opts = {
-            system_prompt = "",
-        },
+        system_prompt = "",
         strategies = {
             chat = {
                 adapter = "anthropic",
