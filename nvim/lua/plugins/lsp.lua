@@ -58,17 +58,21 @@ return {
         },
     },
     config = function(_, opts)
-        local lspconfig = require("lspconfig")
+        -- Get default capabilities from cmp_nvim_lsp
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+        -- Configure each LSP server using the new vim.lsp.config API (Neovim 0.11+)
         for server, config in pairs(opts.servers) do
-            -- Check if the server exists before setting it up
-            if lspconfig[server] then
-                config.capabilities = capabilities
-                lspconfig[server].setup(config)
-            else
-                vim.notify("LSP server '" .. server .. "' not found", vim.log.levels.WARN)
-            end
+            -- Merge capabilities into the config
+            local server_config = vim.tbl_deep_extend("force", config, {
+                capabilities = capabilities,
+            })
+
+            -- Use vim.lsp.config to define/customize the server configuration
+            vim.lsp.config(server, server_config)
+
+            -- Enable the LSP server
+            vim.lsp.enable(server)
         end
     end,
     keys = {
