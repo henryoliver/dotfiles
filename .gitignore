@@ -17,3 +17,7 @@ Thumbs.db
 
 # Neovim diff temporary files
 *_diff_*
+
+# Claude Code local settings
+.claude_local
+.claude/settings.local.json
