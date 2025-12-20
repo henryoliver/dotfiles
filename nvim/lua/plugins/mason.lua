@@ -48,11 +48,6 @@ return {
                 "gofumpt",
             },
             auto_update = true,
-            integrations = {
-                ["mason-lspconfig"] = true,
-                ["mason-null-ls"] = false,
-                ["mason-nvim-dap"] = false,
-            },
         })
     end,
 }

@@ -1,6 +1,7 @@
 return {
     "rmagatti/goto-preview",
     dependencies = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig" },
+    config = true,
     opts = {
         -- height = 20, -- Height of the floating window
         -- default_mappings = false,

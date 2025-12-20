@@ -80,7 +80,21 @@ return {
         }
 
         dropbar.setup({
-            bar = { hover = false },
+            bar = {
+                hover = false,
+                sources = function(buf, _)
+                    if vim.bo[buf].filetype == "codecompanion" then
+                        return {}
+                    end
+                    local sources = require("dropbar.sources")
+                    return {
+                        sources.path,
+                        sources.treesitter,
+                        sources.lsp,
+                        sources.markdown,
+                    }
+                end,
+            },
             menu = { quick_navigation = false, preview = false, hover = false, keymaps = {} },
             icons = {
                 enable = true,
@@ -100,15 +114,6 @@ return {
                     },
                 },
             },
-        })
-
-        -- Auto Commands
-        -- Disable folding in Telescope preview
-        vim.api.nvim_create_autocmd("FileType", {
-            pattern = "codecompanion",
-            callback = function()
-                dropbar.setup({ bar = { enable = false } })
-            end,
         })
     end,
     keys = {

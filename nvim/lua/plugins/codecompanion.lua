@@ -44,7 +44,7 @@ return {
                     return require("codecompanion.adapters").extend("anthropic", {
                         schema = {
                             model = {
-                                default = "claude-sonnet-4-5",
+                                default = "claude-sonnet-4-5-20250929",
                             },
                         },
                     })
@@ -71,13 +71,12 @@ return {
             acp = {
                 claude_code = function()
                     return require("codecompanion.adapters").extend("claude_code", {
-                        -- No API key needed - uses your existing Claude CLI authentication
                         env = {
-                            api_key = "cmd:echo ''", -- Empty string to avoid API key requirement
+                            CLAUDE_CODE_OAUTH_TOKEN = vim.env.CLAUDE_CODE_OAUTH_TOKEN,
                         },
                         schema = {
                             model = {
-                                default = "claude-sonnet-4-5",
+                                default = "claude-sonnet-4-5-20250929",
                             },
                         },
                     })

@@ -1,11 +1,11 @@
 return {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master", -- Use stable frozen branch with auto-highlighting
     build = ":TSUpdate",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
         local treesitter = require("nvim-treesitter.configs")
 
-        -- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#supported-languages
         treesitter.setup({
             auto_install = true,
             ensure_installed = {
@@ -18,7 +18,7 @@ return {
                 "gitignore",
                 "go",
                 "html",
-                "javascript",
+                "javascript", -- Needed for PineScript
                 "json",
                 "lua",
                 "make",
@@ -38,6 +38,6 @@ return {
             incremental_selection = { enable = false },
         })
 
-        vim.g.skip_ts_context_commentstring_module = true -- skip backwards compatibility routines and speed up loading.
+        vim.g.skip_ts_context_commentstring_module = true
     end,
 }

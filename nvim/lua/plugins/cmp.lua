@@ -228,7 +228,9 @@ return {
                     compare.order,
                 },
             },
-            ghost_text = true, -- Moved from experimental (now stable)
+            experimental = {
+                ghost_text = true,
+            },
             performance = {
                 debounce = 100, -- Slightly increased for better performance
                 throttle = 50,

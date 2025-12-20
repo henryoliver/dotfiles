@@ -2,7 +2,19 @@ return {
     "echasnovski/mini.bufremove",
     opts = {},
     keys = {
-        { "<Leader>x", "<Cmd>lua MiniBufremove.delete()<CR>", desc = "which_key_ignore" },
-        { "<Leader>X", "<Cmd>lua MiniBufremove.delete()<CR>", desc = "which_key_ignore" },
+        {
+            "<Leader>x",
+            function()
+                require("mini.bufremove").delete()
+            end,
+            desc = "Delete buffer",
+        },
+        {
+            "<Leader>X",
+            function()
+                require("mini.bufremove").wipeout()
+            end,
+            desc = "Wipeout buffer",
+        },
     },
 }

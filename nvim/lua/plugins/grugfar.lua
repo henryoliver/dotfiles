@@ -1,5 +1,6 @@
 return {
     "MagicDuck/grug-far.nvim",
+    version = "*",
     cmd = "GrugFar",
     opts = {
         helpLine = {
