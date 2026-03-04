@@ -82,6 +82,9 @@ path=(
     # Curl
     /opt/homebrew/opt/curl/bin
 
+    # Java
+    /opt/homebrew/opt/openjdk/bin
+
     # Local bin
     ${HOME}/.local/bin
 
