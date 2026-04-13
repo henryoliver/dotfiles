@@ -46,7 +46,7 @@ Located in `nvim/` directory with modular Lua architecture:
 - Each plugin has its own file (e.g., `lsp.lua`, `telescope.lua`, `cmp.lua`)
 - Lazy-loaded by default via lazy.nvim
 - Nord colorscheme as primary theme
-- Key plugins: LSP (via Mason), Telescope (fuzzy finder), nvim-cmp (completion), noice.ui, codecompanion (AI integration)
+- Key plugins: LSP (via Mason), Telescope (fuzzy finder), nvim-cmp (completion), noice.ui
 
 **Configuration Patterns**:
 - Leader key is Space

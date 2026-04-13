@@ -74,42 +74,16 @@ require("lazy").setup({
             reset = true, -- reset runtimepath to improve startup time
             paths = {}, -- add any custom paths here
             disabled_plugins = {
-                -- Core Vim plugins we don't need
+                -- Keep this aligned with lazy.nvim's documented built-ins.
                 "gzip",
-                "zip",
-                "zipPlugin",
-                "tar",
-                "tarPlugin",
-                "getscript",
-                "getscriptPlugin",
-                "vimball",
-                "vimballPlugin",
-                "2html_plugin",
-                "logiPat",
-                "rrhelper",
-                "spellfile_plugin",
-
-                -- File handling we replace with modern alternatives
-                "netrw",
-                "netrwPlugin",
-                "netrwSettings",
-                "netrwFileHandlers",
-
-                -- Search/matching we replace with better plugins
                 "matchit",
-                "matchparen", -- if you use nvim-treesitter-context
-
-                -- Other built-ins we typically replace
-                "man", -- if you use a better man page viewer
-                "shada_plugin", -- if not needed
-                "tutor_mode_plugin", -- tutorial
-                "rplugin", -- remote plugins (rarely used)
-                "syntax", -- if using treesitter for all syntax
-                "synmenu", -- syntax menu
-                "optwin", -- options window
-                "compiler", -- compiler support (if not needed)
-                "bugreport", -- bug reporting
-                "ftplugin", -- if you handle filetype plugins differently
+                "matchparen",
+                "netrwPlugin",
+                "rplugin",
+                "tarPlugin",
+                "tohtml",
+                "tutor",
+                "zipPlugin",
             },
         },
     },

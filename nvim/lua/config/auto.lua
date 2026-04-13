@@ -24,7 +24,6 @@ vim.api.nvim_create_autocmd("FileType", {
         "noice", -- noice.nvim popups
         "DressingInput", -- dressing.nvim input
         "DressingSelect", -- dressing.nvim select
-        "codecompanion", -- codecompanion chat
         "diff", -- diff mode
         "git", -- git related buffers
         "gitcommit", -- git commit messages

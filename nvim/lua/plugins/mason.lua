@@ -1,12 +1,13 @@
 return {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     dependencies = {
         "yamatsum/nvim-nonicons",
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason-lspconfig.nvim",
         "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     config = function()
         local mason = require("mason")
+        local mason_lspconfig = require("mason-lspconfig")
         local mason_tool = require("mason-tool-installer")
         local nonicons_extention = require("nvim-nonicons.extentions.mason")
 
@@ -16,9 +17,8 @@ return {
             },
         })
 
-        mason_tool.setup({
+        mason_lspconfig.setup({
             ensure_installed = {
-                -- LSP
                 "html",
                 "cssls",
                 "jsonls",
@@ -32,8 +32,14 @@ return {
                 "bashls",
                 "lua_ls",
                 "pylsp",
-                "postgres_lsp",
+                "sqls",
                 "vimls",
+            },
+            automatic_enable = false,
+        })
+
+        mason_tool.setup({
+            ensure_installed = {
 
                 -- Linter
                 "stylelint",

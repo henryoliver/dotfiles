@@ -11,6 +11,9 @@ return {
             json = { "jsonlint" },
             javascript = { "eslint_d" },
             typescript = { "eslint_d" },
+            javascriptreact = { "eslint_d" },
+            typescriptreact = { "eslint_d" },
+            svelte = { "eslint_d" },
             -- lua = { "stylua" },
             go = { "revive" },
             ruby = { "rubocop" },
@@ -44,10 +47,7 @@ return {
         vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
             group = lint_augroup,
             callback = function()
-                -- Debounce by 100ms for better performance
-                vim.defer_fn(function()
-                    lint.try_lint()
-                end, 100)
+                lint.try_lint()
             end,
         })
     end,

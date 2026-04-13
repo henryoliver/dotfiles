@@ -5,7 +5,7 @@ return {
         "nvim-lua/plenary.nvim",
         "yamatsum/nvim-nonicons",
         "debugloop/telescope-undo.nvim",
-        "nvim-telescope/telescope-fzy-native.nvim",
+        { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         "nvim-telescope/telescope-file-browser.nvim",
     },
     config = function()
@@ -47,9 +47,11 @@ return {
                 undo = {
                     -- telescope-undo.nvim config, see below
                 },
-                fzy_native = {
+                fzf = {
+                    fuzzy = true,
                     override_generic_sorter = true,
                     override_file_sorter = true,
+                    case_mode = "smart_case",
                 },
                 file_browser = {
                     hidden = true,
@@ -64,7 +66,7 @@ return {
         -- Plugins
         -- https://github.com/nvim-telescope/telescope.nvim/wiki/Extensions#different-plugins-with-telescope-integration
         telescope.load_extension("undo")
-        telescope.load_extension("fzy_native")
+        telescope.load_extension("fzf")
         telescope.load_extension("file_browser")
 
         -- Highlights

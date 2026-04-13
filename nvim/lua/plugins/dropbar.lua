@@ -83,9 +83,6 @@ return {
             bar = {
                 hover = false,
                 sources = function(buf, _)
-                    if vim.bo[buf].filetype == "codecompanion" then
-                        return {}
-                    end
                     local sources = require("dropbar.sources")
                     return {
                         sources.path,

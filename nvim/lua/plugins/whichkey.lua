@@ -39,8 +39,6 @@ return {
             mode = { "n", "v" },
             { "<Leader>u", group = "Time Machine [Undo]" },
 
-            { "<Leader>i", group = "AI" },
-
             { "<Leader>g", group = "Git" },
             { "<Leader>gh", group = "Hunk" },
             { "<Leader>gl", group = "Link" },
@@ -48,7 +46,6 @@ return {
             { "<Leader>s", group = "Search" },
 
             { "<Leader>l", group = "LSP" },
-            { "<Leader>p", group = "LSP Preview" },
         })
     end,
 }

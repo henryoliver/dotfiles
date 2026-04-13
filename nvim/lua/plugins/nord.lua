@@ -5,7 +5,7 @@ return {
     config = function()
         require("nord").setup({
             transparent = true, -- Disable setting the background color
-            diff = { mode = "none" },
+            diff = { mode = "bg" },
             errors = { mode = "none" },
             on_highlights = function(highlights, colors)
                 -- https://github.com/gbprod/nord.nvim/blob/main/lua/nord/colors.lua
@@ -22,11 +22,6 @@ return {
                 -- UI elements
                 highlights.Folded = { bg = colors.none, fg = colors.polar_night.bright }
 
-                -- Diff
-                highlights.DiffText = { bg = colors.none, fg = colors.polar_night.brightest }
-                highlights.DiffAdd = { bg = colors.none, fg = colors.frost.ice }
-                highlights.DiffChange = { bg = colors.none, fg = colors.aurora.yellow }
-                highlights.DiffDelete = { bg = colors.none, fg = colors.aurora.red }
                 highlights.DiffviewFilePanelInsertions = { bg = colors.none, fg = colors.frost.ice }
                 highlights.DiffviewStatusModified = { bg = colors.none, fg = colors.aurora.yellow }
                 highlights.DiffviewFilePanelDeletions = { bg = colors.none, fg = colors.aurora.red }

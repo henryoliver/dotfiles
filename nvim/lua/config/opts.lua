@@ -32,7 +32,6 @@ vim.opt.undodir = { backup_dirs.undo .. "//" }
 
 -- Additional backup settings to ensure backups are created
 vim.opt.backupcopy = "yes" -- Preserve file attributes (safer for some tools)
-vim.opt.backupskip = "" -- Don't skip any files for backup
 
 -- Performance optimizations
 vim.opt.lazyredraw = false -- Keep false for modern Neovim
@@ -170,8 +169,8 @@ vim.opt.matchtime = 2
 -- Command area (modern minimalist approach)
 vim.opt.cmdheight = 0 -- Use floating command line
 vim.opt.cmdwinheight = 5 -- Better height for command window
-vim.opt.laststatus = 0 -- Global statusline (better for multiple windows)
-vim.opt.showtabline = 0 -- Hide tabline (use bufferline plugin instead)
+vim.opt.laststatus = 3 -- Single global statusline across all windows
+vim.opt.showtabline = 1 -- Only show the tabline when there are multiple tabs
 vim.opt.showcmd = false
 vim.opt.showmode = false
 vim.opt.more = false

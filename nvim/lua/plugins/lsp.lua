@@ -58,8 +58,8 @@ return {
         },
     },
     config = function(_, opts)
-        -- Get default capabilities from cmp_nvim_lsp
-        local capabilities = require("cmp_nvim_lsp").default_capabilities()
+        -- Get default capabilities from blink.cmp
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
 
         -- Configure each LSP server using the new vim.lsp.config API (Neovim 0.11+)
         for server, config in pairs(opts.servers) do

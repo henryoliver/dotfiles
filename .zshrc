@@ -45,17 +45,20 @@ unsetopt CORRECT_ALL             # Disable all arguments correction
 
 # 🔧 Completion System
 # Initialize completion system
+typeset -g ZSH_CACHE_DIR="${HOME}/.zsh/cache"
+typeset -g ZSH_COMPDUMP="${ZSH_CACHE_DIR}/.zcompdump-${ZSH_VERSION}"
 autoload -Uz compinit
-compinit -C
+mkdir -p "${ZSH_CACHE_DIR}"
+compinit -C -d "${ZSH_COMPDUMP}"
 
 # Completion options
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+[[ -n "${LS_COLORS:-}" ]] && zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' rehash true
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':completion:*' cache-path "${ZSH_CACHE_DIR}"
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 
 # 🛤️ Paths
@@ -63,6 +66,7 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 fpath+=($HOME/.zsh/pure)
 
 # Configure PATH
+: ${GOPATH:=${HOME}/go}
 typeset -U path PATH
 path=(
     # Homebrew
@@ -147,6 +151,7 @@ function zvm_after_init() {
 
 # 🔌 Plugin Manager
 # Zplug - A next-generation plugin manager for zsh
+: ${ZPLUG_HOME:=${HOME}/.zplug}
 if [[ -f "${ZPLUG_HOME}/init.zsh" ]]; then
     source "${ZPLUG_HOME}/init.zsh"
 
@@ -155,7 +160,7 @@ if [[ -f "${ZPLUG_HOME}/init.zsh" ]]; then
     zplug "jeffreytse/zsh-vi-mode"
     zplug "b4b4r07/enhancd", use:init.sh
     zplug "zsh-users/zsh-autosuggestions"
-    zplug "zsh-users/zsh-syntax-highlighting", defer:2
+    zplug "zsh-users/zsh-syntax-highlighting", defer:3
     zplug "zsh-users/zsh-completions"
     zplug "zsh-users/zsh-history-substring-search"
 
@@ -206,7 +211,7 @@ alias duf="du -sh * | sort -h" # List folder sizes sorted
 
 # Python
 alias python="python3"
-alias pip="uv"
+alias pip="uv pip"
 
 # Navigation
 alias ..="cd .."
@@ -216,14 +221,16 @@ alias .....="cd ../../../.."
 
 # Others
 alias c="clear"
-alias grep="grep --color=auto"
-alias myip="curl -s http://myip.dnsomatic.com && echo"
+if command -v ggrep &> /dev/null; then
+    alias grep="ggrep --color=auto"
+fi
+alias myip="curl -fsSL https://api.ipify.org && echo"
 alias flush="dscacheutil -flushcache"    # Flush your dns cache
 alias path='echo $PATH | tr -s ":" "\n"' # Pretty print the path
 alias reload="exec ${SHELL} -l"          # Reload shell
 
-# 🧹 System Maintenance Aliases
-alias clean='
+# 🧹 System Maintenance
+clean() {
     echo "╔═══════════════════════════════════════════════════════════════════╗"
     echo "║                        SYSTEM CLEANUP                             ║"
     echo "╚═══════════════════════════════════════════════════════════════════╝"
@@ -232,15 +239,16 @@ alias clean='
     echo "🍺 Homebrew"
     brew cleanup --prune=all
     brew autoremove
-    rm -rf $(brew --cache)
+    rm -rf "$(brew --cache)"
     echo "✓ Homebrew cleaned"
     echo
 
     echo "🐚 Zsh"
-    zplug clean --force
-    zplug clear
-    rm -rf ~/.zcompdump*
-    rm -rf ~/.zsh_sessions
+    if command -v zplug &> /dev/null; then
+        zplug clean --force
+        zplug clear
+    fi
+    rm -rf "${ZSH_CACHE_DIR}" ~/.zcompdump* ~/.zsh_sessions
     echo "✓ Zsh plugins cleaned"
     echo
 
@@ -264,7 +272,7 @@ alias clean='
         echo "✓ uv cache cleaned"
     fi
     if command -v pip &> /dev/null; then
-        pip cache purge 2>/dev/null || true
+        uv pip cache prune 2>/dev/null || true
         echo "✓ pip cache cleaned"
     fi
     if command -v pipx &> /dev/null; then
@@ -302,9 +310,9 @@ alias clean='
     echo "╔═══════════════════════════════════════════════════════════════════╗"
     echo "║                    CLEANUP COMPLETED                              ║"
     echo "╚═══════════════════════════════════════════════════════════════════╝"
-'
+}
 
-alias update='
+update() {
     echo "╔═══════════════════════════════════════════════════════════════════╗"
     echo "║                        SYSTEM UPDATE                              ║"
     echo "╚═══════════════════════════════════════════════════════════════════╝"
@@ -320,19 +328,19 @@ alias update='
     echo
 
     echo "🐚 Zsh Plugins"
-    zplug update
-    # Rebuild zcompdump
-    rm -f ~/.zcompdump && compinit
+    if command -v zplug &> /dev/null; then
+        zplug update
+    fi
+    rm -f "${ZSH_COMPDUMP}" ~/.zcompdump*
+    compinit -C -d "${ZSH_COMPDUMP}"
     echo "✓ Zsh plugins updated"
     echo
 
     echo "📦 Node.js (via Homebrew)"
-    # Node.js is updated via brew upgrade above
     echo "✓ Node.js updated via Homebrew"
     echo
 
     echo "🐍 Python (via Homebrew)"
-    # Python and tools are updated via brew upgrade above
     if command -v uv &> /dev/null; then
         uv self update
         echo "✓ uv self updated"
@@ -341,13 +349,10 @@ alias update='
     echo
 
     echo "🐹 Go (via Homebrew)"
-    # Go is updated via brew upgrade above
     echo "✓ Go updated via Homebrew"
     echo
 
     echo "💎 Ruby (via Homebrew)"
-    # Ruby is updated via brew upgrade above
-    # Update rbenv if installed
     if command -v rbenv &> /dev/null; then
         rbenv rehash
         echo "✓ rbenv rehashed"
@@ -356,9 +361,7 @@ alias update='
     echo
 
     echo "🔧 System Maintenance"
-    # Update macOS CLI tools
     softwareupdate --all --install --force 2>/dev/null || true
-    # Update App Store apps if mas is installed via Homebrew
     if command -v mas &> /dev/null; then
         mas upgrade
         echo "✓ App Store apps updated"
@@ -369,4 +372,4 @@ alias update='
     echo "╔═══════════════════════════════════════════════════════════════════╗"
     echo "║                    UPDATE COMPLETED                               ║"
     echo "╚═══════════════════════════════════════════════════════════════════╝"
-'
+}
