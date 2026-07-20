@@ -1,5 +1,6 @@
 -- Leader key (should be set in init.lua, but keeping for safety)
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
 -- Backup and recovery with better path handling
 vim.opt.backup = true
@@ -169,7 +170,7 @@ vim.opt.matchtime = 2
 -- Command area (modern minimalist approach)
 vim.opt.cmdheight = 0 -- Use floating command line
 vim.opt.cmdwinheight = 5 -- Better height for command window
-vim.opt.laststatus = 3 -- Single global statusline across all windows
+vim.opt.laststatus = 0 -- Hide the statusline/footer bar
 vim.opt.showtabline = 1 -- Only show the tabline when there are multiple tabs
 vim.opt.showcmd = false
 vim.opt.showmode = false
@@ -208,14 +209,12 @@ vim.opt.winminwidth = 5 -- Minimum window width
 vim.opt.winminheight = 1 -- Minimum window height
 
 -- Buffers
-vim.opt.hidden = true
 vim.opt.switchbuf = { "useopen", "uselast" }
 vim.opt.autoread = true
 vim.opt.autowrite = true -- Automatically save when switching buffers
 
 -- Interface
 vim.opt.confirm = true
-vim.opt.termguicolors = true
 vim.opt.pumheight = 10 -- Limit popup menu height
 
 -- Special characters with better Unicode symbols
@@ -255,8 +254,8 @@ vim.opt.maxmempattern = 20000 -- Increase pattern memory
 vim.opt.inccommand = "split" -- Live preview of substitute commands
 vim.opt.completeopt = { "menu", "menuone", "noselect", "fuzzy" } -- Better completion with fuzzy matching (Neovim 0.11+)
 vim.opt.virtualedit = { "block" } -- Allow cursor beyond end of line in visual block
--- vim.opt.messagesopt = "history:100" -- Not a valid option
--- vim.opt.winborder = "single" -- Not a valid global option (borders are configured per-window)
+vim.opt.winborder = "rounded" -- Default border for all floating windows (Neovim 0.11+)
+vim.opt.messagesopt = "hit-enter,history:500" -- Message display options (Neovim 0.11+)
 
 -- Session options for fold preservation
 vim.opt.sessionoptions = {
@@ -288,15 +287,11 @@ vim.g.loaded_python_provider = 0
 -- Only disable python3_provider if you don't use Python plugins
 vim.g.loaded_python3_provider = 0
 
--- Disable some built-in plugins for performance
-vim.g.loaded_matchparen = 1 -- Use treesitter instead
-vim.g.loaded_matchit = 1 -- Use treesitter instead
+-- Disable built-in plugins not covered by lazy.nvim's disabled_plugins list
 vim.g.loaded_logiPat = 1
 vim.g.loaded_rrhelper = 1
-vim.g.loaded_tarPlugin = 1
-vim.g.loaded_gzip = 1
-vim.g.loaded_zipPlugin = 1
 vim.g.loaded_2html_plugin = 1
 vim.g.loaded_shada_plugin = 1
 vim.g.loaded_spellfile_plugin = 1
-vim.g.loaded_netrw = 1 -- Disable if using a file explorer plugin
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1

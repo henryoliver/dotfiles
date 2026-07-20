@@ -148,11 +148,9 @@ return {
                 view_search = "virtualtext",
             },
 
-            -- Popupmenu
+            -- Popupmenu (disabled - blink.cmp handles cmdline completion)
             popupmenu = {
-                enabled = true,
-                backend = "nui",
-                kind_icons = {},
+                enabled = false,
             },
 
             -- Notifications

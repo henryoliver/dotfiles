@@ -12,35 +12,14 @@ vim.api.nvim_create_autocmd("FileType", {
         "notify",
         "qf",
         "NeogitStatus",
-        "oil", -- oil.nvim file explorer
-        "trouble", -- trouble.nvim diagnostics
-        "lsp-installer", -- mason.nvim installer
-        "netrw", -- netrw file browser
-        "startuptime", -- startuptime plugin
-        "fugitive", -- vim-fugitive
-        "neo-tree", -- neo-tree file explorer
-        "TelescopePrompt", -- telescope preview
-        "spectre_panel", -- spectre search/replace
-        "noice", -- noice.nvim popups
-        "DressingInput", -- dressing.nvim input
-        "DressingSelect", -- dressing.nvim select
-        "diff", -- diff mode
-        "git", -- git related buffers
-        "gitcommit", -- git commit messages
-        "gitrebase", -- git rebase
-        "man", -- man pages
-        "tsplayground", -- treesitter playground
-        "undotree", -- undotree
-        "Outline", -- outline/symbols
-        "dapui_watches", -- dap ui
-        "dapui_stacks",
-        "dapui_breakpoints",
-        "dapui_scopes",
-        "dapui_console",
-        "dap-repl",
-        "neotest-output",
-        "neotest-summary",
-        "neotest-output-panel",
+        "NvimTree",
+        "TelescopePrompt",
+        "noice",
+        "diff",
+        "git",
+        "gitcommit",
+        "gitrebase",
+        "man",
     },
     callback = function(event)
         vim.bo[event.buf].buflisted = false

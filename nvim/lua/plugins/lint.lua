@@ -1,6 +1,7 @@
 return {
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
+    dependencies = "yamatsum/nvim-nonicons",
     config = function()
         local lint = require("lint")
         local nonicons = require("nvim-nonicons")
@@ -9,11 +10,11 @@ return {
         lint.linters_by_ft = {
             -- css = { "stylelint" },
             json = { "jsonlint" },
-            javascript = { "eslint_d" },
-            typescript = { "eslint_d" },
-            javascriptreact = { "eslint_d" },
-            typescriptreact = { "eslint_d" },
-            svelte = { "eslint_d" },
+            javascript = { "eslint" },
+            typescript = { "eslint" },
+            javascriptreact = { "eslint" },
+            typescriptreact = { "eslint" },
+            svelte = { "eslint" },
             -- lua = { "stylua" },
             go = { "revive" },
             ruby = { "rubocop" },

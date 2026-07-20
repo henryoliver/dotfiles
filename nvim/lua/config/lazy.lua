@@ -41,8 +41,10 @@ require("lazy").setup({
     -- Default plugin configuration
     defaults = {
         lazy = true, -- lazy-load by default
-        version = false, -- always use latest commit (set to "*" for version pinning)
+        version = false, -- rely on the lockfile for reproducible plugin commits
     },
+
+    lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json",
 
     -- Installation settings
     install = {
@@ -52,10 +54,10 @@ require("lazy").setup({
 
     -- Update checker
     checker = {
-        enabled = true,
-        notify = true, -- get notified when updates are available
+        enabled = false, -- avoid background drift; update intentionally and refresh the lockfile
+        notify = false,
         frequency = 3600, -- check for updates every hour
-        check_pinned = false, -- don't check for updates on pinned plugins
+        check_pinned = false,
     },
 
     -- Change detection

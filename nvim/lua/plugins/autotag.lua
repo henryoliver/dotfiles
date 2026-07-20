@@ -1,13 +1,16 @@
 return {
     "windwp/nvim-ts-autotag",
-    event = "InsertEnter",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = "nvim-treesitter/nvim-treesitter",
     config = function()
         local autotag = require("nvim-ts-autotag")
 
         autotag.setup({
-            enable_close = true, -- Auto close tags
-            enable_rename = true, -- Auto rename pairs of tags
-            enable_close_on_slash = false, -- Auto close on trailing </
+            opts = {
+                enable_close = true,
+                enable_rename = true,
+                enable_close_on_slash = false,
+            },
         })
     end,
 }

@@ -2,8 +2,8 @@ return {
     "neovim/nvim-lspconfig",
     event = "VeryLazy",
     dependencies = {
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason.nvim",
+        "mason-org/mason-lspconfig.nvim",
     },
     opts = {
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
@@ -25,12 +25,11 @@ return {
             lua_ls = {
                 settings = {
                     Lua = {
-                        -- Get the language server to recognize the `vim` global
-                        diagnostics = { globals = { "vim", "string", "require", "pairs" } },
+                        diagnostics = { globals = { "vim" } },
                     },
                 },
             },
-            sqls = {},
+            sqlls = {},
             pylsp = {},
             ruby_lsp = {
                 cmd_env = { BUNDLE_GEMFILE = vim.fn.getenv("GLOBAL_GEMFILE") },

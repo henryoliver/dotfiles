@@ -1,7 +1,7 @@
 return {
     "saghen/blink.cmp",
     version = "1.*",
-    event = "InsertEnter",
+    lazy = false,
     dependencies = {
         "yamatsum/nvim-nonicons",
         "rafamadriz/friendly-snippets",
@@ -167,7 +167,11 @@ return {
         vim.api.nvim_set_hl(0, "PmenuSel", { bg = colors.polar_night.bright, fg = colors.snow_storm.origin })
         vim.api.nvim_set_hl(0, "FloatBorder", { bg = "NONE", fg = colors.polar_night.bright })
 
-        vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection", { bg = colors.polar_night.bright, fg = colors.snow_storm.origin })
+        vim.api.nvim_set_hl(
+            0,
+            "BlinkCmpMenuSelection",
+            { bg = colors.polar_night.bright, fg = colors.snow_storm.origin }
+        )
         vim.api.nvim_set_hl(0, "BlinkCmpLabelMatch", { fg = colors.frost.artic_water, bold = true })
         vim.api.nvim_set_hl(0, "BlinkCmpLabelDeprecated", { fg = colors.polar_night.brightest, strikethrough = true })
         vim.api.nvim_set_hl(0, "BlinkCmpSource", { fg = colors.polar_night.brightest })

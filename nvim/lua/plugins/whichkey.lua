@@ -5,7 +5,6 @@ return {
     opts = {
         preset = "modern", -- false | "classic" | "modern" | "helix"
         notify = false, -- show a warning when issues were detected with your mappings
-        ignore_missing = true,
         plugins = {
             marks = false, -- shows a list of your marks on ' and `
             registers = false, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
@@ -42,6 +41,8 @@ return {
             { "<Leader>g", group = "Git" },
             { "<Leader>gh", group = "Hunk" },
             { "<Leader>gl", group = "Link" },
+
+            { "<Leader>a", group = "AI" },
 
             { "<Leader>s", group = "Search" },
 

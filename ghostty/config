@@ -4,49 +4,41 @@
 theme = nord
 
 font-size = 18
-font-family = "MonoLisa Variable"
-font-family-bold = "MonoLisa Variable"
-font-family-italic = "MonoLisa Variable"
-font-family-bold-italic = "MonoLisa Variable"
-
-font-thicken = false
-adjust-cell-width = 2%
+font-family = "MonoLisaCode"
 
 # https://github.com/ryanoasis/nerd-fonts/wiki/Glyph-Sets-and-Code-Points
 # Seti-UI + Custom
-font-codepoint-map = U+e5fa-U+e6b7=Symbols Nerd Font
+font-codepoint-map = U+e5fa-U+e6b7=Symbols Nerd Font Mono
 # Devicons
-font-codepoint-map = U+e700-U+e8ef=Symbols Nerd Font
+font-codepoint-map = U+e700-U+e8ef=Symbols Nerd Font Mono
 # Font Awesome
-font-codepoint-map = U+ed00-U+f2ff=Symbols Nerd Font
+font-codepoint-map = U+ed00-U+f2ff=Symbols Nerd Font Mono
 # Font Awesome Extension
-font-codepoint-map = U+e200-U+e2a9=Symbols Nerd Font
+font-codepoint-map = U+e200-U+e2a9=Symbols Nerd Font Mono
 # Material Design Icons
-font-codepoint-map = U+f0001-U+f1af0=Symbols Nerd Font
+font-codepoint-map = U+f0001-U+f1af0=Symbols Nerd Font Mono
 # Weather
-font-codepoint-map = U+e300-U+e3e3=Symbols Nerd Font
+font-codepoint-map = U+e300-U+e3e3=Symbols Nerd Font Mono
 # Octicons
-font-codepoint-map = U+f400-U+f533,U+2665,U+26A1=Symbols Nerd Font
+font-codepoint-map = U+f400-U+f533,U+2665,U+26A1=Symbols Nerd Font Mono
 # Powerline Symbols
-font-codepoint-map = U+e0a0-U+e0a2,U+e0b0-U+e0b3=Symbols Nerd Font
+font-codepoint-map = U+e0a0-U+e0a2,U+e0b0-U+e0b3=Symbols Nerd Font Mono
 # Powerline Extra Symbols
-font-codepoint-map = U+e0a3,U+e0b4-U+e0c8,U+e0ca,U+e0cc-U+e0d7=Symbols Nerd Font
+font-codepoint-map = U+e0a3,U+e0b4-U+e0c8,U+e0ca,U+e0cc-U+e0d7=Symbols Nerd Font Mono
 # IEC Power Symbols
-font-codepoint-map = U+23fb-U+23fe,U+2b58=Symbols Nerd Font
+font-codepoint-map = U+23fb-U+23fe,U+2b58=Symbols Nerd Font Mono
 # Font Logos
-font-codepoint-map = U+f300-U+f381=Symbols Nerd Font
+font-codepoint-map = U+f300-U+f381=Symbols Nerd Font Mono
 # Pomicons
-font-codepoint-map = U+e000-U+e00a=Symbols Nerd Font
+font-codepoint-map = U+e000-U+e00a=Symbols Nerd Font Mono
 # Codicons
-font-codepoint-map = U+ea60-U+ec1e=Symbols Nerd Font
+font-codepoint-map = U+ea60-U+ec1e=Symbols Nerd Font Mono
 # Nonicons
 font-codepoint-map = U+f101-U+f25c=nonicons
 
 working-directory = home
 
 title = " "
-window-subtitle = false
-window-inherit-font-size = true
 window-inherit-working-directory = false
 
 macos-titlebar-style = tabs

@@ -32,7 +32,7 @@ return {
                 "bashls",
                 "lua_ls",
                 "pylsp",
-                "sqls",
+                "sqlls",
                 "vimls",
             },
             automatic_enable = false,
@@ -43,7 +43,6 @@ return {
 
                 -- Linter
                 "stylelint",
-                "eslint_d",
                 "jsonlint",
                 "revive",
                 "rubocop",
