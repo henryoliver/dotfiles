@@ -1,6 +1,7 @@
 [user]
     name = Henry Oliver
     email = henry_oliver@me.com
+	signingkey = /Users/henryoliver/.ssh/github.pub
 
 [push]
     autoSetupRemote = true
@@ -59,6 +60,7 @@
 
 [commit]
     verbose = true
+	gpgsign = true
 
 [alias]
     ls = log --decorate --abbrev-commit --date=short --pretty=format:"%C(yellow)%h' '%C(blue)%ad' | '%C(green)[%cn]' '%C(reset)%s%C(red)%d"
@@ -94,3 +96,9 @@
 	added = cyan
 	changed = blue
 	untracked = magenta
+[gpg]
+	format = ssh
+[tag]
+	gpgSign = true
+[gpg "ssh"]
+	allowedSignersFile = /Users/henryoliver/.ssh/allowed_signers

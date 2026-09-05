@@ -4,10 +4,69 @@
 # ╚═══════════════════════════════════════════════════════════════════════════╝
 
 # 🌍 Environment Setup
-# Homebrew initialization (Apple Silicon)
+# Homebrew initialization (Apple Silicon). Also seeds FPATH with
+# ${HOMEBREW_PREFIX}/share/zsh/site-functions, which is where `pure` lives.
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+export HOMEBREW_NO_ENV_HINTS=1        # Silence brew's "hint:" chatter
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1  # Cleanup is handled explicitly by `clean`
+
+# Locale — /etc/zprofile only sets C.UTF-8, which breaks sorting and some TUIs
+export LANG="${LANG:-en_US.UTF-8}"
+export LC_ALL="${LC_ALL:-en_US.UTF-8}"
+
+# Editor / pager
+export EDITOR="${EDITOR:-nvim}"
+export VISUAL="$EDITOR"
+export PAGER="less"
+export LESS="-FiRX"                   # Quit-if-one-screen, smart-case, colors, no clear
+export MANPAGER="less -R"
+
+# 🛤️ Paths
+# Tool roots. HOMEBREW_PREFIX is exported by `brew shellenv` above; the fallback
+# keeps this correct if brew is missing, and portable to Intel (/usr/local).
+# These are plain shell variables — the tools that need them export their own
+# copy, and GOPATH is already exported from ~/.zshenv for non-interactive use.
+: ${HOMEBREW_PREFIX:=/opt/homebrew}
+: ${GOPATH:=${HOME}/go}
+
+# zplug: the Homebrew formula stores its cloned plugin repos under the formula
+# prefix, so `brew upgrade zplug` wipes them — `update` runs `zplug install` to
+# heal that. zplug's core.zsh re-declares this as `typeset -gx`, so setting the
+# plain variable here is enough. ${ZPLUG_HOME}/bin is added to path by zplug.
+: ${ZPLUG_HOME:=${HOMEBREW_PREFIX}/opt/zplug}
+
+typeset -U path PATH fpath FPATH
+path=(
+    # Homebrew
+    ${HOMEBREW_PREFIX}/bin
+    ${HOMEBREW_PREFIX}/sbin
+
+    # PostgreSQL
+    ${HOMEBREW_PREFIX}/opt/postgresql@17/bin
+
+    # Go
+    ${GOPATH}/bin
+
+    # Ruby
+    ${HOME}/.rbenv/shims
+
+    # Curl
+    ${HOMEBREW_PREFIX}/opt/curl/bin
+
+    # Java
+    ${HOMEBREW_PREFIX}/opt/openjdk/bin
+
+    # Local bin
+    ${HOME}/.local/bin
+
+    # System paths
+    $path
+)
+export PATH
 
 # ⚙️ Zsh Options
 # History configuration
@@ -15,7 +74,6 @@ HISTFILE="${HOME}/.zsh_history"
 HISTSIZE=100000
 SAVEHIST=100000
 
-# Zsh options for better experience
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format
 unsetopt SHARE_HISTORY           # Do not share history between sessions (keep per-tab)
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history
@@ -24,87 +82,36 @@ setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event i
 setopt HIST_FIND_NO_DUPS         # Do not display a previously found event
 setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file
+setopt HIST_REDUCE_BLANKS        # Strip superfluous whitespace before recording
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion
 setopt APPEND_HISTORY            # Append to history file
 unsetopt INC_APPEND_HISTORY      # Do not write to history file immediately (keep in memory)
 setopt AUTO_CD                   # Change directory without typing cd
 setopt AUTO_PUSHD                # Push directories onto the directory stack
 setopt PUSHD_IGNORE_DUPS         # Do not push multiple copies of the same directory
+setopt PUSHD_SILENT              # Don't print the directory stack after pushd/popd
 setopt PUSHD_MINUS               # Exchange the meanings of '+' and '-'
 setopt NO_BEEP                   # Don't beep on errors
+setopt EXTENDED_GLOB             # Enable #, ~ and ^ glob operators
+setopt NUMERIC_GLOB_SORT         # Sort globs numerically when they contain numbers
+setopt INTERACTIVE_COMMENTS      # Allow # comments in interactive shells
 setopt COMPLETE_IN_WORD          # Complete from both ends of a word
 setopt ALWAYS_TO_END             # Move cursor to the end of a completed word
 setopt PATH_DIRS                 # Perform path search even on command names with slashes
 setopt AUTO_MENU                 # Show completion menu on a successive tab press
 setopt AUTO_LIST                 # Automatically list choices on ambiguous completion
 setopt AUTO_PARAM_SLASH          # If completed parameter is a directory, add a trailing slash
-setopt MENU_COMPLETE             # Do not autoselect the first completion entry
+unsetopt MENU_COMPLETE           # Do not autoselect the first completion entry (AUTO_MENU handles cycling)
 unsetopt FLOW_CONTROL            # Disable start/stop characters in shell editor
 unsetopt CORRECT                 # Disable command correction
 unsetopt CORRECT_ALL             # Disable all arguments correction
 
-# 🔧 Completion System
-# Initialize completion system
 typeset -g ZSH_CACHE_DIR="${HOME}/.zsh/cache"
 typeset -g ZSH_COMPDUMP="${ZSH_CACHE_DIR}/.zcompdump-${ZSH_VERSION}"
-autoload -Uz compinit
-mkdir -p "${ZSH_CACHE_DIR}"
-compinit -C -d "${ZSH_COMPDUMP}"
-
-# Completion options
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
-[[ -n "${LS_COLORS:-}" ]] && zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' rehash true
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "${ZSH_CACHE_DIR}"
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-
-# 🛤️ Paths
-# Add to fpath
-fpath+=($HOME/.zsh/pure)
-
-# Configure PATH
-: ${GOPATH:=${HOME}/go}
-typeset -U path PATH
-path=(
-    # Homebrew
-    /opt/homebrew/bin
-    /opt/homebrew/sbin
-
-    # PostgreSQL
-    /opt/homebrew/opt/postgresql@17/bin
-
-    # Go
-    ${GOPATH}/bin
-    ${HOME}/go/bin
-
-    # Ruby
-    ${HOME}/.rbenv/shims
-
-    # Curl
-    /opt/homebrew/opt/curl/bin
-
-    # Java
-    /opt/homebrew/opt/openjdk/bin
-
-    # Local bin
-    ${HOME}/.local/bin
-
-    # System paths
-    $path
-)
-
-export PATH
-
-# 🎨 Prompt
-# Pure prompt - minimal and fast
-autoload -U promptinit; promptinit
-prompt pure
+[[ -d "${ZSH_CACHE_DIR}" ]] || mkdir -p "${ZSH_CACHE_DIR}"
 
 # ⌨️ zsh-vi-mode Configuration
-# Configure zsh-vi-mode before it loads
+# Must be defined before the plugin loads.
 function zvm_config() {
     # Use jj as escape key in insert mode
     ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
@@ -132,54 +139,92 @@ function zvm_config() {
     ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_UNDERLINE
 }
 
-# Define function to run after zsh-vi-mode init (for compatibility with other plugins)
+# zsh-vi-mode takes over the keymap at init, so every custom bindkey has to be
+# (re)applied here, after it finishes.
 function zvm_after_init() {
-    # Load fzf if it exists
-    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+    [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
-    # zsh-autosuggestions key bindings
+    # zsh-autosuggestions
     bindkey '^l' autosuggest-accept
     bindkey '^ ' autosuggest-execute
 
-    # History search bindings
+    # History substring search
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
-    # Also bind for vi mode
     bindkey -M vicmd 'k' history-substring-search-up
     bindkey -M vicmd 'j' history-substring-search-down
 }
 
 # 🔌 Plugin Manager
-# Zplug - A next-generation plugin manager for zsh
-: ${ZPLUG_HOME:=${HOME}/.zplug}
+# ZPLUG_HOME is set in the Paths section above.
 if [[ -f "${ZPLUG_HOME}/init.zsh" ]]; then
     source "${ZPLUG_HOME}/init.zsh"
 
-    # Plugins
     zplug "supercrabtree/k"
     zplug "jeffreytse/zsh-vi-mode"
     zplug "b4b4r07/enhancd", use:init.sh
     zplug "zsh-users/zsh-autosuggestions"
-    zplug "zsh-users/zsh-syntax-highlighting", defer:3
     zplug "zsh-users/zsh-completions"
     zplug "zsh-users/zsh-history-substring-search"
+    zplug "zsh-users/zsh-syntax-highlighting", defer:3
 
-    # Install plugins if there are plugins that have not been installed
-    if ! zplug check --verbose; then
-        printf "Install? [y/N]: "
+    if ! zplug check; then
+        printf "zplug: missing plugins. Install? [y/N]: "
         if read -q; then
             echo; zplug install
         fi
+        echo
     fi
 
-    # Load plugins
     zplug load
 fi
 
-# 🎯 Key Bindings
-# Note: Key bindings for zsh-autosuggestions and history search
-# are now defined in the zvm_after_init function above to ensure
-# compatibility with zsh-vi-mode
+# zsh-autosuggestions tuning (set after load so the plugin's defaults are known)
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20        # Skip suggestions for very long lines
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1           # Don't re-bind widgets on every prompt
+
+# 🔧 Completion System
+# Runs *after* zplug load so zsh-completions and brew's site-functions are on
+# fpath. The dump is regenerated at most once a day; every other start uses -C
+# (skip the security audit) for a fast path.
+autoload -Uz compinit
+if [[ -n ${ZSH_COMPDUMP}(#qN.mh-24) ]]; then
+    compinit -C -d "${ZSH_COMPDUMP}"
+else
+    compinit -i -d "${ZSH_COMPDUMP}"
+    # Compile the dump in the background; saves ~20ms on subsequent starts
+    { zcompile -R -- "${ZSH_COMPDUMP}" } &!
+fi
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+[[ -n "${LS_COLORS:-}" ]] && zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' rehash true
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${ZSH_CACHE_DIR}"
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+
+# 💎 Ruby
+# Shims are already on PATH above and completions come from brew's
+# site-functions, so `rbenv init` would only add a ~40ms subprocess to every
+# shell. Inline the one thing it actually provides: the wrapper that lets
+# `rbenv shell` / `rbenv rehash` mutate the current shell instead of a child.
+export RBENV_SHELL=zsh
+rbenv() {
+    local command="${1:-}"
+    (( $# > 0 )) && shift
+    case "$command" in
+        rehash|shell) eval "$(command rbenv "sh-$command" "$@")" ;;
+        *)            command rbenv "$command" "$@" ;;
+    esac
+}
+
+# 🎨 Prompt
+# Pure prompt - minimal and fast (provided by the `pure` Homebrew formula)
+autoload -Uz promptinit && promptinit
+prompt pure
 
 # 🔗 Aliases
 # Editor
@@ -206,8 +251,8 @@ alias ttt="tree -LC 3 --dirsfirst"
 alias tttt="tree -LC 4 --dirsfirst"
 
 # Disk usage
-alias duh="du -h -d 0 [^.]*" # List folder sizes
-alias duf="du -sh * | sort -h" # List folder sizes sorted
+alias duh="du -h -d 0 *(N)"        # List folder sizes (nullglob: no error when empty)
+alias duf="du -sh *(N) | sort -h"  # List folder sizes sorted
 
 # Python
 alias python="python3"
@@ -230,11 +275,28 @@ alias path='echo $PATH | tr -s ":" "\n"' # Pretty print the path
 alias reload="exec ${SHELL} -l"          # Reload shell
 
 # 🧹 System Maintenance
-clean() {
+_hdr() {
     echo "╔═══════════════════════════════════════════════════════════════════╗"
-    echo "║                        SYSTEM CLEANUP                             ║"
+    printf "║ %-65s ║\n" "$1"
     echo "╚═══════════════════════════════════════════════════════════════════╝"
     echo
+}
+
+# True when $1 resolves to a binary inside the Homebrew prefix, i.e. the tool
+# is package-manager-managed and must not self-update.
+_brew_managed() {
+    local bin
+    bin="$(command -v "$1" 2>/dev/null)" || return 1
+    [[ "$bin" == "${HOMEBREW_PREFIX:-/opt/homebrew}"/* ]]
+}
+
+# clean [--deep]
+#   --deep also purges the Go module cache (forces a full re-download).
+clean() {
+    local deep=0
+    [[ "$1" == "--deep" || "$1" == "-d" ]] && deep=1
+
+    _hdr "SYSTEM CLEANUP"
 
     echo "🍺 Homebrew"
     brew cleanup --prune=all
@@ -246,10 +308,11 @@ clean() {
     echo "🐚 Zsh"
     if command -v zplug &> /dev/null; then
         zplug clean --force
-        zplug clear
     fi
     rm -rf "${ZSH_CACHE_DIR}" ~/.zcompdump* ~/.zsh_sessions
-    echo "✓ Zsh plugins cleaned"
+    mkdir -p "${ZSH_CACHE_DIR}"
+    compinit -i -d "${ZSH_COMPDUMP}"
+    echo "✓ Zsh caches cleaned and completion dump rebuilt"
     echo
 
     echo "🌐 DNS Cache"
@@ -271,14 +334,6 @@ clean() {
         uv cache clean
         echo "✓ uv cache cleaned"
     fi
-    if command -v pip &> /dev/null; then
-        uv pip cache prune 2>/dev/null || true
-        echo "✓ pip cache cleaned"
-    fi
-    if command -v pipx &> /dev/null; then
-        pipx upgrade-all --upgrade-injected
-        echo "✓ pipx packages cleaned"
-    fi
     if command -v poetry &> /dev/null; then
         poetry cache clear pypi --all -n 2>/dev/null || true
         echo "✓ poetry cache cleaned"
@@ -289,8 +344,12 @@ clean() {
     if command -v go &> /dev/null; then
         go clean -cache
         go clean -testcache
-        go clean -modcache
-        echo "✓ Go cache cleaned"
+        if (( deep )); then
+            go clean -modcache
+            echo "✓ Go build, test and module caches cleaned"
+        else
+            echo "✓ Go build and test caches cleaned (use 'clean --deep' for -modcache)"
+        fi
     else
         echo "⚠ Go not found"
     fi
@@ -307,43 +366,54 @@ clean() {
     fi
     echo
 
-    echo "╔═══════════════════════════════════════════════════════════════════╗"
-    echo "║                    CLEANUP COMPLETED                              ║"
-    echo "╚═══════════════════════════════════════════════════════════════════╝"
+    _hdr "CLEANUP COMPLETED"
 }
 
 update() {
-    echo "╔═══════════════════════════════════════════════════════════════════╗"
-    echo "║                        SYSTEM UPDATE                              ║"
-    echo "╚═══════════════════════════════════════════════════════════════════╝"
-    echo
+    _hdr "SYSTEM UPDATE"
 
     echo "🍺 Homebrew"
     brew update
     brew upgrade
     brew upgrade --cask --greedy
     brew cleanup --prune=all
-    brew doctor
     echo "✓ Homebrew updated"
     echo
 
     echo "🐚 Zsh Plugins"
     if command -v zplug &> /dev/null; then
+        # ZPLUG_HOME lives in the Cellar, so a zplug upgrade above may have
+        # removed repos/ — reinstall before updating.
+        zplug install
         zplug update
     fi
-    rm -f "${ZSH_COMPDUMP}" ~/.zcompdump*
-    compinit -C -d "${ZSH_COMPDUMP}"
+    rm -f "${ZSH_COMPDUMP}" "${ZSH_COMPDUMP}.zwc" ~/.zcompdump*
+    compinit -i -d "${ZSH_COMPDUMP}"
     echo "✓ Zsh plugins updated"
     echo
 
     echo "📦 Node.js (via Homebrew)"
-    echo "✓ Node.js updated via Homebrew"
+    if command -v npm &> /dev/null; then
+        npm install -g npm@latest
+        npm update -g
+        echo "✓ npm and global packages updated"
+    fi
     echo
 
     echo "🐍 Python (via Homebrew)"
     if command -v uv &> /dev/null; then
-        uv self update
-        echo "✓ uv self updated"
+        if _brew_managed uv; then
+            echo "• uv is Homebrew-managed — upgraded by 'brew upgrade'; skipping 'uv self update'"
+        else
+            uv self update
+            echo "✓ uv self updated"
+        fi
+        uv tool upgrade --all 2>/dev/null || true
+        echo "✓ uv tools upgraded"
+    fi
+    if command -v pipx &> /dev/null; then
+        pipx upgrade-all --include-injected
+        echo "✓ pipx packages upgraded"
     fi
     echo "✓ Python updated via Homebrew"
     echo
@@ -361,7 +431,8 @@ update() {
     echo
 
     echo "🔧 System Maintenance"
-    softwareupdate --all --install --force 2>/dev/null || true
+    # Needs sudo for system-level packages; keep stderr visible so failures show.
+    softwareupdate --all --install || true
     if command -v mas &> /dev/null; then
         mas upgrade
         echo "✓ App Store apps updated"
@@ -369,7 +440,9 @@ update() {
     echo "✓ System maintenance completed"
     echo
 
-    echo "╔═══════════════════════════════════════════════════════════════════╗"
-    echo "║                    UPDATE COMPLETED                               ║"
-    echo "╚═══════════════════════════════════════════════════════════════════╝"
+    echo "🩺 Homebrew Doctor"
+    brew doctor || true
+    echo
+
+    _hdr "UPDATE COMPLETED"
 }
